@@ -1,0 +1,22 @@
+﻿nom de famille {
+	tout en majuscule
+	peut avoir un ou plusieurs tirets, mais pas plusieurs tirets d'affilée
+	pas de caractères spéciaux du style : accent, cédille, ...
+	peut avoir des apostrophes
+}
+
+prénom {
+	première lettre en majuscule
+	peut avoir un ou plusieurs tirets, mais pas plusieurs tirets d'affilée
+	peut avoir des caractères spéciaux, uniquement français, sauf sur les majuscules
+	peut avoir des apostrophes
+}
+
+une fonction en .php pour {
+	détecter les caractères interdits
+	tester les majuscules en début des prénoms
+	tester les majuscules sur les noms
+	retirer les accents sur les majuscules
+	si on ne l'enlève pas on signale que ce n'est pas conforme
+	
+}
