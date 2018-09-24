@@ -1,0 +1,8 @@
+1 fonction pour : 
+
+caractere interdit (nom/prenom)
+majuscule au debut
+si minuscule transformer en maj etc...
+si accent sur lettre maj on retir les accents
+si ; on le retire pas on dit pas conforme
+tous ces test sont en php
