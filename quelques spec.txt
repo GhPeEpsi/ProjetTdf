@@ -6,3 +6,7 @@ si minuscule transformer en maj etc...
 si accent sur lettre maj on retir les accents
 si ; on le retire pas on dit pas conforme
 tous ces test sont en php
+
+si ç -> C
+
+voir wikipédia : Diacritique

@@ -12,18 +12,13 @@
 		//xhr.open('GET', 'http://localhost:8082/support_php/prof/15_8.php');
 		xhr.open('GET', '15_8a.php?val='+val,true);
 		xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		<!-- alert("ca marche ?"); -->
 		
 		var Lire = function() 
 		{
 			if (xhr.readyState === 4 && xhr.status === 200) 
-		    { 	
-				<!-- alert(xhr.responseText); -->
+		    {
 				document.getElementById('resultat').innerHTML = '<span>' + xhr.responseText + '</span>'; 			
 				var tableau = xhr.responseText.split("<br/>");
-				<!-- alert(tableau.lenght); -->
-				<!-- alert(tableau[0]); -->
-				<!-- alert(tableau[1]); -->
 				
 				for (var i; elt.length; i++){
 					elt.options[0] = null;
@@ -45,12 +40,7 @@
   <p> 
 	<label> nom : </label><input type="text" id="nom" name="nom" value="" > <br/>
   </p>
-  <!-- <select id="pays" name="pays" size="1">		 -->
-	<!-- <option value="france"> France</option> -->
-	<!-- <option value="belgique" selected> Belgique</option> -->
-	<!-- <option value="suisse"> Suisse</option> -->
-	<!-- <option value="canada"> Canada</option> -->
-  <!-- </select> -->
+  
   <p id="resultat">
     <span id="r2">en attente de données</span>
   </p>
