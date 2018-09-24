@@ -3,15 +3,60 @@
 	<head>
     	<meta charset="utf-8">
     	<title>Ajout_coureur</title>
+		<script>
+		function chargerDonnee(val) 
+		{
+			
+			var xhr = new XMLHttpRequest();
+
+			//xhr.open('GET', 'http://localhost:8082/support_php/prof/15_8.php');
+			xhr.open('GET', 'ajoutCoureur.php?val='+val,true);
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			var Lire = function() 
+			{
+				if (xhr.readyState === 4 && xhr.status === 200) 
+				{ 	
+					document.getElementById('resultat').innerHTML = '<span>' + xhr.responseText + '</span>'; 			
+					var tableau = xhr.responseText.split("<br/>");
+					for (var i; elt.length; i++){
+						elt.options[0] = null;
+					}
+					
+					for (var i =0; i<tableau.length; i++){
+						elt.options[elt.length] = new Option(tableau[i+1])
+					}
+				}
+			}
+			xhr.addEventListener("readystatechange", Lire, false);		
+			xhr.send(null); 
+		}
+		</script>
 		<form action="/ma-page-de-traitement" method="post">
     		<div>
-        		<label for="name">Nom :</label>
+        		<label>Nom :</label>
         		<input type="text" id="nom" name="nom">
     		</div>
     		</br>
     		<div>
-        		<label for="name">Prenom :</label>
+        		<label>Prénom :</label>
         		<input type="text" id="prenom" name="prenom">
+    		</div>
+			 </br>
+			<div>
+				<label> Nationalité:</label>
+				<input type="text" id="nationalite" name="nationalite" value="">
+				<p id="resultat">
+					<span id="r2">en attente de données</span>
+				</p>
+			<script>
+				var elt1 = document.getElementById('nom');
+
+				var maFonction1 = function() 
+				{
+					chargerDonnee(elt1.value);
+				};
+				elt1.addEventListener('keyup', maFonction1, false);
+			</script>
     		</div>
 			 </br>
             <div>
@@ -19,4 +64,8 @@
             </div>
 		</form>
   </head>
+</html>
+  
+	
+  </body>
 </html>
