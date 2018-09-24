@@ -10,8 +10,10 @@ SELECT * from vt_coureur where Nom like 'A%'; -- nom changeable par prenom, n_co
 SELECT * from vt_coureur where Nom like '%A%';
 SELECT * from vt_coureur where Nom like '%A';
 
---vérification si un coureur à participé ou nom au TDF :
-select * from vt_coureur
+--vérification si un coureur à participé ou non au TDF :
+select * from vt_coureur co
+join vt_parti_coureur using (n_coureur)
+where co.nom like 'ANTON';
 
 
 select * from tdf_categorie_epreuve;
