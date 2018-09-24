@@ -1,17 +1,20 @@
 ﻿<?php
-/* Connexions
-	$db_username = "ETU2_33";
+/*  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO
+	CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO
+	CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO
+	CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  */
+
+/*	$db_username = "ETU2_33";
 	$db_password = "ETU2_33";
 	$db = "oci:dbname=info;charset=AL32UTF8"; // fonctionne si tnsname.ora est complet (base UTF8)
 	$db = "oci:dbname=info;charset=WE8ISO8859P15"; // fonctionne si tnsname.ora est complet
 	
 	$db = fabriquerChaineConnex();
-	$conn = ConnecterPDO($db,$db_username,$db_password);
-*/
+	$conn = Connecter($db,$db_username,$db_password);	*/
 
 
 
-function OuvrirConnexionPDO($db,$db_username,$db_password) {
+function OuvrirConnexion($db,$db_username,$db_password) {
 	try {
 		$conn = new PDO($db,$db_username,$db_password);
 		$res = true;
@@ -24,14 +27,14 @@ function OuvrirConnexionPDO($db,$db_username,$db_password) {
 
 
 
-function majDonneesPDO($conn,$sql) {
+function majDonnees($conn,$sql) {
 	$stmt = $conn->exec($sql);
 	return $stmt;
 }
 
 
 
-function preparerRequetePDO($conn,$sql)
+function preparerRequete($conn,$sql)
 {
 	$cur = $conn->prepare($sql);
 	return $cur;
@@ -39,7 +42,7 @@ function preparerRequetePDO($conn,$sql)
 
 
 
-function ajouterParamPDO($cur,$param,$contenu,$type='texte',$taille=0) {
+function ajouterParam($cur,$param,$contenu,$type='texte',$taille=0) {
 	// Sur Oracle, on peut tout passer sans préciser le type. Sur MySQL ???
 	//	if ($type == 'nombre')
 	//		$cur->bindParam($param, $contenu, PDO::PARAM_INT);
@@ -51,21 +54,21 @@ function ajouterParamPDO($cur,$param,$contenu,$type='texte',$taille=0) {
 
 
 
-function majDonneesPrepareesPDO($cur) {
+function majDonneesPreparees($cur) {
 	$res = $cur->execute();
 	return $res;
 }
 
 
 
-function majDonneesPrepareesTabPDO($cur,$tab) {
+function majDonneesPrepareesTab($cur,$tab) {
 	$res = $cur->execute($tab);
 	return $res;
 }
 
 
 
-function LireDonneesPDO1($conn,$sql,&$tab) {
+function LireDonnees1($conn,$sql,&$tab) {
 	$i=0;
 	foreach($conn->query($sql,PDO::FETCH_ASSOC) as $ligne) {
 		$tab[$i++] = $ligne;
@@ -76,7 +79,7 @@ function LireDonneesPDO1($conn,$sql,&$tab) {
 
 
 
-function LireDonneesPDO2($conn,$sql,&$tab) {
+function LireDonnees2($conn,$sql,&$tab) {
 	$i=0;
 	$cur = $conn->query($sql);
 	while($ligne = $cur->fetch(PDO::FETCH_ASSOC)) {
@@ -88,7 +91,7 @@ function LireDonneesPDO2($conn,$sql,&$tab) {
 
 
 
-function LireDonneesPDO3($conn,$sql,&$tab) {
+function LireDonnees3($conn,$sql,&$tab) {
   $cur = $conn->query($sql);
   $tab = $cur->fetchall(PDO::FETCH_ASSOC);
   return count($tab);
@@ -96,7 +99,7 @@ function LireDonneesPDO3($conn,$sql,&$tab) {
 
 
 
-function LireDonneesPDOPreparee($cur,&$tab) {
+function LireDonneesPreparees($cur,&$tab) {
   $res = $cur->execute();
   $tab = $cur->fetchall(PDO::FETCH_ASSOC);
   return count($tab);
@@ -104,7 +107,7 @@ function LireDonneesPDOPreparee($cur,&$tab) {
 
 
 
-function fabriquerChaineConnexPDO() {
+function fabriquerChaineConnexion() {
 	$hote = 'spartacus.iutc3.unicaen.fr';
 	$port = '1521'; // port par défaut
 	$service = 'info.iutc3.unicaen.fr';
