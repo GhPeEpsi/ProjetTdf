@@ -14,19 +14,19 @@
 
 
 
+// Permet de se connecter à la base de données avec une instance PDO
 function OuvrirConnexion($db,$db_username,$db_password) {
-	try {
+	try { // On teste si les paramètres de connexion sont valides
 		$conn = new PDO($db,$db_username,$db_password);
 		$res = true;
-	}
-	catch (PDOException $erreur) {
+	} catch (PDOException $erreur) { // Sinon on affiche un message d'erreur
 		echo $erreur->getMessage();
 	}
-	return $conn;
+	return $conn; 
 }
 
 
-
+// Permet de mettre à jour les données dans la base
 function majDonnees($conn,$sql) {
 	$stmt = $conn->exec($sql);
 	return $stmt;

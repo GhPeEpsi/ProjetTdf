@@ -1,10 +1,8 @@
 <form name="formVerifCoureur" action="" method="post">
 	<br>
 	<select name="coureur"  >
-	<option > --------------------------------- </option>    
-	<?php
-		remplirOption($tab,$nbLignes);		
-	?>
+	<option >Choisir un coureur</option>    
+		<?php remplirOption($tab,$nbLignes); ?>
 	</select>
 	<input type="submit" name="verifier" value="Vérifier" >
 	<br>	   
@@ -12,7 +10,7 @@
 
 <?php
 	function remplirOption($tab,$nbLignes) {
-		for ($i=0;$i<$nbLignes;$i++) {
+		for ($i=0; $i<$nbLignes; $i++) {
 			$tab[$i]["PRENOM"] = utf8_encode($tab[$i]["PRENOM"]);
 			echo '<option value="'.$tab[$i]["N_COUREUR"].'">'.$tab[$i]['NOM'].' '.$tab[$i]['PRENOM'];
 			echo '</option>';

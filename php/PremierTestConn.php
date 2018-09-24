@@ -12,8 +12,7 @@
 		$login = 'copie_tdf';
 		$mdp = 'copie_tdf_local';
 		$db = 'oci:dbname=localhost:1521/xe';
-	
-		// ce code ne doit pas être dans le <select> … </select>
+		
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		$req = 'SELECT * FROM vt_coureur order by nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);
