@@ -9,18 +9,18 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 	
-		$login = 'copie_tdf';
-		$mdp = 'copie_tdf_local';
+		$login = 'copie_tdf_copie';
+		$mdp = 'copie_tdf_copie';
 		$db = 'oci:dbname=localhost:1521/xe';
 		
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		$req = 'SELECT DISTINCT code_cio FROM vt_app_nation order by code_cio';
+		$req = 'SELECT code_cio, nom FROM vt_nation order by nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);
 		
 		if (!empty($_POST)) {
-			if (isset($_POST['code_cio'])) {
-				$nat = $_POST['code_cio'];
-				echo ("Nationalité $nat sélectionné");
+			if (isset($_POST['nationalite'])) {
+				$nat = $_POST['nationalite'];
+				echo ("Nationalité $nat sélectionnée");
 			}
 		}
 		else {

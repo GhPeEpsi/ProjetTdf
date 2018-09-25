@@ -14,7 +14,7 @@
         		<input type="text" id="prenom" name="prenom">
     		</div>
 			 </br>
-			<select name="Nationalité"  >
+			<select name="nationalite"  >
 				<option>Nationalité</option>
 				<?php remplirOption($tab,$nbLignes); ?>
 			</select>
@@ -24,11 +24,10 @@
 				<?php
 					function remplirOption($tab,$nbLignes) 
 					{
-						echo '<hola>';
 						for ($i=0; $i<$nbLignes; $i++)
 						 {
-							$tab[$i]["CODE_CIO"] = utf8_encode($tab[$i]["CODE_CIO"]);
-							echo '<option value="'.$tab[$i]["CODE_CIO"].'">';
+							$tab[$i]["NOM"] = utf8_encode($tab[$i]["NOM"]);
+							echo '<option value="'.$tab[$i]['CODE_CIO'].'">'.$tab[$i]['NOM'];
 							echo '</option>';
 						}
 					}
