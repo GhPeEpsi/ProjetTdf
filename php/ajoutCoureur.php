@@ -57,8 +57,14 @@
 	function ajoutDateN(){
 		if(isset($_POST['dateN'])){
 			$dateN = $_POST['dateN'];
-			echo "Date ".$dateN." sélectionné";
-			echo "</br>";
+			if(empty($dateN)){
+				echo '<span><font color="red">Veuillez entrer une date !</font></span>';
+				echo "</br>";
+			}
+			else{
+				echo "Date ".$dateN." sélectionné";
+				echo "</br>";
+			}
 		}
 	}
 
