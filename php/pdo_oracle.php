@@ -33,7 +33,7 @@ function majDonnees($conn,$sql) {
 }
 
 
-
+// Prépare un requête donnée et retourne l'objet
 function preparerRequete($conn,$sql)
 {
 	$cur = $conn->prepare($sql);
@@ -41,26 +41,26 @@ function preparerRequete($conn,$sql)
 }
 
 
-
+// 
 function ajouterParam($cur,$param,$contenu,$type='texte',$taille=0) {
 	// Sur Oracle, on peut tout passer sans préciser le type. Sur MySQL ???
 	//	if ($type == 'nombre')
 	//		$cur->bindParam($param, $contenu, PDO::PARAM_INT);
 	//	else
-	//$cur->bindParam($param, $contenu, PDO::PARAM_STR, $taille);
+	//		$cur->bindParam($param, $contenu, PDO::PARAM_STR, $taille);
 	$cur->bindParam($param,$contenu);
 	return $cur;
 }
 
 
-
+// Permet de mettre à jour les données préparées (variable)
 function majDonneesPreparees($cur) {
 	$res = $cur->execute();
 	return $res;
 }
 
 
-
+// Permet de mettre à jour les données préparées (tableau)
 function majDonneesPrepareesTab($cur,$tab) {
 	$res = $cur->execute($tab);
 	return $res;
