@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+	<html lang="fr">
 	<head>
     	<meta charset="utf-8">
     	<title>Ajout coureur</title>
@@ -25,6 +25,7 @@
         			<input type="date" id="start" name="trip"
                			value=""
                			min="1900-01-01" max= "<?php echo date("Y-m-d"); ?>"
+               			<?php ajoutDateN(); ?>
     			</div>
 			</fieldset>
 			<br>
@@ -34,7 +35,7 @@
 				<?php remplirOption($tab,$nbLignes); ?>
 			</select>
 				<input type="submit" name="verifier" value="Vérifier" ></br>
-				<?php ajoutSelection() ?>
+				<?php ajoutSelection();?>
 			<br>
 		</form>
 	</head>	

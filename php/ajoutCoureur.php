@@ -10,7 +10,15 @@
 	$db = 'oci:dbname=localhost:1521/xe';
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
-	$req = 'SELECT code_cio, nom FROM vt_nation order by nom';
+
+	$req = "select code_cio, nom from tdf_nation
+			where annee_creation <2003
+			and annee_disparition >2003
+			UNION
+			select code_cio, nom from tdf_nation
+			where annee_creation is null
+			and annee_disparition is null";
+
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 
 	//On vérifie que le nom est séléctionné
@@ -18,7 +26,7 @@
 	function ajoutNom(){
 		if(isset($_POST['Nom'])){
 			$nom = $_POST['Nom'];
-			if($nom = " "){
+			if(empty($nom)){
 				echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
 				echo "</br>";
 			}
@@ -34,12 +42,27 @@
 	function ajoutPrenom(){
 		if(isset($_POST['prenom'])){
 			$prenom = $_POST['prenom'];
-			if($prenom = " "){
+			if(empty($prenom)){
 				echo '<span><font color="red">Veuillez entrer un prénom !</font></span>';
 				echo "</br>";
 			}
-			else{ 
-				echo "Prénom ".$_POST['prenom']." sélectionné";
+			else{
+				echo "Prénom ".$prenom." sélectionné";
+				echo "</br>";
+			}
+		}
+	}
+
+
+	function ajoutDateN(){
+		if(isset($_POST['dateN'])){
+			$dateN = $_POST['dateN'];
+			if(empty($dateN)){
+				echo '<span><font color="red">Veuillez entrer une date !</font></span>';
+				echo "</br>";
+			}
+			else{
+				echo "Date ".$dateN." sélectionné";
 				echo "</br>";
 			}
 		}
@@ -64,7 +87,7 @@
 		if (!empty($_POST)) {
 			if (isset($_POST['nationalite'])) {
 				$nat = $_POST['nationalite'];
-				if($nat = "Nationalité"){
+				if($nat == "Nationalité"){
 					echo '<span><font color="red">Veuillez sélectionner une Nationalité !</font></span>';
 				}
 				else{
