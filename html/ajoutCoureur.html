@@ -16,25 +16,24 @@
         		<?php ajoutPrenom(); ?>
     		</div>
 			 <br>
-			
-
-			<fieldset>
-    			<legend>Date de naissance</legend>
+    			<label>Date de naissance</label>
 
     			<div>
         			<input type="date" id="start" name="trip"
                			value=""
                			min="1900-01-01" max= "<?php echo date("Y-m-d"); ?>"
-               			<?php ajoutDateN(); ?>
     			</div>
-			</fieldset>
-			<br>
+    			<?php ajoutDateN(); ?>
+				<br>
+				<br>
 
 			<select name="nationalite"  >
 				<option> Nationalité </option>
 				<?php remplirOption($tab,$nbLignes); ?>
+				<br>
 			</select>
-				<input type="submit" name="verifier" value="Vérifier" ></br>
+				<input type="submit" name="verifier" value="Vérifier" >
+			<br>
 				<?php ajoutSelection();?>
 			<br>
 		</form>
