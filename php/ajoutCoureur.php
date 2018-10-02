@@ -11,9 +11,17 @@
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
 
+	// pour récupérer l'année entrée par l'utilisateur
+	if(isset($_POST['dateN'])){
+		$dateN = $_POST['dateN'];
+		$tab = explode("-", $dateN);
+		$annee = $tab[0];
+	}
+
+	// requete permettant d'afficher les nations en fonction de l'année entrée par l'utilisateur
 	$req = "select code_cio, nom from tdf_nation
-			where annee_creation <2003
-			and annee_disparition >2003
+			where annee_creation <$annee
+			and annee_disparition >$annee
 			UNION
 			select code_cio, nom from tdf_nation
 			where annee_creation is null
@@ -62,7 +70,7 @@
 				echo "</br>";
 			}
 			else{
-				echo "Date ".$dateN." sélectionné";
+				echo "Date ".$dateN." sélectionné ";
 				echo "</br>";
 			}
 		}
