@@ -1,0 +1,73 @@
+<!--  E.Porcq	9_5.htm  maj du 25/08/2015 -->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>formulaire final</title>
+	    <script	 src="./9_5.js">     </script>
+  </head>
+  <body>
+	<form name="monFormulaire" action= "" method="post" enctype="multipart/form-data">
+		<fieldset>
+		<legend><b>Identité</b></legend>
+		<br />
+		<label for="nom">nom : </label><input type="text" name="nom" size="30" maxlength="50" placeholder="nom ?" value="<?php verifierText("nom"); ?>"><br />
+		<label for="prenom">prénom : </label><input type="text" name="prenom" value="<?php verifierText("prenom"); ?>"><br />
+		<label for="courriel">Courriel : </label><input type="email" name="courriel"  value="<?php verifierText("courriel"); ?>"><br />
+		<label for="code">Mot de passe : </label><input type="password" name="code" AUTOCOMPLETE=OFF > <br />
+		<br/>
+		<label for="civiliteF"> Femme :</label><input type="radio" id="civiliteF" name="civilite" <?php cocherRadio("civilite","homme"); ?> value="homme"> <br />
+		<label for="civiliteH"> Homme :</label><input type="radio" id="civiliteH" name="civilite" <?php cocherRadio("civilite","femme"); ?> value="femme" ><br />
+		<select name="pays" size="1">
+		  <option value=""   <?php VerifierSelect("pays","rien");   ?> > ------</option>
+		  <option value="France"   <?php VerifierSelect("pays","France");   ?> > France</option>
+		  <option value="Belgique" <?php VerifierSelect("pays","Belgique"); ?> > Belgique</option>
+		  <option value="Suisse"   <?php VerifierSelect("pays","Suisse");   ?> > Suisse</option>
+		  <option value="Canada"   <?php VerifierSelect("pays","Canada");   ?> > Canada </option>
+		</select>
+		<br />
+		<br />	   
+	  </fieldset>
+	  <!-- Deuxième groupe de composants-->
+	  <fieldset>
+		<legend><b>Ce que vous préférez dans la vie</b></legend>
+		<input type="checkbox" name="tout" value="tout"  onclick="toutCocher2('preference[]')"> Tout cocher<br />
+		<input type="checkbox" name="preference[]" value="bdd" <?php cocherCase("preference","bdd"); ?>  > Bases de données<br />
+		<input type="checkbox" name="preference[]" value="oracle" <?php cocherCase("preference","oracle"); ?> > Oracle<br />
+		<input type="checkbox" name="preference[]" value="triggers" <?php cocherCase("preference","triggers"); ?>  > Triggers<br />
+		<input type="checkbox" name="preference[]" value="sql" <?php cocherCase("preference","sql"); ?>  > SQL<br />
+		<input type="checkbox" name="preference[]" value="MCD" <?php cocherCase("preference","MCD"); ?>  > MCD<br />
+		<input type="checkbox" name="preference[]" value="PLSQL" <?php cocherCase("preference","PLSQL"); ?>  > PL/SQL<br /> 
+
+	   <textarea name="gouts" cols="50" rows="5" placeholder="Quoi d'autre ?" ><?php verifierText("gouts"); ?></textarea><br />
+		<br />
+	  </fieldset>
+	  <!-- troisième groupe de composants-->
+	  <fieldset>
+		<legend><b>Envoyez nous votre photo</b></legend>
+		<canvas id="canvas" width="450" height="220" style="float:left"></canvas>
+		<!-- <img name="image" id="image" src="" style="display:none"><br/>  -->
+		<input type="file" name="fichier" accept="" onchange="readURL(this);" > 
+		<input type="hidden" name="discret" value="10000" >
+	  </fieldset><br />
+        <br />
+		<input type="submit" name="EN" value="Envoyer" onclick="return testerValid()"> 		&nbsp;&nbsp;&nbsp;
+		<input type="reset" name="RE" value="Effacer">        &nbsp;&nbsp;&nbsp;
+		<input type="button" name="IN" value="Incrementer" onclick="alert(discret.value++)">
+        <br />
+	  <br />	  
+	</form>
+  </body>
+</html>
+
+
+<!-- testerValid peut empêcher au formulaire d'être soummis -->
+<!-- ajout d'une fonction pour afficher l'image -->
+
+
+
+
+
+
+
+

@@ -9,8 +9,8 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 	
-		$login = 'copie_tdf';
-		$mdp = 'copie_tdf_local';
+		$login = 'copie_tdf_copie';
+		$mdp = 'copie_tdf_copie';
 		$db = 'oci:dbname=localhost:1521/xe';
 		
 		$conn = OuvrirConnexion($db,$login,$mdp);
