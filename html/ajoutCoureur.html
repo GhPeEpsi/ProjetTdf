@@ -1,37 +1,40 @@
 <!DOCTYPE html>
-<html lang="fr">
+	<html lang="fr">
 	<head>
     	<meta charset="utf-8">
     	<title>Ajout coureur</title>
 		<form name="formVerifCoureur" action="" method="post">
     		<div>
-        		<label>Nom :</label>
-        		<input type="text" id="nom" name="nom">
+        		<label> Nom : </label>
+				<input type = text name = "Nom" value ="" placeholder="Saisir"></br>
+				<?php ajoutNom(); ?>
     		</div>
-    		</br>
+    		<br>
     		<div>
-        		<label>Prénom :</label>
-        		<input type="text" id="prenom" name="prenom">
+        		<label> Prénom :</label>
+        		<input type="text" name = "prenom" value ="" placeholder="Saisir"></br>
+        		<?php ajoutPrenom(); ?>
     		</div>
-			 </br>
+			 <br>
+    			<label>Date de naissance</label>
+
+    			<div>
+        			<input type="date" name ="dateN" value="" min="1900-01-01" max= "<?php echo date("Y-m-d"); ?>">
+    			</div>
+    			<?php ajoutDateN(); ?>
+				<br>
+				<br>
+
 			<select name="nationalite"  >
-				<option>Nationalité</option>
+				<option> Nationalité </option>
 				<?php remplirOption($tab,$nbLignes); ?>
+				<br>
 			</select>
 				<input type="submit" name="verifier" value="Vérifier" >
-			</br>
+			<br>
+				<?php ajoutSelection();?>
+			<br>
 		</form>
-				<?php
-					function remplirOption($tab,$nbLignes) 
-					{
-						for ($i=0; $i<$nbLignes; $i++)
-						 {
-							$tab[$i]["NOM"] = utf8_encode($tab[$i]["NOM"]);
-							echo '<option value="'.$tab[$i]['CODE_CIO'].'">'.$tab[$i]['NOM'];
-							echo '</option>';
-						}
-					}
-				?>
 	</head>	
   </body>
 </html>
