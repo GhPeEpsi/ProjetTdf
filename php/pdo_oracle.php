@@ -41,6 +41,24 @@ function preparerRequete($conn,$sql)
 }
 
 
+//
+function ExecuterRequete($conn,$req) {
+	$cur = oci_parse($conn, $req);
+	if (!$cur) {  
+		$e = oci_error($conn);  
+		print htmlentities($e['message']);  
+		exit;
+	}
+	$r = oci_execute($cur, OCI_DEFAULT);
+	if (!$r) {  
+		$e = oci_error($conn);  
+		echo htmlentities($e['message']);  
+		exit;
+	}
+	return $cur;
+}
+
+
 // 
 function ajouterParam($cur,$param,$contenu,$type='texte',$taille=0) {
 	// Sur Oracle, on peut tout passer sans préciser le type. Sur MySQL ???
@@ -92,9 +110,16 @@ function LireDonnees2($conn,$sql,&$tab) {
 
 
 function LireDonnees3($conn,$sql,&$tab) {
-  $cur = $conn->query($sql);
-  $tab = $cur->fetchall(PDO::FETCH_ASSOC);
-  return count($tab);
+	$cur = $conn->query($sql);
+	$tab = $cur->fetchall(PDO::FETCH_ASSOC);
+	return count($tab);
+}
+
+
+
+function LireDonnees4($cur,&$tab) {
+	$nbLignes = oci_fetch_all($cur, $tab,0,-1,OCI_ASSOC); //OCI_FETCHSTATEMENT_BY_ROW, OCI_ASSOC, OCI_NUM
+	return $nbLignes;
 }
 
 
@@ -111,7 +136,19 @@ function fabriquerChaineConnexion() {
 	$hote = 'spartacus.iutc3.unicaen.fr';
 	$port = '1521'; // port par défaut
 	$service = 'info.iutc3.unicaen.fr';
-	$db = "oci:dbname=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(Host=".$hote .")(Port=".$port.")))(CONNECT_DATA=(SERVICE_NAME=".$service.")))";
+
+	$db =
+	"oci:dbname=(DESCRIPTION =
+	(ADDRESS_LIST =
+		(ADDRESS =
+			(PROTOCOL = TCP)
+			(Host = ".$hote .")
+			(Port = ".$port."))
+	)
+	(CONNECT_DATA =
+		(SERVICE_NAME = ".$service.")
+	)
+	)";
 	return $db;
 }
 ?>
