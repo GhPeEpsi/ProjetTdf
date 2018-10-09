@@ -11,11 +11,16 @@
 	
 		if (isset($_GET['coureur']))
 			$cour = $_GET['coureur'];
-
+		
 		$login = 'copie_tdf_copie';
 		$mdp = 'copie_tdf_copie';
-	//	$db = 'oci:dbname=localhost:1521/xe';
-		$db = 'localhost:1521/xe';
+//		$db = fabriquerChaineConnexion2();
+		$db = 'oci:dbname=localhost:1521/xe';
+		
+/*		$login = "ETU2_33";
+		$mdp = "ETU2_33";
+		$db = fabriquerChaineConnexion();		*/
+	
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		
 		if (isset($_GET['coureur'])) {

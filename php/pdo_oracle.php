@@ -43,7 +43,7 @@ function preparerRequete($conn,$sql)
 
 //
 function ExecuterRequete($conn,$req) {
-	$cur = oci_parse($conn, $req);
+	$cur = oci_parse($conn,$req);
 	if (!$cur) {  
 		$e = oci_error($conn);  
 		print htmlentities($e['message']);  
@@ -136,6 +136,28 @@ function fabriquerChaineConnexion() {
 	$hote = 'spartacus.iutc3.unicaen.fr';
 	$port = '1521'; // port par défaut
 	$service = 'info.iutc3.unicaen.fr';
+
+	$db =
+	"oci:dbname=(DESCRIPTION =
+	(ADDRESS_LIST =
+		(ADDRESS =
+			(PROTOCOL = TCP)
+			(Host = ".$hote .")
+			(Port = ".$port."))
+	)
+	(CONNECT_DATA =
+		(SERVICE_NAME = ".$service.")
+	)
+	)";
+	return $db;
+}
+
+
+
+function fabriquerChaineConnexion2() {
+	$hote = 'localhost';
+	$port = '1521'; // port par défaut
+	$service = 'xe';
 
 	$db =
 	"oci:dbname=(DESCRIPTION =
