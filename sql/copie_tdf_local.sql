@@ -89,7 +89,7 @@ select * from tdf_nation where nom = 'RUSSIE';
 
 
 
-
+select * from tdf_coureur order by nom;
 
 
 
