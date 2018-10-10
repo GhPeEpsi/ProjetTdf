@@ -29,6 +29,11 @@ VALUES (
     
     --Sous requètes utile à l'ajout d'un coureur :
     select max(n_coureur) from tdf_coureur;
+    --apartenance à un pays :
+    INSERT INTO tdf_app_nation (n_coureur, code_cio, annee_debut)
+    Values (
+    
+    );
 
 
 --création d'une participation au tdf
@@ -40,6 +45,12 @@ VALUES (
 ), 2, 1, 1, 1);
     --Recherche de l'année max
     select max(ANNEE) from tdf_annee;
+    --Recherche des bonnes values :
+    select n_coureur from tdf_coureur 
+    join tdf_app_nation using (n_coureur)
+    where nom = 'GROUT'
+    and prenom = 'Abel'
+    and code_cio = 'FR';
     
 --Création d'une nouvelle année :
 INSERT INTO tdf_annee(annee) VALUES 
@@ -55,9 +66,11 @@ UNION
 select code_cio, nom from tdf_nation
 where annee_creation is null
 and annee_disparition is null;
-
-select code_cio, nom, annee_creation, annee_disparition from tdf_nation;
-select code_cio, nom, annee_creation, annee_disparition from tdf_nation where code_cio = 'URS';
+    --Recherche pour la requète :
+    select code_cio, nom, annee_creation, annee_disparition from tdf_nation;
+    select code_cio, nom, annee_creation, annee_disparition from tdf_nation where code_cio = 'URS';
+    
+    select * from tdf_app_nation;
     
 --insertion tdf_app_nation
 INSERT INTO tdf_app_nation(;
@@ -67,3 +80,17 @@ select To_char(sysdate,'yyyy') from dual;
 select * from tdf_ANNEE;
 
 select * from tdf_app_nation;
+
+
+
+
+
+select * from tdf_nation where nom = 'RUSSIE'; 
+
+
+
+
+
+
+
+
