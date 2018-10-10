@@ -12,11 +12,11 @@
 	$conn = OuvrirConnexion($db,$login,$mdp);
 
 	// pour récupérer l'année entrée par l'utilisateur
-	// if(isset($_GET['dateN'])){
-	// 	//echo 'on est dans le php';
-	// 	$dateN = $_GET['dateN'];
-	// 	$tab1 = explode("-", $dateN);
-	// 	$annee = $tab1[0];
+	if(isset($_POST['dateN'])){
+	 	$dateN = $_POST['dateN'];
+	 	$tab1 = explode("-", $dateN);
+	 	$annee = $tab1[0];
+	 }
 	// $req = "select code_cio, nom from tdf_nation
 	// 	where annee_creation <$annee
 	// 	and annee_disparition >$annee
@@ -27,6 +27,42 @@
 	//$conn = OuvrirConnexion($db,$login,$mdp);
 	$req = 'SELECT code_cio, nom FROM vt_nation where annee_disparition is null order by nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
+
+	
+	function ajoutALaBase($conn){
+
+		if ($conn){
+
+			$sql = 'INSERT INTO tdf_coureur (n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, $nom, $prenom, $annee)';
+			if(isset($_POST['Nom'])){
+				$nom = $_POST['Nom'];
+			}else{
+				$nom = null;
+			}
+			if(isset($_POST['prenom'])){
+				$prenom = $_POST['prenom'];
+			}else{
+				$prenom = null;
+			}
+			if(isset($_POST['dateN'])){
+				$dateN = $_POST['dateN'];
+			}else{
+				$dateN = null;
+			}
+
+			$cur = preparerRequete($conn,$sql);
+			//AfficherTab($cur);
+			$tab = array (
+				':nom'=>$nom,
+				':prenom'=>$prenom,
+				':dateN'=>$dateN,
+			);
+			$res = majDonneesPrepareesTab($cur,$tab);
+			AfficherTab($res);
+			echo "on est arrivé jusque là ???";
+		}
+	}
+
 
 	//$nbLignes = LireDonnees1($conn,$req,$tabNation);
 	//AfficherDonneeNation($tabNation,$nbLignes);
@@ -81,7 +117,7 @@
 		if(isset($_POST['dateN'])){
 			$dateN = $_POST['dateN'];
 			if(empty($dateN)){
-				echo '<span><font color="red">Veuillez entrer une date !</font></span>';
+				echo '<span><font color="red">Veuillez entrer une date de naissance !</font></span>';
 				echo "</br>";
 			}
 			else{
