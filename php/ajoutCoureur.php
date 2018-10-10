@@ -12,22 +12,28 @@
 	$conn = OuvrirConnexion($db,$login,$mdp);
 
 	// pour récupérer l'année entrée par l'utilisateur
-	if(isset($_POST['dateN'])){
-		$dateN = $_POST['dateN'];
-		$tab = explode("-", $dateN);
-		$annee = $tab[0];
-	}
+	// if(isset($_GET['dateN'])){
+	// 	//echo 'on est dans le php';
+	// 	$dateN = $_GET['dateN'];
+	// 	$tab1 = explode("-", $dateN);
+	// 	$annee = $tab1[0];
+	// $req = "select code_cio, nom from tdf_nation
+	// 	where annee_creation <$annee
+	// 	and annee_disparition >$annee
+	// 	UNION
+	// 	select code_cio, nom from tdf_nation
+	// 	where annee_creation is null
+	// 	and annee_disparition is null";
+	//$conn = OuvrirConnexion($db,$login,$mdp);
+	$req = 'SELECT code_cio, nom FROM vt_nation where annee_disparition is null order by nom';
+	$nbLignes = LireDonnees1($conn,$req,$tab);
+
+	//$nbLignes = LireDonnees1($conn,$req,$tabNation);
+	//AfficherDonneeNation($tabNation,$nbLignes);
+	//}
 
 	// requete permettant d'afficher les nations en fonction de l'année entrée par l'utilisateur
-	$req = "select code_cio, nom from tdf_nation
-			where annee_creation <$annee
-			and annee_disparition >$annee
-			UNION
-			select code_cio, nom from tdf_nation
-			where annee_creation is null
-			and annee_disparition is null";
-
-	$nbLignes = LireDonnees1($conn,$req,$tab);
+	
 
 	//On vérifie que le nom est séléctionné
 
@@ -45,6 +51,16 @@
 		}
 	}
 
+
+	// function AfficherDonneeNation($tabNation,$nbLignes) {
+	// 	if ($nbLignes > 0) {
+	// 		for ($i = 0; $i < $nbLignes; $i++) { // balayage de toutes les lignes
+	// 			echo $tabNation[$i]['NOM'];
+	// 			echo '<br>';
+	// 		}
+	// 	}
+	// }
+
 	//On vérifie que le prénom est séléctionné
 
 	function ajoutPrenom(){
@@ -61,8 +77,7 @@
 		}
 	}
 
-
-	function ajoutDateN(){
+	function ajoutDate(){
 		if(isset($_POST['dateN'])){
 			$dateN = $_POST['dateN'];
 			if(empty($dateN)){
@@ -70,12 +85,11 @@
 				echo "</br>";
 			}
 			else{
-				echo "Date ".$dateN." sélectionné ";
+				echo "Date ".$dateN." sélectionnée";
 				echo "</br>";
 			}
 		}
 	}
-
 	
 	// On remplis la liste deroulante avec les nationalité de la base
 
@@ -105,5 +119,7 @@
 		}
 	}
 
-	include ("../html/ajoutCoureur.html"); //on inclut le fichier html
+	if(empty($_GET)){
+		include ("../html/ajoutCoureur.html"); //on inclut le fichier html
+	}
 	?>
