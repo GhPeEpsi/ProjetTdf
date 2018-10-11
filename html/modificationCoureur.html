@@ -7,20 +7,19 @@
 	</head>
 	<body>
 		<form name="formModifCoureur" action= "" method="post" enctype="multipart/form-data">
-			<p><h1>Modification d'un coureur</h1></p>
-			<br/>
+			<p><h1>Modification d'un coureur</h1></p><br/>
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
 				<label for="nom">Entrer un nom/prénom de coureur :</label><br/>
-					<input type="texte" size="50" id="recherche" name="recherche" value=""><br/><br>
-					<p id="resultat"><span id="r2">Aucune valeur entrée</span></p>
-						<script>
-							var rech1 = document.getElementById('recherche');
-							var foncRecherche = function() {
-								chargerDonnee(rech1.value);
-							};
-							rech1.addEventListener('keyup', foncRecherche, false);
-						</script>
-				<br>
+				<input type="texte" size="50" id="recherche" name="recherche" value=""><br/><br>
+				<p id="resultat"><span id="r2">Aucune valeur entrée</span></p>
+					<script>
+						var rech1 = document.getElementById('recherche');
+						var foncRecherche = function() {
+							chargerDonnee(rech1.value);
+						};
+						rech1.addEventListener('keyup', foncRecherche, false);
+					</script><br/>
+				
 			</fieldset>
 			<br/><br/>
 			<input type="submit" name="env" value="Envoyer" onclick="return testerValid()">&nbsp;&nbsp;&nbsp;

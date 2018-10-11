@@ -22,14 +22,12 @@
 		$db = fabriquerChaineConnexion();		*/
 	
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		
+/*		
 		if (isset($_GET['coureur'])) {
-			echo "debut";
 			$req = "SELECT nom, prenom FROM vt_coureur where nom like upper('".$cour."%')";
 			$cur = ExecuterRequete($conn,$req);
 			$nb = LireDonnees4($cur,$donnees);
 			//AfficherDonnee2($donnees,$nb);
-			echo "fin";
 		}
 		?>	
 	</body>
