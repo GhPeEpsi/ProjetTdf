@@ -9,23 +9,15 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 	
-		$login = 'copie_tdf_copie';
-		$mdp = 'copie_tdf_copie';
-		$db = 'oci:dbname=localhost:1521/xe';
+		$login = 'ETU2_49';
+		$mdp = 'ETU2_49';
+		$db = fabriquerChaineConnexion();
 		
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		$req = 'SELECT * FROM vt_coureur order by nom';
+		$req = 'SELECT * FROM tdf_coureur order by nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);
+		AfficherDonnee2($tab);
 		
-		if (!empty($_POST)) {
-			if (isset($_POST['coureur'])) {
-				$cour = $_POST['coureur'];
-				echo ("Coureur $cour sélectionné");
-			}
-		}
-		else {
-			include ("../html/PremierTestConn.html");
-		}
-		?>   	
+		?>
 	</body>
 </html>
