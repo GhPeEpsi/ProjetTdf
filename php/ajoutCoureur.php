@@ -33,7 +33,7 @@
 		if(isset($_POST['verifier'])){
 
 			echo ("<hr/> BLOC 1 <br/>");
-			$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom) VALUES ((select max(n_coureur) from vt_coureur) + 1,:nom,:prenom)";
+			$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
 			if(isset($_POST['Nom'])){
 				$nom = $_POST['Nom'];
@@ -41,6 +41,12 @@
 			if(isset($_POST['prenom'])){
 				$prenom = $_POST['prenom'];
 			}
+			if(isset($_POST['dateN'])){
+			 	$dateN = $_POST['dateN'];
+	 			$tab1 = explode("-", $dateN);
+	 			$annee = $tab1[0];
+	 			$annee_naissance = $annee;
+	 		}
 
 			$cur = preparerRequete($conn,$sql);
 			AfficherTab($cur);
@@ -52,6 +58,7 @@
 			//ajouterParam($cur,':n_coureur',$n_coureur);
 			ajouterParam($cur,':nom',$nom);
 			ajouterParam($cur,':prenom',$prenom);
+			ajouterParam($cur,':annee_naissance',$annee_naissance);
 			$res = majDonneesPreparees($cur);
 			AfficherTab($res);
 			echo ("FIN BLOC 2 <hr/>");
