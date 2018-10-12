@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Choix d'un coureur</title>
+		<script src="../js/choixCoureur.js"></script>
+	</head>
+	<body>
+		<form name="formuaireChoixCoureur" action= "" method="post" enctype="multipart/form-data">
+			<p><h1>Choisir un coureur</h1></p><br/>
+			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
+					<select name="coureur">
+						<option >CHOISIR UN COUREUR</option><?php listeCoureurs($tab,$nbLignes); ?>
+					</select><br/><br/>
+			</fieldset><br/>
+			<input type="reset" name="Annuler" value="Annuler">&nbsp;&nbsp;&nbsp;
+			<input type="submit" name="Suivant" value="Suivant">&nbsp;&nbsp;&nbsp;
+	   <!-- <input type="button" name="Suivant" value="Suivant" onclick="return testerValid()">&nbsp;&nbsp;&nbsp; -->
+		</form>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<!-- <label for="nom">Entrer un nom/prénom de coureur :</label><br/> -->
+				<!-- <input type="texte" size="50" id="recherche" name="recherche" value=""><br/><br> -->
+				<!-- <p id="resultat"><span id="r2">Aucune valeur entrée</span></p> -->
+					<!-- <script> -->
+						<!-- var rech1 = document.getElementById('recherche'); -->
+						<!-- var foncRecherche = function() { -->
+							<!-- chargerDonnee(rech1.value); -->
+						<!-- }; -->
+						<!-- rech1.addEventListener('keyup', foncRecherche, false); -->
+					<!-- </script><br/> -->
