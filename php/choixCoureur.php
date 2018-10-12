@@ -20,7 +20,7 @@
 		
 	
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		$req = 'SELECT * FROM vt_coureur order by nom';
+		$req = 'SELECT * FROM tdf_coureur order by nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);
 		
 		if (!empty($_POST)) {
@@ -38,6 +38,19 @@
 				$tab[$i]["PRENOM"] = utf8_encode($tab[$i]["PRENOM"]);
 				echo '<option value="'.$tab[$i]["N_COUREUR"].'">'.$tab[$i]['NOM'].' '.$tab[$i]['PRENOM'];
 				echo '</option>';
+			}
+		}
+		
+		function aChoisiUnCoureur() {		
+			if (!empty($_POST)) {
+				if (isset($_POST['coureur'])) {
+					//return "self.location.replace('../html/choixCoureur.php');";
+					return "self.location.replace('../../etudiant2/15_8a.htm');";
+				}
+			}
+			else {
+				//return "self.location.replace('../../etudiant2/15_8a.htm');";
+				return "self.location.replace('../html/choixCoureur.html');";
 			}
 		}
 		?>
