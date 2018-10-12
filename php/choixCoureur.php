@@ -9,13 +9,15 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 	
-		$login = 'copie_tdf_copie';
+/*		$login = 'copie_tdf_copie';
 		$mdp = 'copie_tdf_copie';
-		$db = 'oci:dbname=localhost:1521/xe';
+		$db = 'oci:dbname=localhost:1521/xe';		*/
 		
-/*		$login = "ETU2_33";
-		$mdp = "ETU2_33";
-		$db = fabriquerChaineConnexion();	*/
+		$login = 'ETU2_49';
+		$mdp = 'ETU2_49';
+		$db = fabriquerChaineConnexion();
+	//	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr";
+		
 	
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		$req = 'SELECT * FROM vt_coureur order by nom';

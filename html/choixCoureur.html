@@ -6,21 +6,30 @@
 		<script src="../js/choixCoureur.js"></script>
 	</head>
 	<body>
-		<form name="formModifCoureur" action= "" method="post" enctype="multipart/form-data">
+		<form name="formuaireChoixCoureur" action= "" method="post" enctype="multipart/form-data">
 			<p><h1>Choisir un coureur</h1></p><br/>
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
-				<form name="formuaireChoixCoureur" action="" method="post">
-					<select name="coureur"  >
-						<option >CHOISIR UN COUREUR EXISTANT</option><?php listeCoureurs($tab,$nbLignes); ?>
-					</select> <br>	   
-				</form><br/>
+					<select name="coureur">
+						<option >CHOISIR UN COUREUR</option><?php listeCoureurs($tab,$nbLignes); ?>
+					</select><br/><br/>
 			</fieldset><br/>
 			<input type="reset" name="Annuler" value="Annuler">&nbsp;&nbsp;&nbsp;
-			<input type="button" name="Suivant" value="Suivant" onclick="return testerValid()">&nbsp;&nbsp;&nbsp;
-	   <!-- <input type="submit" name="Suivant" value="Suivant" onclick="return testerValid()">&nbsp;&nbsp;&nbsp; -->
+			<input type="submit" name="Suivant" value="Suivant">&nbsp;&nbsp;&nbsp;
+	   <!-- <input type="button" name="Suivant" value="Suivant" onclick="return testerValid()">&nbsp;&nbsp;&nbsp; -->
 		</form>
-  </body>
+	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

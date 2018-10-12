@@ -4,8 +4,8 @@
 	CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO
 	CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  -  CONNEXION_PDO  */
 
-/*	$db_username = "ETU2_33";
-	$db_password = "ETU2_33";
+/*	$db_username = "ETU2_49";	// Base UniCaen de Bastien
+	$db_password = "ETU2_49";	// Base UniCaen de Bastien
 	$db = "oci:dbname=info;charset=AL32UTF8"; // fonctionne si tnsname.ora est complet (base UTF8)
 	$db = "oci:dbname=info;charset=WE8ISO8859P15"; // fonctionne si tnsname.ora est complet
 	
