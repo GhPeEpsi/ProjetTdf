@@ -8,15 +8,14 @@
 		<?php
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
-	
-/*		$login = 'copie_tdf_copie';
-		$mdp = 'copie_tdf_copie';
-		$db = 'oci:dbname=localhost:1521/xe';		*/
 		
 		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
 		$db = fabriquerChaineConnexion();
-	//	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr";
+	
+/*		$login = 'copie_tdf_copie';
+		$mdp = 'copie_tdf_copie';
+		$db = fabriquerChaineConnexion2();*/
 		
 	
 		$conn = OuvrirConnexion($db,$login,$mdp);
@@ -41,18 +40,7 @@
 			}
 		}
 		
-		function aChoisiUnCoureur() {		
-			if (!empty($_POST)) {
-				if (isset($_POST['coureur'])) {
-					//return "self.location.replace('../html/choixCoureur.php');";
-					return "self.location.replace('../../etudiant2/15_8a.htm');";
-				}
-			}
-			else {
-				//return "self.location.replace('../../etudiant2/15_8a.htm');";
-				return "self.location.replace('../html/choixCoureur.html');";
-			}
-		}
+		
 		?>
 	</body>
 </html>

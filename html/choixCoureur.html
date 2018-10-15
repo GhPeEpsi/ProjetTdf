@@ -9,37 +9,13 @@
 		<form name="formuaireChoixCoureur" action= "" method="post" enctype="multipart/form-data">
 			<p><h1>Choisir un coureur</h1></p><br/>
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
-					<select name="coureur">
-						<option >CHOISIR UN COUREUR</option><?php listeCoureurs($tab,$nbLignes); ?>
+					<select name="nomCoureur">
+						<?php listeCoureurs($tab,$nbLignes); ?>
 					</select><br/><br/>
 			</fieldset><br/>
-			<input type="reset" name="Annuler" value="Annuler">&nbsp;&nbsp;&nbsp;
-			<!-- <input type="submit" name="Suivant" value="Suivant">&nbsp;&nbsp;&nbsp; -->
-			<input type="submit" name="Suivant" value="Suivant" onclick="return aChoisiUnCoureur()">&nbsp;&nbsp;&nbsp;
+			<input type="button" name="annuler" value="Annuler" onclick="window.location.href='../'">&nbsp;&nbsp;&nbsp;
+			<input type="button" name="informations" value="Informations du coureur" onclick="window.location.href='../php/affichageCoureur.php'">&nbsp;&nbsp;&nbsp;
+			<input type="button" name="modifier" value="Modifier le coureur" onclick="window.location.href='../php/modificationCoureur.php'">&nbsp;&nbsp;&nbsp;
 		</form>
 	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				<!-- <label for="nom">Entrer un nom/prénom de coureur :</label><br/> -->
-				<!-- <input type="texte" size="50" id="recherche" name="recherche" value=""><br/><br> -->
-				<!-- <p id="resultat"><span id="r2">Aucune valeur entrée</span></p> -->
-					<!-- <script> -->
-						<!-- var rech1 = document.getElementById('recherche'); -->
-						<!-- var foncRecherche = function() { -->
-							<!-- chargerDonnee(rech1.value); -->
-						<!-- }; -->
-						<!-- rech1.addEventListener('keyup', foncRecherche, false); -->
-					<!-- </script><br/> -->
