@@ -8,43 +8,50 @@
 		<?php
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
-		include("../html/affichageCoureur.html");
 		
-		/*$login = 'ETU2_49';
+		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
 		$db = fabriquerChaineConnexion();
-		
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		$req = 'SELECT * FROM vt_coureur order by nom';
-		$nbLignes = LireDonnees1($conn,$req,$tab);*/
 		
+		// --n_coureur, nom, prenom, nation, ... :
+		$reqBase = 
+			"select n_coureur as "Numero de coureur", co.nom as "Nom", prenom as "Prenom", annee_naissance as "Annee de naissance", annee_prem as "Annee de première", na.nom as "Nation"
+			from tdf_coureur co
+			join tdf_app_nation using (n_coureur)
+			join tdf_nation na using (code_cio)
+			where co.nom = \'JOACHIM\'
+			and prenom = \'Benoit\'";
+		$nbLignesBase = LireDonnees1($conn,$reqBase,$tabBase);
+		
+		$reqNbParticipation = 
+			"select count(*) from tdf_parti_coureur
+			join tdf_coureur using (n_coureur)
+			where nom = 'JOACHIM'
+			and prenom = 'Benoit'";
+		$nbLignesNb = LireDonnees1($conn,$reqNbParticipation,$tabNb);
+			
+		$req = 'SELECT * FROM tdf_coureur order by nom';
+		$nbLignes = LireDonnees1($conn,$req,$tab);
+		
+		
+
+		//PLACE D'ARRIVÉE A CHAQUE TOUR
 		// Remplissage des info si coureur séléctionné :
 		
-		
-		function afficheNom() {
-			if (!empty($_POST)) {
-				echo '<p>Nom : Prunier</p>';
-			}
+		echo '<pre>';
+		function afficheBase() {
+			global $nbLignesBase, $tabBase;
+			print_r($tabBase);
 		}
 		
-		function affichePrenom() {
-			if (!empty($_POST)) {
-				echo '<p>Prenom : Bastien</p>';
-			}
+		function afficheNb() {
+			global $nbLignesNb, $tabNb;
+			print_r($tabNb);
 		}
 		
-		function listeCoureurs($tab,$nbLignes) {
-			/*
-			for ($i=0; $i<$nbLignes; $i++) {
-				$tab[$i]["PRENOM"] = utf8_encode($tab[$i]["PRENOM"]);
-				echo '<option value="'.$tab[$i]["N_COUREUR"].'">'.$tab[$i]['NOM'].' '.$tab[$i]['PRENOM'];
-				echo '</option>';
-			}*/
-			echo '<option value="7">Bastien PRUNIER</option>';
-			echo '<option value="7">Clément CATEL</option>';
-			echo '<option value="7">Jérémy LAMY</option>';
-			echo '<option value="7">Noe GUILLOUET</option>';
-		}
+		//Le fichier html:
+		include("../html/affichageCoureur.html");
 		?>
 	</body>
 </html>

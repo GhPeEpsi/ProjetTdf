@@ -8,20 +8,11 @@
 	
 	<body>
 		<!-- Recherche du coureur : -->
-		<form name="formuaireChoixCoureur" action= "" method="post" enctype="multipart/form-data">
-			<p><h1>Choisir un coureur</h1></p><br/>
-			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
-				<select name="coureur">
-					<option >CHOISIR UN COUREUR</option><?php listeCoureurs($tab,$nbLignes); ?>
-				</select><br/><br/>
-			</fieldset><br/>
-			<input type="reset" name="Annuler" value="Annuler">&nbsp;&nbsp;&nbsp;
-			<input type="submit" name="Suivant" value="Suivant">&nbsp;&nbsp;&nbsp;
-		</form>
+		<!-- Ca c'est Noé qui c'en charge -->
 		
 		<!-- Affichage des informations du coureur : -->
-		<?php afficheNom()?>
-		<?php affichePrenom()?>
+		<?php afficheBase()?>
+		<?php afficheNb()?>
 		
 		
 	</body>
