@@ -5,11 +5,11 @@
 	
 	// connexion à la base
 
-	$login = 'copie_tdf_copie';
-	$mdp = 'copie_tdf_copie';
-	$db = 'oci:dbname=localhost:1521/xe';
+	$db_username = 'copie_tdf_copie';
+	$db_password = 'copie_tdf_copie';
+	$db = fabriquerChaineConnexion2();
 
-	$conn = OuvrirConnexion($db,$login,$mdp);
+	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	// pour récupérer l'année entrée par l'utilisateur
 	if(isset($_POST['dateN'])){
@@ -28,40 +28,93 @@
 	$req = 'SELECT code_cio, nom FROM vt_nation where annee_disparition is null order by nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 
-	
-	function ajoutALaBase($conn){
+	if ($conn)
+	{	
+		if(isset($_POST['verifier'])){
 
-		if ($conn){
+			echo ("<hr/> BLOC 1 <br/>");
+			$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
-			$sql = 'INSERT INTO tdf_coureur (n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, $nom, $prenom, $annee)';
 			if(isset($_POST['Nom'])){
 				$nom = $_POST['Nom'];
-			}else{
-				$nom = null;
 			}
 			if(isset($_POST['prenom'])){
 				$prenom = $_POST['prenom'];
-			}else{
-				$prenom = null;
 			}
 			if(isset($_POST['dateN'])){
-				$dateN = $_POST['dateN'];
-			}else{
-				$dateN = null;
-			}
+			 	$dateN = $_POST['dateN'];
+	 			$tab1 = explode("-", $dateN);
+	 			$annee = $tab1[0];
+	 			$annee_naissance = $annee;
+	 		}
 
 			$cur = preparerRequete($conn,$sql);
-			//AfficherTab($cur);
-			$tab = array (
-				':nom'=>$nom,
-				':prenom'=>$prenom,
-				':dateN'=>$dateN,
-			);
-			$res = majDonneesPrepareesTab($cur,$tab);
+			AfficherTab($cur);
+			echo ("FIN BLOC 1 <hr/>");
+
+			echo ("<hr/> BLOC 2 <br/>");
+			// solution 1
+			//ajouterParamPDO($cur,':val',$val,'entier',0);
+			//ajouterParam($cur,':n_coureur',$n_coureur);
+			ajouterParam($cur,':nom',$nom);
+			ajouterParam($cur,':prenom',$prenom);
+			ajouterParam($cur,':annee_naissance',$annee_naissance);
+			$res = majDonneesPreparees($cur);
 			AfficherTab($res);
-			echo "on est arrivé jusque là ???";
+			echo ("FIN BLOC 2 <hr/>");
 		}
-	}
+	}	
+	// function ajoutALaBase(){
+
+	// 	global $conn;
+
+	// 	if(isset($_POST['verifier'])){
+
+	// 		if(isset($_POST['Nom']))
+	// 			$nom = $_POST['Nom'];
+	// 		else
+	// 			$nom = null;
+
+	// 		if(isset($_POST['prenom']))
+	// 			$prenom = $_POST['prenom'];
+	// 		else
+	// 			$prenom = null;
+			
+	// 		if(isset($_POST['dateN']))
+	// 			$dateN = $_POST['dateN'];
+	// 		else
+	// 			$dateN = null;
+			
+
+			//$sql = 'select * from vt_coureur order by n_coureur';
+			// $sql = "insert into tdf_coureur (n_coureur, nom) values (3500, 'CATEL')";//, :prenom, :annee)';
+	
+			//LireDonnees1($conn,$sql,$tab);
+			//print_r($tab);
+			/*$cur = preparerRequete($conn,$sql);
+			AfficherTab($cur);
+			//AfficherTab($cur);
+			//$tab = array (
+				//':nom'=>$nom//,
+				// ':prenom'=>$prenom,
+				// ':dateN'=>$dateN
+			//);
+			
+			//$res = majDonneesPrepareesTab($cur,$tab);
+			//echo $nom;
+			//echo $res;
+			//AfficherTab($res);
+			ajouterParam($cur,':nom',$nom);
+			// ajouterParamPDO($cur,':type',$type);
+			// ajouterParamPDO($cur,':couleur',$couleur);
+			$res = majDonneesPreparees($cur);
+			AfficherTab($cur);
+			AfficherTab($res);
+			echo "on est arrivé jusque là ???";*/
+	// 		$stmt = majDonnees($conn,$sql);
+	// 		AfficherTab($stmt);
+	// 	}
+	// }
 
 
 	//$nbLignes = LireDonnees1($conn,$req,$tabNation);
