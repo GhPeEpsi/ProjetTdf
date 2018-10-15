@@ -79,18 +79,31 @@ INSERT INTO tdf_app_nation(;
 select To_char(sysdate,'yyyy') from dual;
 select * from tdf_ANNEE;
 
-select * from tdf_app_nation;
-
-
-
-
 
 select * from tdf_nation where nom = 'RUSSIE'; 
-
-
-
 select * from tdf_coureur order by nom;
 
 
+--Requête pour inserer la nation d'un coureur.
+Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(n_coureur) from tdf_coureur),'FRA', '1969');
 
+    --aides
+    select * from tdf_app_nation;
+    select * from tdf_nation;
+    select count(*) from tdf_coureur;
+    
+--Recherche sur un coureur :
+    --n_coureur, nom, prenom, nation, ... :
+    select n_coureur, co.nom, prenom, annee_naissance, annee_prem, na.nom
+    from tdf_coureur co
+    join tdf_app_nation using (n_coureur)
+    join tdf_nation na using (code_cio)
+    order by n_coureur;
+    --nb de participation :
+    select count(*) from tdf_parti_coureur
+    join tdf_coureur using (n_coureur)
+    where nom = 'JOACHIM'
+    and prenom = 'Benoit';
+    --équipe :
+    
 
