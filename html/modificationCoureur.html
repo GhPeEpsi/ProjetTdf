@@ -9,7 +9,7 @@
 		<form name="formuaireChoixCoureur" action="" method="post" enctype="multipart/form-data">
 			<p><h1>Choisir un coureur</h1></p><br/>
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
-				<label for="nom">N° Coureur: </label><input type="text" name="numCoureur" size="2" value="" readonly><!-- style="background:#cccccc"-->&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="nom">N° Coureur: </label><input type="text" name="numCoureur" style="background:#eeeeee" size="2" value="<?php numeroCoureur($conn); ?>" readonly><!-- style="background:#cccccc"-->&nbsp;&nbsp;&nbsp;&nbsp;
 				<label for="nom">Nom: </label><input type="text" name="nom" value="">&nbsp;&nbsp;&nbsp;&nbsp;
 				<label for="nom">Prénom: </label><input type="text" name="prenom" value=""><br />
 			</fieldset><br/>
