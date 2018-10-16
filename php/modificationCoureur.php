@@ -11,7 +11,7 @@
 		
 		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
-		$db = fabriquerChaineConnexion();
+		$db = fabriquerChaineConnexion();	
 	
 /*		$login = 'copie_tdf_copie';
 		$mdp = 'copie_tdf_copie';
@@ -22,6 +22,12 @@
 		$nbLignes = LireDonnees1($conn,$req,$tab);
 		
 		include ("../html/modificationCoureur.html");
+		
+		function numeroCoureur($conn) {
+			$req1 = 'SELECT n_coureur FROM tdf_coureur where nom = \'ABADIE\'';
+			$nbLignes1 = LireDonnees1($conn,$req1,$tab);
+			echo $tab[0]['N_COUREUR'];
+		}
 		
 		function verificationEnvoi() {	
 		}
