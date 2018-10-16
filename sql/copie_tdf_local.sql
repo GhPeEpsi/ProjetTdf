@@ -99,8 +99,8 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
     join tdf_nation na using (code_cio)
     where co.nom = 'JOACHIM'
     and prenom = 'Benoit';
-    --nb de participation :
-    select count(*) from tdf_parti_coureur
+    --Année où il a participé :
+    select annee from tdf_parti_coureur
     join tdf_coureur using (n_coureur)
     where nom = 'JOACHIM'
     and prenom = 'Benoit';
@@ -108,12 +108,43 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
     --place à chaque tour :
     select * from tdf_temps;
     
-    select annee, nom, prenom, sum(total_seconde) as "Temps Total" from tdf_coureur co
+    --temps total d'un coureur
+    select sum(total_seconde) as "Temps Total" from tdf_coureur co
     join tdf_parti_coureur using (n_coureur)
     join tdf_temps using (n_coureur, annee)
     where nom = 'JOACHIM'
     and prenom = 'Benoit'
     and annee = 2000
     group by annee, nom, prenom;
-    --IL FAUT CALCULER SON TEMPS TOTAL SUR LE TOUR ET REGARDER PAR RAPPORT AU TEMPS TOTAL DES AUTRES
-    
+   
+    --IL FAUT CALCULER SON TEMPS TOTAL SUR LE TOUR ET REGARDER PAR RAPPORT AU TEMPS TOTAL DES AUTRES // IL FAUT ENLEVER CEUX QUI ONT ABANDONNÉ
+    select count(tmp) from
+    (
+        (
+            select annee, nom, prenom, sum(total_seconde) as tmp from tdf_coureur co
+            join tdf_parti_coureur using (n_coureur)
+            join tdf_temps using (n_coureur, annee)
+            where annee = 2002
+            group by annee, nom, prenom
+        )
+        minus
+        (
+            select annee, nom, prenom, sum(total_seconde) as tmp from tdf_coureur co
+            join tdf_parti_coureur using (n_coureur)
+            join tdf_abandon using (n_coureur, annee)
+            join tdf_temps using (n_coureur, annee)
+            where annee = 2002
+            group by annee, nom, prenom
+        )
+        order by tmp
+    )
+    where tmp <=
+    (
+        select sum(total_seconde) as "Temps Total" from tdf_coureur co
+        join tdf_parti_coureur using (n_coureur)
+        join tdf_temps using (n_coureur, annee)
+        where nom = 'ARMSTRONG'
+        and prenom = 'Lance'
+        and annee = 2002
+        group by annee, nom, prenom
+    );

@@ -28,23 +28,21 @@
 			from tdf_coureur co
 			join tdf_app_nation using (n_coureur)
 			join tdf_nation na using (code_cio)
-			where co.nom = 'JOACHIM'
-			and prenom = 'Benoit'";
+			where co.nom = 'JALABERT'
+			and prenom = 'Laurent'";
 		$nbLignesBase = LireDonnees1($conn,$reqBase,$tabBase);
 		
-		$reqNbParticipation = 
-			"select count(*) as \"Nombre de participation au tdf\" from tdf_parti_coureur
+		//Nombre de participations plus les années
+		$reqAnneeParticipation = 
+			"select annee from tdf_parti_coureur
 			join tdf_coureur using (n_coureur)
-			where nom = 'JOACHIM'
-			and prenom = 'Benoit'";
-		$nbLignesNb = LireDonnees1($conn,$reqNbParticipation,$tabNb);
-		
-		$reqPlaceParticipation = 
-			"select * from tdf_coureur";
-		$nbLignesNb = LireDonnees1($conn,$reqNbParticipation,$tabNb);
+			where nom = 'JALABERT'
+			and prenom = 'Laurent'
+			order by annee";
+		$nbLignesAnnee = LireDonnees1($conn,$reqAnneeParticipation,$tabAnnee);
 			
-		$req = 'SELECT * FROM tdf_coureur order by nom';
-		$nbLignes = LireDonnees1($conn,$req,$tab);
+		/*$req = 'SELECT * FROM tdf_coureur order by nom';
+		$nbLignes = LireDonnees1($conn,$req,$tab);*/
 		
 		
 
@@ -56,18 +54,68 @@
 				echo "<p>$key : $ligne</p>";
 		}
 		
-		function afficheNb() {
-			global $nbLignesNb, $tabNb;
-			foreach($tabNb[0] as $key => $ligne)
-				echo "<p>$key : $ligne</p>";
+		function afficherNbParti() {
+			global $nbLignesAnnee;
+			echo "A participé $nbLignesAnnee fois au tdf<br>";
 		}
 		
-		function afficherPlace() {
-			global $nbLignesNb, $tabNb;
+		function afficheAnnee() {
+			global $conn, $nbLignesAnnee, $tabAnnee;
+			echo "annee : place<br>";
+			foreach($tabAnnee as $ligne) {
+				$reqPlaceParticipation = 
+					"select count(tmp) as nb from
+					(
+						(
+							select annee, nom, prenom, sum(total_seconde) as tmp from tdf_coureur co
+							join tdf_parti_coureur using (n_coureur)
+							join tdf_temps using (n_coureur, annee)
+							where annee = " . $ligne['ANNEE'] . "
+							group by annee, nom, prenom
+						)
+						minus
+						(
+							select annee, nom, prenom, sum(total_seconde) as tmp from tdf_coureur co
+							join tdf_parti_coureur using (n_coureur)
+							join tdf_abandon using (n_coureur, annee)
+							join tdf_temps using (n_coureur, annee)
+							where annee = " . $ligne['ANNEE'] . "
+							group by annee, nom, prenom
+						)
+						order by tmp
+					)
+					where tmp <=
+					(
+						select sum(total_seconde) as tmp from tdf_coureur co
+						join tdf_parti_coureur using (n_coureur)
+						join tdf_temps using (n_coureur, annee)
+						where nom = 'JALABERT'
+						and prenom = 'Laurent'
+						and annee = " . $ligne['ANNEE'] . "
+						group by annee, nom, prenom
+					)";
+				$place = LireDonneesCount($conn,$reqPlaceParticipation);
+				if ($place == '0') {
+					$rep = $ligne['ANNEE'] . " : Abandon<br>";
+				}
+				else {
+					$rep = $ligne['ANNEE'] . " : " . $place . "<br>";
+				}
+				echo $rep;
+			}
 		}
 		
 		//Le fichier html:
 		include("../html/affichageCoureur.html");
+		
+		
+		//à déplacer plus tard ...
+		function LireDonneesCount($conn,$sql) {
+			$cur = $conn->query($sql);
+			$tab = $cur->fetchall(PDO::FETCH_ASSOC);
+			return $tab[0]['NB'];
+		}
+		
 		?>
 	</body>
 </html>
