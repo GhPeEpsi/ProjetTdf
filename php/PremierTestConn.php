@@ -13,6 +13,10 @@
 		$mdp = 'ETU2_49';
 		$db = fabriquerChaineConnexion();
 		
+		echo $login . "</br>";
+		echo $mdp . "</br>";
+		echo $db . "</br>";
+		
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		$req = 'SELECT * FROM tdf_coureur order by nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);

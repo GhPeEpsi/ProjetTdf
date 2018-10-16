@@ -79,18 +79,45 @@ INSERT INTO tdf_app_nation(;
 select To_char(sysdate,'yyyy') from dual;
 select * from tdf_ANNEE;
 
-select * from tdf_app_nation;
-
-
-
-
 
 select * from tdf_nation where nom = 'RUSSIE'; 
-
-
-
 select * from tdf_coureur order by nom;
 
 
+--Requête pour inserer la nation d'un coureur.
+Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(n_coureur) from tdf_coureur),'FRA', '1969');
 
-
+    --aides
+    select * from tdf_app_nation;
+    select * from tdf_nation;
+    select count(*) from tdf_coureur;
+    
+--Recherche sur un coureur :
+    select n_coureur as "Numero de coureur", co.nom as "Nom", prenom as "Prenom", annee_naissance as "Annee de naissance", annee_prem as "Annee de première", na.nom as "Nation"
+    from tdf_coureur co
+    join tdf_app_nation using (n_coureur)
+    join tdf_nation na using (code_cio)
+    where co.nom = 'JOACHIM'
+    and prenom = 'Benoit';
+    --nb de participation :
+    select count(*) from tdf_parti_coureur
+    join tdf_coureur using (n_coureur)
+    where nom = 'JOACHIM'
+    and prenom = 'Benoit';
+    --place à chaque tour :
+    select * from tdf_parti_coureur;
+    select * from tdf_ordrequi order by numero_ordre, annee;
+    select * from tdf_coureur co
+    join tdf_parti_coureur using(N_coureur)
+    join tdf_sponsor using (n_equipe, n_sponsor)
+    join tdf_ordrequi using (n_equipe, n_sponsor, annee)
+    where co.nom = 'JOACHIM'
+    and prenom = 'Benoit';
+    --final
+    select annee, numero_ordre from tdf_coureur co
+    join tdf_parti_coureur using(N_coureur)
+    join tdf_sponsor using (n_equipe, n_sponsor)
+    join tdf_ordrequi using (n_equipe, n_sponsor, annee)
+    where co.nom = 'JOACHIM'
+    and prenom = 'Benoit';
+    

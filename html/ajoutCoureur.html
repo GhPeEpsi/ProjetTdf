@@ -3,25 +3,43 @@
 	<head>
     	<meta charset="utf-8">
     	<title>Ajout coureur</title>
+    	<script> 
+    		function chargerDate(elt1){
+    			var dateN = elt1.value;
+    			var xhr = new XMLHttpRequest();
+				xhr.open('GET', '../php/ajoutCoureur.php?dateN='+dateN, true);
+
+				var Lire = function()
+				{
+					if (xhr.readyState === 4 && xhr.status === 200)
+					{
+						var elt = document.getElementById('depuisQ');
+						document.getElementById('depuisQ').innerHTML = xhr.responseText;
+						document.getElementById('depuisQ').value = xhr.responseText;
+					}
+				}
+
+				xhr.addEventListener("readystatechange", Lire, false);
+				xhr.send(null);
+			}
+    	</script>
     </head>
 		<form name="formVerifCoureur" action="" method="post">
     		<div>
         		<label> Nom : </label>
 				<input type = text name = "Nom" value ="" placeholder="Saisir"><br>
-				<?php ajoutNom(); ?>
     		</div>
     		<br>
     		<div>
         		<label> Prénom :</label>
         		<input type="text" name = "prenom" value ="" placeholder="Saisir"><br>
-        		<?php ajoutPrenom(); ?>
     		</div>
 			 <br>
 
 			 <label>Date de naissance</label>
 
     			<div>
-        			<input type="date" name ="dateN" value="" id = "dateN" onblur="" min="1900-01-01" max= "<?php echo date("Y-m-d"); ?>"><br>
+        			<input type="date" name ="dateN" value="" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>"><br>
         			<?php ajoutDate(); ?>
     			</div>
 				<br>
@@ -31,9 +49,21 @@
 				<option>Nationalité</option>
 				<?php remplirOption($tab,$nbLignes); ?>
 			</select>
+				<br>
+				<br>
+
+			<label>Depuis quand ?</label>
+
+    			<div>
+        			<input type="text" name ="depuisQ" value="" id = "depuisQ"><br>
+        			<?php verifDepuisQ(recupAnnee());?>
+    			</div>
+    			<br>
+				<br>
 				<input type="submit" name="verifier" value="Vérifier" >
-			<br>
 				<?php ajoutSelection();?>
+			<br>
+				
 				<!-- <?php ajoutALaBase();?> -->
 
 			<br>
