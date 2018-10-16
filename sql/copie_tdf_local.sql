@@ -104,20 +104,16 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
     join tdf_coureur using (n_coureur)
     where nom = 'JOACHIM'
     and prenom = 'Benoit';
+   
     --place à chaque tour :
-    select * from tdf_parti_coureur;
-    select * from tdf_ordrequi order by numero_ordre, annee;
-    select * from tdf_coureur co
-    join tdf_parti_coureur using(N_coureur)
-    join tdf_sponsor using (n_equipe, n_sponsor)
-    join tdf_ordrequi using (n_equipe, n_sponsor, annee)
-    where co.nom = 'JOACHIM'
-    and prenom = 'Benoit';
-    --final
-    select annee, numero_ordre from tdf_coureur co
-    join tdf_parti_coureur using(N_coureur)
-    join tdf_sponsor using (n_equipe, n_sponsor)
-    join tdf_ordrequi using (n_equipe, n_sponsor, annee)
-    where co.nom = 'JOACHIM'
-    and prenom = 'Benoit';
+    select * from tdf_temps;
+    
+    select annee, nom, prenom, sum(total_seconde) as "Temps Total" from tdf_coureur co
+    join tdf_parti_coureur using (n_coureur)
+    join tdf_temps using (n_coureur, annee)
+    where nom = 'JOACHIM'
+    and prenom = 'Benoit'
+    and annee = 2000
+    group by annee, nom, prenom;
+    --IL FAUT CALCULER SON TEMPS TOTAL SUR LE TOUR ET REGARDER PAR RAPPORT AU TEMPS TOTAL DES AUTRES
     
