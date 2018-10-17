@@ -23,6 +23,9 @@
 	$req = 'SELECT code_cio, nom FROM vt_nation where annee_disparition is null order by nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 
+	echo '<h3> Veuillez remplir tous les champs : </h3>';
+
+	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if ($conn)
 	{	
 
@@ -30,46 +33,46 @@
 
 			if (empty($_POST['Nom']) || empty($_POST['prenom']) || !isset($_POST['dateN']) || !isset($_POST['nationalite']) || empty($_POST['depuisQ']) || !verifDepuisQ(recupAnnee())){
 			
-				echo "il faut tout remplir";
+				echo '<span><font color="red"> IL FAUT TOUT REMPLIR !! </font></span>';
 
 			}else{
 
-				echo ("<hr/> BLOC 1 <br/>");
+				//BLOC 1
 				$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
-				if(!empty($_POST['Nom'])){
+				//if(!empty($_POST['Nom'])){
 					$nom = $_POST['Nom'];
 					echo "Nom ".$_POST['Nom']." sélectionné";
 					echo "<br>";
-				}else{
-					echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
-					echo "<br>";
-				}
+			    //}else{
+				// 	echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
+				// 	echo "<br>";
+				// }
 
-				if(!empty($_POST['prenom'])){
+				//if(!empty($_POST['prenom'])){
 					$prenom = $_POST['prenom'];
 					echo "Prénom ".$prenom." sélectionné";
 					echo "<br>";
-				}else{
-					echo '<span><font color="red">Veuillez entrer un prénom !</font></span>';
-					echo "<br>";
-				}
+				//}else{
+				// 	echo '<span><font color="red">Veuillez entrer un prénom !</font></span>';
+				// 	echo "<br>";
+				// }
 
 				$annee_naissance = recupAnnee();
 
 				$cur = preparerRequete($conn,$sql);
 				AfficherTab($cur);
-				echo ("FIN BLOC 1 <hr/>");
+				//FIN BLOC 1
 
-				echo ("<hr/> BLOC 2 <br/>");
+				//BLOC 2 
 				ajouterParam($cur,':nom',$nom);
 				ajouterParam($cur,':prenom',$prenom);
 				ajouterParam($cur,':annee_naissance',$annee_naissance);
 				$res = majDonneesPreparees($cur);
 				AfficherTab($res);
-				echo ("FIN BLOC 2 <hr/>");
+				//FIN BLOC 2
+			}
 		}
-	}
 	}
 
 	function recupAnnee(){
