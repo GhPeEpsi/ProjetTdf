@@ -148,3 +148,10 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
         and annee = 2002
         group by annee, nom, prenom
     );
+    
+    
+    select n_coureur as "Numero de coureur", co.nom as "Nom", prenom as "Prenom", annee_naissance as "Annee de naissance", annee_prem as "Annee de première", na.nom as "Nation"
+			from tdf_coureur co
+			join tdf_app_nation using (n_coureur)
+			join tdf_nation na using (code_cio)
+			where n_coureur = 1354;
