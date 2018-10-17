@@ -9,18 +9,21 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 		
-		/*Serveur UNICAEN
+		/*Serveur UNICAEN*/
 		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
 		$db = fabriquerChaineConnexion();
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		*/
-		/*Bastien Localhost*/
+		/**/
+		/*Bastien Localhost
 		$login = 'projet_php';
 		$mdp = 'projet_php';
 		$db = fabriquerChaineConnexion2();
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		/**/
+		*/
+
+		if (!empty($_GET['numCoureur']))
+			echo $_GET['numCoureur'];
 		
 		// --n_coureur, nom, prenom, nation, ... :
 		$reqBase = 
