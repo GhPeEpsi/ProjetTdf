@@ -22,8 +22,14 @@
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		*/
 
-		if (!empty($_GET['numCoureur']))
-			echo $_GET['numCoureur'];
+		$n_coureur;
+		$nom;
+		$prenom;
+		
+		if (!empty($_GET['numCoureur'])) {
+			$n_coureur = intval($_GET['numCoureur']);
+		}
+		
 		
 		// --n_coureur, nom, prenom, nation, ... :
 		$reqBase = 
@@ -31,16 +37,16 @@
 			from tdf_coureur co
 			join tdf_app_nation using (n_coureur)
 			join tdf_nation na using (code_cio)
-			where co.nom = 'JALABERT'
-			and prenom = 'Laurent'";
+			where n_coureur = ".$n_coureur;
 		$nbLignesBase = LireDonnees1($conn,$reqBase,$tabBase);
+		//$nom = $tabBase[0]['Nom'];
+		//$prenom = $tabBase[0]['Prenom'];
 		
 		//Nombre de participations plus les années
 		$reqAnneeParticipation = 
 			"select annee from tdf_parti_coureur
 			join tdf_coureur using (n_coureur)
-			where nom = 'JALABERT'
-			and prenom = 'Laurent'
+			where n_coureur = ".$n_coureur."
 			order by annee";
 		$nbLignesAnnee = LireDonnees1($conn,$reqAnneeParticipation,$tabAnnee);
 			
@@ -63,8 +69,14 @@
 		}
 		
 		function afficheAnnee() {
-			global $conn, $nbLignesAnnee, $tabAnnee;
-			echo "annee : place<br>";
+			global $conn, $nbLignesAnnee, $tabAnnee, $n_coureur;
+			$style = "style=\"border: 1px solid black;\"";
+			echo "<table $style>";
+			echo 
+				"<tr $style>
+					<th $style>Annee</th>
+					<th $style>Place</th>
+				</tr>";
 			foreach($tabAnnee as $ligne) {
 				$reqPlaceParticipation = 
 					"select count(tmp) as nb from
@@ -92,20 +104,21 @@
 						select sum(total_seconde) as tmp from tdf_coureur co
 						join tdf_parti_coureur using (n_coureur)
 						join tdf_temps using (n_coureur, annee)
-						where nom = 'JALABERT'
-						and prenom = 'Laurent'
+						where n_coureur =".$n_coureur."
 						and annee = " . $ligne['ANNEE'] . "
 						group by annee, nom, prenom
 					)";
 				$place = LireDonneesCount($conn,$reqPlaceParticipation);
 				if ($place == '0') {
-					$rep = $ligne['ANNEE'] . " : Abandon<br>";
+					$place = "Abandon";
 				}
-				else {
-					$rep = $ligne['ANNEE'] . " : " . $place . "<br>";
-				}
-				echo $rep;
+				echo "
+					<tr $style>
+						<th $style>" . $ligne['ANNEE'] . "</th>
+						<th $style>$place</th>
+					</tr>";
 			}
+			echo "</table>";
 		}
 		
 		//Le fichier html:
