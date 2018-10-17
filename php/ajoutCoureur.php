@@ -11,6 +11,7 @@
 
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
+	//récupérer seulement l'annee de la date entrée
 	if(isset($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
 		$tab1 = explode("-", $dateN);
@@ -24,43 +25,51 @@
 
 	if ($conn)
 	{	
+
 		if(isset($_POST['verifier'])){
 
-			echo ("<hr/> BLOC 1 <br/>");
-			$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
+			if (empty($_POST['Nom']) || empty($_POST['prenom']) || !isset($_POST['dateN']) || !isset($_POST['nationalite']) || empty($_POST['depuisQ']) || !verifDepuisQ(recupAnnee())){
+			
+				echo "il faut tout remplir";
 
-			if(!empty($_POST['Nom'])){
-				$nom = $_POST['Nom'];
-				echo "Nom ".$_POST['Nom']." sélectionné";
-				echo "<br>";
 			}else{
-				echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
-				echo "<br>";
-			}
 
-			if(!empty($_POST['prenom'])){
-				$prenom = $_POST['prenom'];
-				echo "Prénom ".$prenom." sélectionné";
-				echo "<br>";
-			}else{
-			echo '<span><font color="red">Veuillez entrer un prénom !</font></span>';
-			echo "<br>";
-			}
+				echo ("<hr/> BLOC 1 <br/>");
+				$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
-			$annee_naissance = recupAnnee();
+				if(!empty($_POST['Nom'])){
+					$nom = $_POST['Nom'];
+					echo "Nom ".$_POST['Nom']." sélectionné";
+					echo "<br>";
+				}else{
+					echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
+					echo "<br>";
+				}
 
-			$cur = preparerRequete($conn,$sql);
-			AfficherTab($cur);
-			echo ("FIN BLOC 1 <hr/>");
+				if(!empty($_POST['prenom'])){
+					$prenom = $_POST['prenom'];
+					echo "Prénom ".$prenom." sélectionné";
+					echo "<br>";
+				}else{
+					echo '<span><font color="red">Veuillez entrer un prénom !</font></span>';
+					echo "<br>";
+				}
 
-			echo ("<hr/> BLOC 2 <br/>");
-			ajouterParam($cur,':nom',$nom);
-			ajouterParam($cur,':prenom',$prenom);
-			ajouterParam($cur,':annee_naissance',$annee_naissance);
-			$res = majDonneesPreparees($cur);
-			AfficherTab($res);
-			echo ("FIN BLOC 2 <hr/>");
+				$annee_naissance = recupAnnee();
+
+				$cur = preparerRequete($conn,$sql);
+				AfficherTab($cur);
+				echo ("FIN BLOC 1 <hr/>");
+
+				echo ("<hr/> BLOC 2 <br/>");
+				ajouterParam($cur,':nom',$nom);
+				ajouterParam($cur,':prenom',$prenom);
+				ajouterParam($cur,':annee_naissance',$annee_naissance);
+				$res = majDonneesPreparees($cur);
+				AfficherTab($res);
+				echo ("FIN BLOC 2 <hr/>");
 		}
+	}
 	}
 
 	function recupAnnee(){
@@ -119,9 +128,11 @@
 		if(!empty($_POST['depuisQ']) && !empty($annee_naissance)){
 			if($_POST['depuisQ'] < $annee_naissance){
 				echo "Vérifier que l'année entrée est inférieure à l'année de naissance";
+				unset($_POST['depuisQ']);
 				return FALSE;
 			}
 		}
+		return TRUE;
 	}
 
 	if(empty($_GET)){
