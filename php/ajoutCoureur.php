@@ -19,10 +19,6 @@
 		echo $annee;
 	}
 
-
-	$req = 'SELECT code_cio, nom FROM vt_nation where annee_disparition is null order by nom';
-	$nbLignes = LireDonnees1($conn,$req,$tab);
-
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if ($conn)
 	{	
@@ -62,6 +58,7 @@
 
 					$annee_naissance = recupAnnee();
 
+					//requête pour ajouter un coureur à la base.
 					$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
 					$cur = preparerRequete($conn,$sql);
@@ -75,6 +72,24 @@
 					$res = majDonneesPreparees($cur);
 					AfficherTab($res);
 					//FIN BLOC 2
+
+					$nat = ajoutSelection();
+					$depuisQuand = $_POST['depuisQ'];
+
+					//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
+					$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
+
+					$cur = preparerRequete($conn,$sql2);
+					AfficherTab($cur);
+					//FIN BLOC 1
+
+					//BLOC 2 
+					ajouterParam($cur,':nat',$nat);
+					ajouterParam($cur,':depuisQuand',$depuisQuand);
+					$res = majDonneesPreparees($cur);
+					AfficherTab($res);
+
+
 				}
 			}
 		}
@@ -126,7 +141,8 @@
 					echo '<span><font color="red">Veuillez sélectionner une Nationalité !</font></span>';
 				}
 				else{
-					echo ("Nationalité $nat sélectionnée");
+					//echo ("Nationalité $nat sélectionnée");
+					return $nat;
 				}
 			}
 		}
