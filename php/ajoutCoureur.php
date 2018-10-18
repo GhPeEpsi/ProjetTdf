@@ -27,7 +27,7 @@
 
 			if (empty($_POST['Nom']) || empty($_POST['prenom']) || !isset($_POST['dateN']) || !isset($_POST['nationalite']) || empty($_POST['depuisQ']) || !verifDepuisQ(recupAnnee())){
 			
-				echo '<span><font color="red"> IL FAUT TOUT REMPLIR !! </font></span>';
+				echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 
 			}else{
 				//BLOC 1

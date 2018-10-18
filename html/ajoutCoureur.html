@@ -24,22 +24,32 @@
 			}
     	</script>
     </head>
+
+    	<style type="text/css">.error{color: red} </style>
     	<h3> Veuillez remplir tous les champs pour l'ajout d'un coureur : </h3>
+
+    	<p><span class="error" >* required field </span></p>
 		<form name="formVerifCoureur" action="" method="post">
     		<div>
         		<label> Nom : </label>
-				<input type = text name = "Nom" value ="" placeholder="Saisir"><br>
+				<input type = text name = "Nom" value ="" placeholder="Saisir">
+				<span class="error">* </span>
     		</div>
-    		<br>
+    			<br>
+    			<br>
+
     		<div>
         		<label> Prénom :</label>
-        		<input type="text" name = "prenom" value ="" placeholder="Saisir"><br>
+        		<input type="text" name = "prenom" value ="" placeholder="Saisir">
+        		<span class="error">* </span>
     		</div>
-			 <br>
+			 	<br>
+			 	<br>
 
 			<div>
 			 	<label>Date de naissance</label>    			
-        		<input type="date" name ="dateN" value="" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>"><br>
+        		<input type="date" name ="dateN" value="" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>">
+        		<span class="error">* </span>
         		<?php ajoutDate(); ?>
     		</div>
 				<br>
@@ -49,13 +59,15 @@
 				<option>Nationalité</option>
 				<?php remplirOption($tab,$nbLignes); ?>
 			</select>
+			<span class="error">* </span>
 				<br>
 				<br>
 
 			<label>Depuis quand ?</label>
 
     			<div>
-        			<input type="text" name ="depuisQ" value="" id = "depuisQ"><br>
+        			<input type="text" name ="depuisQ" value="" id = "depuisQ">
+        			<span class="error">* </span>
         			<?php verifDepuisQ(recupAnnee());?>
     			</div>
     			<br>
@@ -63,10 +75,6 @@
 				<input type="submit" name="verifier" value="Vérifier" >
 				<?php ajoutSelection();?>
 			<br>
-				
-				<!-- <?php ajoutALaBase();?> -->
-
-			<br>
-		</form>	
+		</form>
   </body>
 </html>
