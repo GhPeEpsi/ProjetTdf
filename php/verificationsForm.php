@@ -48,7 +48,7 @@ function testNom($nom, $regex) {
         //echo "<br>";
         return $nom;
     } else {
-        echo "Nom invalide <br>"; 
+        //echo "Nom invalide <br>"; 
         return NULL;  
     }
 }
@@ -70,10 +70,18 @@ function testPrenom($prenom, $regex) {
         //echo "<br>";
         return $prenom;
     } else {
-        echo "Prénom invalide <br>";   
+        //echo "Prénom invalide <br>";   
         return NULL;
     }
 }
+
+
+
+
+
+
+
+
 
 // Si nom et prenom sont definis : test leur validité
 if (!empty($_POST['nom']) && !empty($_POST['prenom'])) {

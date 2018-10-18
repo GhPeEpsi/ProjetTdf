@@ -1,7 +1,7 @@
 <?php
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
-
+	include ("verificationsForm.php");
 	
 	// connexion à la base
 
@@ -19,12 +19,6 @@
 		echo $annee;
 	}
 
-
-	$req = 'SELECT code_cio, nom FROM vt_nation where annee_disparition is null order by nom';
-	$nbLignes = LireDonnees1($conn,$req,$tab);
-
-	echo '<h3> Veuillez remplir tous les champs : </h3>';
-
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if ($conn)
 	{	
@@ -33,44 +27,70 @@
 
 			if (empty($_POST['Nom']) || empty($_POST['prenom']) || !isset($_POST['dateN']) || !isset($_POST['nationalite']) || empty($_POST['depuisQ']) || !verifDepuisQ(recupAnnee())){
 			
-				echo '<span><font color="red"> IL FAUT TOUT REMPLIR !! </font></span>';
+				echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 
 			}else{
-
 				//BLOC 1
-				$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
+			
+				$nom = $_POST['Nom'];
+				$prenom = $_POST['prenom'];
 
-				//if(!empty($_POST['Nom'])){
-					$nom = $_POST['Nom'];
-					echo "Nom ".$_POST['Nom']." sélectionné";
+				$nom = testNom($nom, $regex);
+				$prenom = testPrenom($prenom, $regex);
+
+				if($nom == NULL || $prenom == NULL){
+					
+					if($nom == NULL){
+						echo "Le nom entré n'est pas valide, recommencer";
+						echo "<br>";
+					}
+					
+					if($prenom == NULL){
+						echo "Le prenom entré n'est pas valide, recommencer";
+						echo "<br>";
+					}
+
+				}else{
+					echo "Nom ".$nom." sélectionné";
 					echo "<br>";
-			    //}else{
-				// 	echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
-				// 	echo "<br>";
-				// }
-
-				//if(!empty($_POST['prenom'])){
-					$prenom = $_POST['prenom'];
 					echo "Prénom ".$prenom." sélectionné";
 					echo "<br>";
-				//}else{
-				// 	echo '<span><font color="red">Veuillez entrer un prénom !</font></span>';
-				// 	echo "<br>";
-				// }
 
-				$annee_naissance = recupAnnee();
+					$annee_naissance = recupAnnee();
 
-				$cur = preparerRequete($conn,$sql);
-				AfficherTab($cur);
-				//FIN BLOC 1
+					//requête pour ajouter un coureur à la base.
+					$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
-				//BLOC 2 
-				ajouterParam($cur,':nom',$nom);
-				ajouterParam($cur,':prenom',$prenom);
-				ajouterParam($cur,':annee_naissance',$annee_naissance);
-				$res = majDonneesPreparees($cur);
-				AfficherTab($res);
-				//FIN BLOC 2
+					$cur = preparerRequete($conn,$sql);
+					AfficherTab($cur);
+					//FIN BLOC 1
+
+					//BLOC 2 
+					ajouterParam($cur,':nom',$nom);
+					ajouterParam($cur,':prenom',$prenom);
+					ajouterParam($cur,':annee_naissance',$annee_naissance);
+					$res = majDonneesPreparees($cur);
+					AfficherTab($res);
+					//FIN BLOC 2
+
+					$nat = ajoutSelection();
+					$depuisQuand = $_POST['depuisQ'];
+
+					//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
+					$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
+
+					$cur = preparerRequete($conn,$sql2);
+					AfficherTab($cur);
+					//FIN BLOC 1
+
+					//BLOC 2 
+					ajouterParam($cur,':nat',$nat);
+					ajouterParam($cur,':depuisQuand',$depuisQuand);
+					$res = majDonneesPreparees($cur);
+					AfficherTab($res);
+
+
+				}
 			}
 		}
 	}
@@ -121,7 +141,8 @@
 					echo '<span><font color="red">Veuillez sélectionner une Nationalité !</font></span>';
 				}
 				else{
-					echo ("Nationalité $nat sélectionnée");
+					//echo ("Nationalité $nat sélectionnée");
+					return $nat;
 				}
 			}
 		}
