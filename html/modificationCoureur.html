@@ -13,8 +13,9 @@
 				<label for="nomCoureur">Nom: </label><input type="text" name="nomCoureur" value="<?php getNomCoureur($conn); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<label for="prenomCoureur">Prénom: </label><input type="text" name="prenomCoureur" value="<?php getPrenomCoureur($conn); ?>"><br/><br/>
 				<label for="numCoureur">N° Coureur: </label><input type="text" name="numCoureur" style="background:#eeeeee" size="2" value="<?php getNumeroCoureur($conn); ?>" readonly>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="nationCoureur">Nationalité: </label>
 				<select name="pays">
-					<?php paysCoureur($tab,$nbLignes); ?>
+					<?php getListePays($conn); ?>
 				</select><br/><br/>
 			</fieldset><br/>
 			
@@ -23,13 +24,3 @@
 		</form>
 	</body>
 </html>
-
-<?php
-	function paysCoureur($tab,$nbLignes) {
-		for ($i=0; $i<$nbLignes; $i++) {
-			$tab[$i]["PRENOM"] = utf8_encode($tab[$i]["PRENOM"]);
-			echo '<option value="'.$tab[$i]["N_COUREUR"].'">'.$tab[$i]['CODE_CIO'];
-			echo '</option>';
-		}
-	}
-?>
