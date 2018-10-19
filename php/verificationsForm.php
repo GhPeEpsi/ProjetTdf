@@ -1,6 +1,7 @@
 <?php
-//mb_internal_encoding("UTF-8");
-$regex =  mb_convert_encoding("#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,40}$#", "UTF-8");
+mb_internal_encoding("UTF-8");
+//$regex =  mb_convert_encoding("#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,40}$#", "UTF-8");
+$regex = "#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,40}$#";
 //iconv_set_encoding($regex1, "UTF-8");
 //$regex2 = "#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÝàáâãäåçèéêëìíîïñðòóôõöýÿæÆœŒø' -]{2,40}$#";
 
@@ -46,6 +47,7 @@ function testNom($nom, $regex) {
         $nom = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($nom, FALSE)));
         //echo $nom;
         //echo "<br>";
+        $nom = utf8_encode($nom);
         return $nom;
     } else {
         //echo "Nom invalide <br>"; 
@@ -68,6 +70,7 @@ function testPrenom($prenom, $regex) {
 
         //echo $prenom;
         //echo "<br>";
+        $prenom = html_entity_decode($prenom, ENT_NOQUOTES, "UTF-8");
         return $prenom;
     } else {
         //echo "Prénom invalide <br>";   
