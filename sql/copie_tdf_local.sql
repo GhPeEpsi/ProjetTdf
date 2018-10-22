@@ -155,3 +155,18 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
 			join tdf_app_nation using (n_coureur)
 			join tdf_nation na using (code_cio)
 			where n_coureur = 1354;
+            
+--Requète qui récupère juste les coureurs n'ayant jamais participé au tdf :
+select n_coureur, nom, prenom from tdf_coureur
+where n_coureur not in 
+(
+    select n_coureur from tdf_parti_coureur
+)
+order by n_coureur;
+
+select * from tdf_coureur 
+order by n_coureur;
+
+--supprimer un coureur :
+delete from tdf_app_nation where n_coureur=1774;
+delete from tdf_coureur where n_coureur=1774;
