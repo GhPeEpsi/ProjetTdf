@@ -2,6 +2,7 @@
 <html lang="fr">
 	<head>
     	<meta charset="utf-8">
+    	<meta name ="viewport" content="width=device-width, initial-scale=1">
     	<title>Ajout coureur</title>
     	<script> 
     		function chargerDate(elt1){
@@ -28,12 +29,14 @@
     	<style type="text/css">.error{color: red} </style>
     	<h3> Veuillez remplir tous les champs pour l'ajout d'un coureur : </h3>
 
-    	<p><span class="error" >* required field </span></p>
+    	<p><span class="error" >* champs requis </span></p>
 		<form name="formVerifCoureur" action="" method="post">
     		<div>
         		<label> Nom : </label>
 				<input type = text name = "Nom" value ="" placeholder="Saisir">
 				<span class="error">* </span>
+				<span class="error" id="nomErreur"></span>
+				<?php //verifNom();?>
     		</div>
     			<br>
     			<br>
@@ -42,6 +45,8 @@
         		<label> Prénom :</label>
         		<input type="text" name = "prenom" value ="" placeholder="Saisir">
         		<span class="error">* </span>
+        		<span class="error" id="prenomErreur"></span>
+        		<?php //verifPrenom();?>
     		</div>
 			 	<br>
 			 	<br>
@@ -50,7 +55,7 @@
 			 	<label>Date de naissance</label>    			
         		<input type="date" name ="dateN" value="" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>">
         		<span class="error">* </span>
-        		<?php ajoutDate(); ?>
+        		<?php //verifDate();?>
     		</div>
 				<br>
 				<br>
@@ -60,6 +65,7 @@
 				<?php remplirOption($tab,$nbLignes); ?>
 			</select>
 			<span class="error">* </span>
+			<?php ajoutSelection();?>
 				<br>
 				<br>
 
@@ -69,12 +75,13 @@
         			<input type="text" name ="depuisQ" value="" id = "depuisQ">
         			<span class="error">* </span>
         			<?php verifDepuisQ(recupAnnee());?>
+        			<?php verifDepuisQ(recupAnnee());?>
     			</div>
     			<br>
 				<br>
 				<input type="submit" name="verifier" value="Vérifier" >
-				<?php ajoutSelection();?>
 			<br>
+			<span class="error" id ="MessErreur"></span>
 		</form>
   </body>
 </html>

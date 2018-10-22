@@ -11,39 +11,37 @@
 	$db = fabriquerChaineConnexion2();	*/
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
-	$req = 'SELECT * FROM tdf_coureur order by nom';
+	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 
 	include ("../html/modificationCoureur.html");
 
 	function getNumeroCoureur($conn) {
-		$req = 'SELECT n_coureur FROM tdf_coureur where n_coureur = \''.$_GET['numCoureur'].'\'';
+		$req = 'SELECT n_coureur FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['N_COUREUR']);
 	}
 	
 	function getNomCoureur($conn) {
-		$req = 'SELECT nom FROM tdf_coureur where n_coureur = \''.$_GET['numCoureur'].'\'';
+		$req = 'SELECT nom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['NOM']);
 	}
 	
 	function getPrenomCoureur($conn) {
-		$req = 'SELECT prenom FROM tdf_coureur where n_coureur = \''.$_GET['numCoureur'].'\'';
+		$req = 'SELECT prenom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['PRENOM']);
 	}
 
 	function getPaysCoureur($conn) {
-		$req = 'SELECT tdf_nation.nom FROM tdf_nation
-				JOIN tdf_app_nation USING (code_cio)
-				WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		$req = 'SELECT tdf_nation.nom FROM tdf_nation JOIN tdf_app_nation USING (code_cio) WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		return utf8_encode($tab[0]['NOM']);
 	}
 
 	function getListePays($conn) {
-		$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';
+		$req = 'SELECT code_cio, nom FROM tdf_nation WHERE annee_disparition IS NULL ORDER BY nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);
 		$paysCoureur = getPaysCoureur($conn);
 		for ($i=0; $i<$nbLignes; $i++) {
@@ -57,6 +55,18 @@
 				echo '</option>';
 			}
 		}
+	}
+
+	function getAnneeNaissanceCoureur($conn) {
+		$req = 'SELECT annee_naissance FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		$nbLignes1 = LireDonnees1($conn,$req,$tab);
+		echo utf8_encode($tab[0]['ANNEE_NAISSANCE']);
+	}
+
+	function getAnneePremiereCoureur($conn) {
+		$req = 'SELECT annee_prem FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		$nbLignes1 = LireDonnees1($conn,$req,$tab);
+		echo utf8_encode($tab[0]['ANNEE_PREM']);
 	}
 
 	function listeCoureurs($tab,$nbLignes) {

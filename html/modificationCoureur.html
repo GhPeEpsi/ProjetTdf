@@ -4,19 +4,51 @@
 		<meta charset="utf-8">
 		<title>Modification d'un coureur</title>
 			<!-- <script src="../js/modificationCoureur.js"></script> -->
+			<style type="text/css">.error{color: red} </style>
 	</head>
 	<body>
 		<form name="formuaireChoixCoureur" action="" method="post" enctype="multipart/form-data">
-			<p><h1>Choisir un coureur</h1></p><br/>
+			
+			<p><h1>Modification d'un coureur</h1></p><br/>
 			
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
-				<label for="nomCoureur">Nom: </label><input type="text" name="nomCoureur" value="<?php getNomCoureur($conn); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label for="prenomCoureur">Prénom: </label><input type="text" name="prenomCoureur" value="<?php getPrenomCoureur($conn); ?>"><br/><br/>
-				<label for="numCoureur">N° Coureur: </label><input type="text" name="numCoureur" style="background:#eeeeee" size="2" value="<?php getNumeroCoureur($conn); ?>" readonly>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="error">* Champ obligatoire</span><br/>
+				<span class="error">--> Certains champs ne sont pas obligatoires. Néanmoins, s'ils sont vides, il seront insérés comme tels dans la base de donnée lors de la soumission.</span>
+				<br/><br/><hr/><br/>
+				
+				<label for="numCoureur">N° Coureur: </label>
+				<input type="text" id="numCoureur" name="numCoureur" style="background:#eeeeee" size="1" value="<?php getNumeroCoureur($conn); ?>" readonly>
+				<span class="error">*</span>
+				<br/><br/>
+				
+				<label for="nomCoureur">Nom: </label>
+				<input type="text" id="nomCoureur" name="nomCoureur" value="<?php getNomCoureur($conn); ?>">
+				<span class="error">*</span>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
+				<label for="prenomCoureur">Prénom: </label>
+				<input type="text" id="prenomCoureur" name="prenomCoureur" value="<?php getPrenomCoureur($conn); ?>">
+				<span class="error">*</span>
+				<br/><br/>
+				
 				<label for="nationCoureur">Nationalité: </label>
-				<select name="pays">
+				<select name="pays" id="nationCoureur">
 					<?php getListePays($conn); ?>
-				</select><br/><br/>
+				</select>
+				<span class="error">*</span>
+				<br/><br/>
+
+				<label for="anneeNaissanceCoureur">Année de naissance: </label>
+				<input type="text" id="anneeNaissanceCoureur" name="anneeNaissanceCoureur" size ="1" value="<?php getAnneeNaissanceCoureur($conn); ?>">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<label for="anneePremiereCoureur">Première année de participation: </label>
+				<input type="text" id="anneePremiereCoureur" name="anneePremiereCoureur" size ="1" value="<?php getanneePremiereCoureur($conn); ?>">
+				<br/><br/>
+
+				<div class="tooltip">Hover over me
+					<span class="tooltiptext">Tooltip text</span>
+				</div>
 			</fieldset><br/>
 			
 			<input type="button" name="annuler" value="Annuler" onclick="window.location.href='../'">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -24,3 +56,5 @@
 		</form>
 	</body>
 </html>
+
+<!-- <style="color:red"> -->

@@ -1,15 +1,19 @@
-<?php
+﻿<?php
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
-	
+	//echo '<meta charset="utf-8">';
 	// connexion à la base
-
-	$db_username = 'copie_tdf_copie';
-	$db_password = 'copie_tdf_copie';
-	$db = fabriquerChaineConnexion2();
+	$db_username = 'ETU2_49';
+	$db_password = 'ETU2_49';
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	//$db = fabriquerChaineConnexion();
+	 // $db_username = 'copie_tdf_copie';
+	 // $db_password = 'copie_tdf_copie';
+	 // $db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
+	//$conn->exec("set names AL32UTF8");
 
 	//récupérer seulement l'annee de la date entrée
 	if(isset($_GET['dateN'])){
@@ -19,13 +23,15 @@
 		echo $annee;
 	}
 
+	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';
+	$nbLignes = LireDonnees1($conn,$req,$tab);
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if ($conn)
 	{	
 
 		if(isset($_POST['verifier'])){
 
-			if (empty($_POST['Nom']) || empty($_POST['prenom']) || !isset($_POST['dateN']) || !isset($_POST['nationalite']) || empty($_POST['depuisQ']) || !verifDepuisQ(recupAnnee())){
+			if (empty($_POST['Nom']) || empty($_POST['prenom']) || $_POST['nationalite'] == 'Nationalité'){ //!isset($_POST['dateN']) || || !verifDepuisQ(recupAnnee())
 			
 				echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 
@@ -41,29 +47,33 @@
 				if($nom == NULL || $prenom == NULL){
 					
 					if($nom == NULL){
-						echo "Le nom entré n'est pas valide, recommencer";
-						echo "<br>";
+						echo "<script> alert('Le nom entré n\'est pas valide, recommencer'); </script>";
+						//echo "<br>";
 					}
 					
 					if($prenom == NULL){
-						echo "Le prenom entré n'est pas valide, recommencer";
-						echo "<br>";
+						echo "<script> alert('Le prenom entré n\'est pas valide, recommencer'); </script>";
+						//echo "<br>";
 					}
 
 				}else{
-					echo "Nom ".$nom." sélectionné";
-					echo "<br>";
-					echo "Prénom ".$prenom." sélectionné";
-					echo "<br>";
+
+					print_r($nom);
+					print_r($prenom);
+				 	// echo "Nom ".$nom." sélectionné";
+				 	// echo "<br>";
+				 	// echo "Prénom ".$prenom." sélectionné";
+				 	// echo "<br>";
 
 					$annee_naissance = recupAnnee();
 
 					//requête pour ajouter un coureur à la base.
-					$sql = "INSERT INTO vt_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from vt_coureur) + 1, :nom, :prenom, :annee_naissance)";
+					$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
 					$cur = preparerRequete($conn,$sql);
 					AfficherTab($cur);
 					//FIN BLOC 1
+
 
 					//BLOC 2 
 					ajouterParam($cur,':nom',$nom);
@@ -105,19 +115,61 @@
 	 	return null;
 	}
 
-	function ajoutDate(){
-		if(isset($_POST['dateN'])){
-			$dateN = $_POST['dateN'];
-			if(empty($dateN)){
-				echo '<span><font color="red">Veuillez entrer une date de naissance !</font></span>';
-				echo "<br>";
-			}
-			else{
-				echo "Date ".$dateN." sélectionnée";
-				echo "<br>";
-			}
-		}
-	}
+
+	// function verifNom(){
+	// 	if(empty($_POST['Nom'])){
+	// 		echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
+	// 		echo "<br>";
+	// 	}else {
+	// 		$nom = $_POST['Nom'];
+	// 		echo "Nom ".$nom." sélectionné";
+	// 		echo "<br>";
+	// 	}
+	// }
+
+
+	// function verifPrenom(){
+	// 	if(!empty($_POST['prenom'])){
+	// 		$prenom = $_POST['prenom'];
+	// 		if(empty($prenom)){
+	// 			echo '<span><font color="red">Veuillez entrer un Prénom !</font></span>';
+	// 			echo "<br>";
+	// 		}
+	// 		else{
+	// 			echo "Prenom ".$prenom." sélectionné";
+	// 			echo "<br>";
+	// 		}
+	// 	}
+	// }
+
+
+	// function verifDate(){
+	// 	if(!empty($_POST['dateN'])){
+	// 		$dateN = $_POST['dateN'];
+	// 		if(empty($dateN)){
+	// 			echo '<span><font color="red">Veuillez entrer une date de naissance !</font></span>';
+	// 			echo "<br>";
+	// 		}
+	// 		else{
+	// 			echo "Date ".$dateN." sélectionnée";
+	// 			echo "<br>";
+	// 		}
+	// 	}
+	// }
+
+	// function verifDepuisQ2(){
+	// 	if(!empty($_POST['depuisQ'])){
+	// 		$depuisQ = $_POST['depuisQ'];
+	// 		if(empty($depuisQ)){
+	// 			echo '<span><font color="red">Veuillez entrer depuisQuand !</font></span>';
+	// 			echo "<br>";
+	// 		}
+	// 		else{
+	// 			echo "Depuis ".$depuisQ;
+	// 			echo "<br>";
+	// 		}
+	// 	}
+	// }
 	
 	// On remplis la liste deroulante avec les nationalité de la base
 
@@ -138,7 +190,7 @@
 			if (isset($_POST['nationalite'])) {
 				$nat = $_POST['nationalite'];
 				if($nat == "Nationalité"){
-					echo '<span><font color="red">Veuillez sélectionner une Nationalité !</font></span>';
+					//echo '<span><font color="red">Veuillez sélectionner une Nationalité !</font></span>';
 				}
 				else{
 					//echo ("Nationalité $nat sélectionnée");
