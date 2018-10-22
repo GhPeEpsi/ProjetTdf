@@ -34,6 +34,9 @@
 			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 
 		}else{
+			//Changement de la valeur de l'element hidden :
+			
+			
 			//BLOC 1
 		
 			$nom = $_POST['Nom'];
@@ -100,7 +103,6 @@
 		$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
 		LireDonnees1($conn,$sql3,$tab3);
 		header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
-		print_r($tab3);
 	}
 
 	function recupAnnee(){

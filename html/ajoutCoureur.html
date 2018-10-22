@@ -79,6 +79,9 @@
 				<input type="submit" name="regarder" value="Voir Coureur">
 			<br>
 			<span class="error" id ="MessErreur"></span>
+			
+			<!-- Message Hidden qui permet desavoir si on peut aller afficher les informations ou si aucun coureur n'a été rentré-->
+			<input name="droitPassage" type="hidden" value="<?php return isset($_POST['verifier']);?>">
 		</form>
   </body>
 </html>

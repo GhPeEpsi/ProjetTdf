@@ -42,13 +42,20 @@
 		//$nom = $tabBase[0]['Nom'];
 		//$prenom = $tabBase[0]['Prenom'];
 		
-		//Nombre de participations plus les années
 		$reqAnneeParticipation = 
-			"select annee from tdf_parti_coureur
-			join tdf_coureur using (n_coureur)
-			where n_coureur = ".$n_coureur."
-			order by annee";
+				"select annee from tdf_parti_coureur
+				join tdf_coureur using (n_coureur)
+				where n_coureur = ".$n_coureur."
+				order by annee";
 		$nbLignesAnnee = LireDonnees1($conn,$reqAnneeParticipation,$tabAnnee);
+			
+		//Nombre de participations plus les années
+		if ($nbLignesAnnee != 0) {
+			$prob = false; //permet de savoir si il y a eu un soucis de lecture de participation
+		}
+		else {
+			$prob = true;
+		}
 			
 		/*$req = 'SELECT * FROM tdf_coureur order by nom';
 		$nbLignes = LireDonnees1($conn,$req,$tab);*/
@@ -69,8 +76,11 @@
 		}
 		
 		function afficheAnnee() {
-			global $conn, $nbLignesAnnee, $tabAnnee, $n_coureur;
+			global $conn, $nbLignesAnnee, $tabAnnee, $n_coureur, $prob;
+			
 			$style = "style=\"border: 1px solid black;\"";
+			if ($prob) {echo "<h3>Pas encore de participation</h3>";return;}
+			
 			echo "<table $style>";
 			echo 
 				"<tr $style>
