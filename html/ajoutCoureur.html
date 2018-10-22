@@ -36,7 +36,6 @@
 				<input type = text name = "Nom" value ="" placeholder="Saisir">
 				<span class="error">* </span>
 				<span class="error" id="nomErreur"></span>
-				<?php //verifNom();?>
     		</div>
     			<br>
     			<br>
@@ -46,7 +45,6 @@
         		<input type="text" name = "prenom" value ="" placeholder="Saisir">
         		<span class="error">* </span>
         		<span class="error" id="prenomErreur"></span>
-        		<?php //verifPrenom();?>
     		</div>
 			 	<br>
 			 	<br>
@@ -54,8 +52,6 @@
 			<div>
 			 	<label>Date de naissance</label>    			
         		<input type="date" name ="dateN" value="" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>">
-        		<span class="error">* </span>
-        		<?php //verifDate();?>
     		</div>
 				<br>
 				<br>
@@ -73,13 +69,14 @@
 
     			<div>
         			<input type="text" name ="depuisQ" value="" id = "depuisQ">
-        			<span class="error">* </span>
         			<?php verifDepuisQ(recupAnnee());?>
         			<?php verifDepuisQ(recupAnnee());?>
     			</div>
     			<br>
 				<br>
-				<input type="submit" name="verifier" value="Vérifier" >
+				<input type="submit" name="verifier" value="Vérifier" > 
+				<input type="reset"> 
+				<input type="submit" name="regarder" value="Voir Coureur">
 			<br>
 			<span class="error" id ="MessErreur"></span>
 		</form>

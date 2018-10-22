@@ -26,83 +26,81 @@
 	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
-	if ($conn)
-	{	
+	
+	if(isset($_POST['verifier'])){
 
-		if(isset($_POST['verifier'])){
+		if (empty($_POST['Nom']) || empty($_POST['prenom']) || $_POST['nationalite'] == 'Nationalité'){ //!isset($_POST['dateN']) || || !verifDepuisQ(recupAnnee())
+		
+			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 
-			if (empty($_POST['Nom']) || empty($_POST['prenom']) || $_POST['nationalite'] == 'Nationalité'){ //!isset($_POST['dateN']) || || !verifDepuisQ(recupAnnee())
-			
-				echo "<script> alert('vous n\'avez pas tout rempli') </script>";
+		}else{
+			//BLOC 1
+		
+			$nom = $_POST['Nom'];
+			$prenom = $_POST['prenom'];
+
+			$nom = testNom($nom, $regex);
+			$prenom = testPrenom($prenom, $regex);
+
+			if($nom == NULL || $prenom == NULL){
+				
+				if($nom == NULL){
+					echo "<script> alert('Le nom entré n\'est pas valide, recommencer'); </script>";
+					//echo "<br>";
+				}
+				
+				if($prenom == NULL){
+					echo "<script> alert('Le prenom entré n\'est pas valide, recommencer'); </script>";
+					//echo "<br>";
+				}
 
 			}else{
-				//BLOC 1
-			
-				$nom = $_POST['Nom'];
-				$prenom = $_POST['prenom'];
 
-				$nom = testNom($nom, $regex);
-				$prenom = testPrenom($prenom, $regex);
+				$annee_naissance = recupAnnee();
 
-				if($nom == NULL || $prenom == NULL){
-					
-					if($nom == NULL){
-						echo "<script> alert('Le nom entré n\'est pas valide, recommencer'); </script>";
-						//echo "<br>";
-					}
-					
-					if($prenom == NULL){
-						echo "<script> alert('Le prenom entré n\'est pas valide, recommencer'); </script>";
-						//echo "<br>";
-					}
+				//requête pour ajouter un coureur à la base.
+				$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
 
-				}else{
-
-					print_r($nom);
-					print_r($prenom);
-				 	// echo "Nom ".$nom." sélectionné";
-				 	// echo "<br>";
-				 	// echo "Prénom ".$prenom." sélectionné";
-				 	// echo "<br>";
-
-					$annee_naissance = recupAnnee();
-
-					//requête pour ajouter un coureur à la base.
-					$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
-
-					$cur = preparerRequete($conn,$sql);
-					AfficherTab($cur);
-					//FIN BLOC 1
+				$cur = preparerRequete($conn,$sql);
+				//AfficherTab($cur);
+				//FIN BLOC 1
 
 
-					//BLOC 2 
-					ajouterParam($cur,':nom',$nom);
-					ajouterParam($cur,':prenom',$prenom);
-					ajouterParam($cur,':annee_naissance',$annee_naissance);
-					$res = majDonneesPreparees($cur);
-					AfficherTab($res);
-					//FIN BLOC 2
+				//BLOC 2 
+				ajouterParam($cur,':nom',$nom);
+				ajouterParam($cur,':prenom',$prenom);
+				ajouterParam($cur,':annee_naissance',$annee_naissance);
+				$res = majDonneesPreparees($cur);
+				//AfficherTab($res);
+				//FIN BLOC 2
 
-					$nat = ajoutSelection();
-					$depuisQuand = $_POST['depuisQ'];
+				$nat = ajoutSelection();
+				$depuisQuand = $_POST['depuisQ'];
 
-					//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
-					$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
+				//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
+				$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
 
-					$cur = preparerRequete($conn,$sql2);
-					AfficherTab($cur);
-					//FIN BLOC 1
+				$cur = preparerRequete($conn,$sql2);
+				//AfficherTab($cur);
+				//FIN BLOC 1
 
-					//BLOC 2 
-					ajouterParam($cur,':nat',$nat);
-					ajouterParam($cur,':depuisQuand',$depuisQuand);
-					$res = majDonneesPreparees($cur);
-					AfficherTab($res);
+				//BLOC 2 
+				ajouterParam($cur,':nat',$nat);
+				ajouterParam($cur,':depuisQuand',$depuisQuand);
+				$res = majDonneesPreparees($cur);
+				//AfficherTab($res);
 
-
-				}
+				echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 			}
 		}
+	}
+	
+	//permet d'aller voir les infos d'un coureur qui vient d'être entré :
+	if(isset($_POST['regarder'])){
+		$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
+		LireDonnees1($conn,$sql3,$tab3);
+		header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
+		print_r($tab3);
 	}
 
 	function recupAnnee(){
@@ -115,61 +113,6 @@
 	 	return null;
 	}
 
-
-	// function verifNom(){
-	// 	if(empty($_POST['Nom'])){
-	// 		echo '<span><font color="red">Veuillez entrer un nom !</font></span>';
-	// 		echo "<br>";
-	// 	}else {
-	// 		$nom = $_POST['Nom'];
-	// 		echo "Nom ".$nom." sélectionné";
-	// 		echo "<br>";
-	// 	}
-	// }
-
-
-	// function verifPrenom(){
-	// 	if(!empty($_POST['prenom'])){
-	// 		$prenom = $_POST['prenom'];
-	// 		if(empty($prenom)){
-	// 			echo '<span><font color="red">Veuillez entrer un Prénom !</font></span>';
-	// 			echo "<br>";
-	// 		}
-	// 		else{
-	// 			echo "Prenom ".$prenom." sélectionné";
-	// 			echo "<br>";
-	// 		}
-	// 	}
-	// }
-
-
-	// function verifDate(){
-	// 	if(!empty($_POST['dateN'])){
-	// 		$dateN = $_POST['dateN'];
-	// 		if(empty($dateN)){
-	// 			echo '<span><font color="red">Veuillez entrer une date de naissance !</font></span>';
-	// 			echo "<br>";
-	// 		}
-	// 		else{
-	// 			echo "Date ".$dateN." sélectionnée";
-	// 			echo "<br>";
-	// 		}
-	// 	}
-	// }
-
-	// function verifDepuisQ2(){
-	// 	if(!empty($_POST['depuisQ'])){
-	// 		$depuisQ = $_POST['depuisQ'];
-	// 		if(empty($depuisQ)){
-	// 			echo '<span><font color="red">Veuillez entrer depuisQuand !</font></span>';
-	// 			echo "<br>";
-	// 		}
-	// 		else{
-	// 			echo "Depuis ".$depuisQ;
-	// 			echo "<br>";
-	// 		}
-	// 	}
-	// }
 	
 	// On remplis la liste deroulante avec les nationalité de la base
 
@@ -189,11 +132,7 @@
 		if (!empty($_POST)) {
 			if (isset($_POST['nationalite'])) {
 				$nat = $_POST['nationalite'];
-				if($nat == "Nationalité"){
-					//echo '<span><font color="red">Veuillez sélectionner une Nationalité !</font></span>';
-				}
-				else{
-					//echo ("Nationalité $nat sélectionnée");
+				if($nat != "Nationalité"){
 					return $nat;
 				}
 			}
