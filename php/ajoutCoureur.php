@@ -8,9 +8,10 @@
 	$db_password = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
-	 // $db_username = 'copie_tdf_copie';
-	 // $db_password = 'copie_tdf_copie';
-	 // $db = fabriquerChaineConnexion2();
+	
+	//$db_username = 'projet_php';
+	//$db_password = 'projet_php';
+	//$db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	//$conn->exec("set names AL32UTF8");
@@ -100,11 +101,25 @@
 	
 	//permet d'aller voir les infos d'un coureur qui vient d'être entré :
 	if(isset($_POST['regarder'])){
-		$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
-		LireDonnees1($conn,$sql3,$tab3);
-		header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
+		if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
+			$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
+			LireDonnees1($conn,$sql3,$tab3);
+			header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
+		}
 	}
 
+	function droitPassage() {
+		if (isset($_POST['verifier']) && isset($_POST['droitPassage']) && ($_POST['droitPassage']=="false")) {
+			echo "true";
+			return;
+		}
+		else if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
+			echo "true";
+			return;
+		}
+		echo "false";
+	}
+	
 	function recupAnnee(){
 		if(isset($_POST['dateN'])){
 			 	$dateN = $_POST['dateN'];

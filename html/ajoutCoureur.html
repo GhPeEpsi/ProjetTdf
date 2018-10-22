@@ -31,6 +31,10 @@
 
     	<p><span class="error" >* champs requis </span></p>
 		<form name="formVerifCoureur" action="" method="post">
+			
+			<!-- Message Hidden qui permet desavoir si on peut aller afficher les informations ou si aucun coureur n'a été rentré-->
+			<input name="droitPassage" type="hidden" value="<?php droitPassage();?>">
+			
     		<div>
         		<label> Nom : </label>
 				<input type = text name = "Nom" value ="" placeholder="Saisir">
@@ -80,8 +84,7 @@
 			<br>
 			<span class="error" id ="MessErreur"></span>
 			
-			<!-- Message Hidden qui permet desavoir si on peut aller afficher les informations ou si aucun coureur n'a été rentré-->
-			<input name="droitPassage" type="hidden" value="<?php return isset($_POST['verifier']);?>">
+			
 		</form>
   </body>
 </html>
