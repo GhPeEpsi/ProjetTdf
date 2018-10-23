@@ -37,7 +37,7 @@
 			
     		<div>
         		<label> Nom : </label>
-				<input type = text name = "Nom" value ="" placeholder="Saisir">
+				<input type = text name = "Nom" id = "nom" value ="<?php afficherNom();?>" placeholder="Saisir" required>
 				<span class="error">* </span>
 				<span class="error" id="nomErreur"></span>
     		</div>
@@ -46,7 +46,7 @@
 
     		<div>
         		<label> Prénom :</label>
-        		<input type="text" name = "prenom" value ="" placeholder="Saisir">
+        		<input type="text" name = "prenom" id ="prenom" value ="<?php afficherPrenom();?>" placeholder="Saisir" required>
         		<span class="error">* </span>
         		<span class="error" id="prenomErreur"></span>
     		</div>
@@ -55,13 +55,13 @@
 
 			<div>
 			 	<label>Date de naissance</label>    			
-        		<input type="date" name ="dateN" value="" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>">
+        		<input type="date" name ="dateN" value="<?php afficherDateN();?>" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>">
     		</div>
 				<br>
 				<br>
 
-			<select name="nationalite"  >
-				<option>Nationalité</option>
+			<select required name="nationalite">
+				<option value ="">Nationalité</option>
 				<?php remplirOption($tab,$nbLignes); ?>
 			</select>
 			<span class="error">* </span>
@@ -72,9 +72,7 @@
 			<label>Depuis quand ?</label>
 
     			<div>
-        			<input type="text" name ="depuisQ" value="" id = "depuisQ">
-        			<?php verifDepuisQ(recupAnnee());?>
-        			<?php verifDepuisQ(recupAnnee());?>
+        			<input type="text" name ="depuisQ" value="<?php afficherDepuisQ();?>" id = "depuisQ">
     			</div>
     			<br>
 				<br>
@@ -88,3 +86,8 @@
 		</form>
   </body>
 </html>
+
+
+<!-- question : est-ce que faut faire en php le fait que si pas tout rempli alors on efface pas tout      resolu -->
+
+<!-- Penser à régler probleme de nom et prenom identiques mais nationamité different qui devrait s'insérer dans la base et ce n'est pas le cas  -->
