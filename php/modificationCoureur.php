@@ -2,13 +2,13 @@
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 
-	$login = 'ETU2_49';
+	/*$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
-	$db = fabriquerChaineConnexion();	
+	$db = fabriquerChaineConnexion();*/	
 
-/*	$login = 'copie_tdf_copie';
-	$mdp = 'copie_tdf_copie';
-	$db = fabriquerChaineConnexion2();	*/
+	$login = 'copie_tdf';
+	$mdp = 'copie_tdf';
+	$db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';

@@ -118,13 +118,13 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
     group by annee, nom, prenom;
    
     --IL FAUT CALCULER SON TEMPS TOTAL SUR LE TOUR ET REGARDER PAR RAPPORT AU TEMPS TOTAL DES AUTRES // IL FAUT ENLEVER CEUX QUI ONT ABANDONNÉ
-    select count(tmp) from
+    select count(tmp) as nb from
     (
         (
             select annee, nom, prenom, sum(total_seconde) as tmp from tdf_coureur co
             join tdf_parti_coureur using (n_coureur)
             join tdf_temps using (n_coureur, annee)
-            where annee = 2002
+            where annee = ""    --Année
             group by annee, nom, prenom
         )
         minus
@@ -133,28 +133,34 @@ Insert into tdf_app_nation(n_coureur, code_cio,annee_debut) values ((select max(
             join tdf_parti_coureur using (n_coureur)
             join tdf_abandon using (n_coureur, annee)
             join tdf_temps using (n_coureur, annee)
-            where annee = 2002
+            where annee = ""    --Année
             group by annee, nom, prenom
         )
         order by tmp
     )
     where tmp <=
     (
-        select sum(total_seconde) as "Temps Total" from tdf_coureur co
+        select sum(total_seconde) as tmp from tdf_coureur co
         join tdf_parti_coureur using (n_coureur)
         join tdf_temps using (n_coureur, annee)
-        where nom = 'ARMSTRONG'
-        and prenom = 'Lance'
-        and annee = 2002
+        where n_coureur =""     --n_coureur
+        and annee = ""      --Année
         group by annee, nom, prenom
     );
     
+    --Recherche du type d'abandon et de l'étape :
+    select libelle, n_epreuve from tdf_coureur
+    join tdf_parti_coureur using (n_coureur)
+    join tdf_abandon using (n_coureur, annee)
+    join tdf_typeaban using (c_typeaban)
+    where annee = 1994
+    and n_coureur = 28;
     
     select n_coureur as "Numero de coureur", co.nom as "Nom", prenom as "Prenom", annee_naissance as "Annee de naissance", annee_prem as "Annee de première", na.nom as "Nation"
-			from tdf_coureur co
-			join tdf_app_nation using (n_coureur)
-			join tdf_nation na using (code_cio)
-			where n_coureur = 1354;
+    from tdf_coureur co
+    join tdf_app_nation using (n_coureur)
+    join tdf_nation na using (code_cio)
+    where n_coureur = 1354;
             
 --Requète qui récupère juste les coureurs n'ayant jamais participé au tdf :
 select n_coureur, nom, prenom from tdf_coureur
@@ -165,7 +171,7 @@ where n_coureur not in
 order by n_coureur;
 
 select * from tdf_coureur 
-order by n_coureur;
+where nom = 'ALONSO MONJE';
 
 --supprimer un coureur :
 delete from tdf_app_nation where n_coureur=1774;

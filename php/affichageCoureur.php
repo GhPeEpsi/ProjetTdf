@@ -9,18 +9,18 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 		
-		/*Serveur UNICAEN*/
+		/*Serveur UNICAEN
 		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
 		$db = fabriquerChaineConnexion();
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		/**/
-		/*Bastien Localhost
-		$login = 'projet_php';
-		$mdp = 'projet_php';
+		*/
+		/*Bastien Localhost*/
+		$login = 'copie_tdf';
+		$mdp = 'copie_tdf';
 		$db = fabriquerChaineConnexion2();
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		*/
+		/**/
 
 		$n_coureur;
 		$nom;
@@ -66,8 +66,11 @@
 		//Remplissage des info si coureur séléctionné :
 		function afficheBase() {
 			global $nbLignesBase, $tabBase;
-			foreach ($tabBase[0] as $key => $ligne)
-				echo "<p>$key : $ligne</p>";
+			foreach ($tabBase[0] as $key => $ligne) {
+				if ($key != "Numero de coureur") {
+					echo "<p>$key : $ligne</p>";
+				}
+			}
 		}
 		
 		function afficherNbParti() {
@@ -120,7 +123,14 @@
 					)";
 				$place = LireDonneesCount($conn,$reqPlaceParticipation);
 				if ($place == '0') {
-					$place = "Abandon";
+					$reqAbandon = "select libelle, n_epreuve from tdf_coureur
+									join tdf_parti_coureur using (n_coureur)
+									join tdf_abandon using (n_coureur, annee)
+									join tdf_typeaban using (c_typeaban)
+									where annee = " . $ligne['ANNEE'] . "
+									and n_coureur = " . $n_coureur;
+					LireDonnees1($conn, $reqAbandon, $repAban);
+					$place = $repAban[0]['LIBELLE'] . " à la " . $repAban[0]['N_EPREUVE'] . "e épreuve";
 				}
 				echo "
 					<tr $style>

@@ -9,17 +9,17 @@
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
 		
-		/*Serveur UNICAEN*/
+		/*Serveur UNICAEN
 		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
 		$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		/**/
+		*/
 		//Bastien Localhost
-		/*$login = 'projet_php';
-		$mdp = 'projet_php';
+		$login = 'copie_tdf';
+		$mdp = 'copie_tdf';
 		$db = fabriquerChaineConnexion2();
-		$conn = OuvrirConnexion($db,$login,$mdp);*/
+		$conn = OuvrirConnexion($db,$login,$mdp);
 		
 		
 				
