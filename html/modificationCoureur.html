@@ -13,7 +13,7 @@
 			
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
 				<span class="error">* Champ obligatoire</span><br/>
-				<span class="error">--> Certains champs ne sont pas obligatoires. Néanmoins, s'ils sont vides, il seront insérés comme tels dans la base de donnée lors de la soumission.</span>
+				<span class="error">--> /!\ Si certains champs sont vides, ils seront insérés comme tels dans la base de données !</span>
 				<br/><br/><hr/><br/>
 				
 				<label for="numCoureur">N° Coureur: </label>
@@ -33,6 +33,7 @@
 				
 				<label for="nationCoureur">Nationalité: </label>
 				<select name="pays" id="nationCoureur">
+					<option>NATIONALITÉ</option>
 					<?php getListePays($conn); ?>
 				</select>
 				<span class="error">*</span>
@@ -45,14 +46,10 @@
 				<label for="anneePremiereCoureur">Première année de participation: </label>
 				<input type="text" id="anneePremiereCoureur" name="anneePremiereCoureur" size ="1" value="<?php getanneePremiereCoureur($conn); ?>">
 				<br/><br/>
-
-				<div class="tooltip">Hover over me
-					<span class="tooltiptext">Tooltip text</span>
-				</div>
 			</fieldset><br/>
 			
-			<input type="button" name="annuler" value="Annuler" onclick="window.location.href='../'">&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" name="envoyer" value="Envoyer les modifications" onclick="window.location.href='../html/fichierInutileValidation.html'">
+			<input type="button" name="annuler" value="Annuler" onclick="window.location.href='choixCoureur.php'">&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="submit" name="envoyer" value="Envoyer les modifications">
 		</form>
 	</body>
 </html>
