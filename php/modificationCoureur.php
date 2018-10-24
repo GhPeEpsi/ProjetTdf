@@ -2,6 +2,7 @@
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
+	include ("../html/navBar.html");
 
 	/*$login = 'ETU2_49';
 	$mdp = 'ETU2_49';

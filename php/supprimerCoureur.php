@@ -8,6 +8,7 @@
 		<?php
 		include ("pdo_oracle.php");
 		include ("util_affichage.php");
+		include ("../html/navBar.html");
 		
 		/*Serveur UNICAEN
 		$login = 'ETU2_49';

@@ -2,6 +2,7 @@
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
+	include ("../html/navBar.html");
 	//echo '<meta charset="utf-8">';
 	
 	// connexion à la base
