@@ -17,8 +17,8 @@
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		*/
 		//Bastien Localhost
-		$login = 'copie_tdf';
-		$mdp = 'copie_tdf';
+		$login = 'projet_php';
+		$mdp = 'projet_php';
 		$db = fabriquerChaineConnexion2();
 		$conn = OuvrirConnexion($db,$login,$mdp);
 		

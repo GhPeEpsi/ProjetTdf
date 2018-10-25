@@ -16,8 +16,8 @@
 	// $mdp = 'ETU2_49';
 	// $db = fabriquerChaineConnexion();	
 
-	$login = 'copie_tdf_copie';
-	$mdp = 'copie_tdf_copie';
+	$login = 'projet_php';
+	$mdp = 'projet_php';
 	$db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$login,$mdp);

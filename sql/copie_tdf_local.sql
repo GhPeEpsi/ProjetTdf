@@ -170,9 +170,21 @@ where n_coureur not in
 )
 order by n_coureur;
 
-select * from tdf_coureur 
+select * from tdf_coureur order by n_coureur desc;
 where nom = 'ALONSO MONJE';
 
 --supprimer un coureur :
 delete from tdf_app_nation where n_coureur=1774;
 delete from tdf_coureur where n_coureur=1774;
+
+
+
+
+insert into tdf_app_nation (n_coureur,code_cio) values (1772, 
+    (
+        select code_cio from tdf_nation where nom ='FRANCE'
+    )
+);
+
+
+select * from tdf_coureur where n_coureur = '500';
