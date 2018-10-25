@@ -12,13 +12,13 @@
 	include ("util_affichage.php");
 	include ("../html/navBar.html");
 
-	$login = 'ETU2_49';
-	$mdp = 'ETU2_49';
-	$db = fabriquerChaineConnexion();	
+	// $login = 'ETU2_49';
+	// $mdp = 'ETU2_49';
+	// $db = fabriquerChaineConnexion();	
 
-/*	$login = 'copie_tdf_copie';
+	$login = 'copie_tdf_copie';
 	$mdp = 'copie_tdf_copie';
-	$db = fabriquerChaineConnexion2();*/
+	$db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	$req = 'SELECT * FROM tdf_coureur order by nom';
