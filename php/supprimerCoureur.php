@@ -10,17 +10,17 @@
 		include ("util_affichage.php");
 		include ("../html/navBar.html");
 		
-		/*Serveur UNICAEN
+		/*Serveur UNICAEN*/
 		$login = 'ETU2_49';
 		$mdp = 'ETU2_49';
 		$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		*/
+		/**/
 		//Bastien Localhost
-		$login = 'projet_php';
+		/*$login = 'projet_php';
 		$mdp = 'projet_php';
 		$db = fabriquerChaineConnexion2();
-		$conn = OuvrirConnexion($db,$login,$mdp);
+		$conn = OuvrirConnexion($db,$login,$mdp);*/
 		
 		
 				

@@ -11,17 +11,17 @@
 		include ("../html/navBar.html");
 		
 		/*Serveur UNICAEN*/
-		// $login = 'ETU2_49';
-		// $mdp = 'ETU2_49';
-		// $db = fabriquerChaineConnexion();
-		// $conn = OuvrirConnexion($db,$login,$mdp);
+		$login = 'ETU2_49';
+		$mdp = 'ETU2_49';
+		$db = fabriquerChaineConnexion();
+		$conn = OuvrirConnexion($db,$login,$mdp);
 		
-		/*Bastien Localhost*/
+		/*Bastien Localhost
 		$login = 'copie_tdf_copie';
 		$mdp = 'copie_tdf_copie';
 		$db = fabriquerChaineConnexion2();
 		$conn = OuvrirConnexion($db,$login,$mdp);
-		/**/
+		*/
 
 		$n_coureur;
 		$nom;

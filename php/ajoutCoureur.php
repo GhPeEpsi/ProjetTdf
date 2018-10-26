@@ -5,9 +5,9 @@
 	//echo '<meta charset="utf-8">';
 	
 	// connexion à la base
-	//$db_username = 'ETU2_49';
-	//$db_password = 'ETU2_49';
-	//$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	$db_username = 'ETU2_49';
+	$db_password = 'ETU2_49';
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 	//connection de Jérémy qui resté là après la merge
 	//$db_username = 'copie_tdf_copie';
@@ -15,9 +15,10 @@
 	//$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 	
-	 $db_username = 'projet_php';
-	 $db_password = 'projet_php';
-	$db = fabriquerChaineConnexion2();
+	/*
+	$db_username = 'projet_php';
+	$db_password = 'projet_php';
+	$db = fabriquerChaineConnexion2();*/
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	//$conn->exec("set names AL32UTF8");
 

@@ -4,13 +4,13 @@
 	include ("verificationsForm.php");
 	
 
-	// $login = 'ETU2_49';
-	// $mdp = 'ETU2_49';
-	// $db = fabriquerChaineConnexion();
+	$login = 'ETU2_49';
+	$mdp = 'ETU2_49';
+	$db = fabriquerChaineConnexion();
 
-	$login = 'projet_php';
-	$mdp = 'projet_php';
-	$db = fabriquerChaineConnexion2();
+	//$login = 'projet_php';
+	//$mdp = 'projet_php';
+	//$db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	
 	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';
