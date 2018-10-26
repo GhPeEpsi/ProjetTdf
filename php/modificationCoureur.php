@@ -17,8 +17,6 @@
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 
 
-
-
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 	/* --------------------------------------------Récupération des données------------------------------------------------------------ */
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
@@ -93,14 +91,14 @@
 	
 
 	// changement du nom du coureur
-	function setNomCoureur($conn) {
-		$req = 'UPDATE tdf_coureur SET nom = \''.$_POST['nomCoureur'].'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+	function setNomCoureur($conn, $regex) {
+		$req = 'UPDATE tdf_coureur SET nom = \''.testNom($_POST['nomCoureur'], $regex).'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		majDonnees($conn,$req);
 	}
 
 	// changement du prénom du coureur
-	function setPrenomCoureur($conn) {
-		$req = 'UPDATE tdf_coureur SET prenom = \''.$_POST['prenomCoureur'].'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+	function setPrenomCoureur($conn, $regex) {
+		$req = 'UPDATE tdf_coureur SET prenom = \''.testPrenom($_POST['prenomCoureur'], $regex).'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		majDonnees($conn,$req);
 	}
 
@@ -115,7 +113,7 @@
 		if(empty($_POST['anneeNaissanceCoureur'])) {
 			$req = 'UPDATE tdf_coureur SET annee_naissance = \'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		} else {
-			$req = 'UPDATE tdf_coureur SET annee_naissance = '.$_POST['anneeNaissanceCoureur'].' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+			$req = 'UPDATE tdf_coureur SET annee_naissance = '.testDate($_POST['anneeNaissanceCoureur']).' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		}
 		majDonnees($conn,$req);
 	}
@@ -132,9 +130,9 @@
 	
 	//fonction qui permet de lancer toutes les fonctions d'insertion :
 	function toutInserer() {
-		global $conn;
-		setNomCoureur($conn);
-		setPrenomCoureur($conn);
+		global $conn, $regex;
+		setNomCoureur($conn, $regex);
+		setPrenomCoureur($conn, $regex);
 		setPaysCoureur($conn);
 		setAnneeNaissanceCoureur($conn);
 		setAnneePremiereCoureur($conn);
@@ -151,9 +149,22 @@
 	if(isset($_POST['envoyer'])) {
 		// Même si on ne peut pas modifier numCoureur, si jamais il venait à être vide, il ne faut pas soumettre les informations.
 		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
-			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
+			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires') </script>";
 		} else {
-			toutInserer();
+			if (empty(testNom($_POST['nomCoureur'], $regex)) || empty(testPrenom($_POST['prenomCoureur'], $regex)) || empty(testDate($_POST['anneeNaissanceCoureur']))) {
+				if (empty(testNom($_POST['nomCoureur'], $regex))) {
+					echo "<script> alert('Le nom saisi est incorrect') </script>";
+				}
+				if (empty(testPrenom($_POST['prenomCoureur'], $regex))) {
+					echo "<script> alert('Le prénom saisi est incorrect') </script>";
+				}
+				if (empty(testDate($_POST['anneeNaissanceCoureur']))) {
+					echo "<script> alert('La date de naissance saisie est incorrect') </script>";
+				}
+			} else {
+				toutInserer();
+			}
+			
 		}
 	}
 

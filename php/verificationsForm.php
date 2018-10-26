@@ -78,6 +78,15 @@ function testPrenom($prenom, $regex) {
     }
 }
 
+function testDate($date) {
+    $regexDate = "#^[0-9]{4}$#";
+    if (preg_match($regexDate, $date)) {
+        return $date;
+    } else {
+        return NULL;
+    }
+}
+
 
 
 
