@@ -13,7 +13,7 @@
 			
 			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
 				<span class="error">* Champ obligatoire</span><br/>
-				<span class="error">--> /!\ Si certains champs sont vides, ils seront insérés comme tels dans la base de données !</span>
+				<span class="error">/!\ Si certains champs facultatifs sont vides, ils seront insérés comme tels dans la base de données ! /!\</span>
 				<br/><br/><hr/><br/>
 				
 				<label for="numCoureur">N° Coureur: </label>
@@ -32,7 +32,7 @@
 				<br/><br/>
 				
 				<label for="nationCoureur">Nationalité: </label>
-				<select name="pays" id="nationCoureur">
+				<select name="nationCoureur" id="nationCoureur">
 					<option>NATIONALITÉ</option>
 					<?php getListePays($conn); ?>
 				</select>

@@ -16,8 +16,7 @@
 	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 
-	include ("../html/navBar.html");
-	include ("../html/modificationCoureur.html");
+
 
 
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
@@ -76,6 +75,7 @@
 		$req = 'SELECT annee_naissance FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['ANNEE_NAISSANCE']);
+		return utf8_encode($tab[0]['ANNEE_NAISSANCE']);
 	}
 
 	// récupération de l'année de la première participation du coureur
@@ -83,6 +83,7 @@
 		$req = 'SELECT annee_prem FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['ANNEE_PREM']);
+		return utf8_encode($tab[0]['ANNEE_PREM']);
 	}
 
 
@@ -105,40 +106,27 @@
 
 	// insertion/changement du pays du coureur
 	function setPaysCoureur($conn) {
-		$pays = '(SELECT code_cio from tdf_nation where nom = \''.$_POST['pays'].'\')';
-		$val = getPaysCoureur($conn);
-		if($val == "") { // Ajout de la nationalité du coureur UNIQUEMENT SI ELLE N'EXISTE PAS
-			$req = 'INSERT INTO tdf_app_nation(n_coureur, code_cio) VALUES ('.$_GET['numCoureur'].', \''.$pays.'\')';
-			// Faire la soumission
-			majDonnees($conn,$req);
-		} else { // SINON changement de la nationalité du coureur
-			$req = 'UPDATE tdf_app_nation SET code_cio = \''.$pays.'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
-			// Faire la soumission
-			majDonnees($conn,$req);
-		}		
+		$req = 'UPDATE tdf_app_nation SET code_cio = \''.$_POST['nationCoureur'].'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		majDonnees($conn,$req);		
 	}
 
 	// insertion/changement de l'année de naissance du coureur
 	function setAnneeNaissanceCoureur($conn) {
-		// 	-- Ajout de la date de naissance du coureur random -- UNIQUEMENT SI ELLE EST VIDE
-		
-		$req = 'INSERT INTO tdf_coureur(n_coureur, annee_naissance) VALUES ('.$_GET['numCoureur'].', '.$_POST['anneeNaissanceCoureur'].')';
-		majDonnees($conn,$req);
-		
-		// 	-- Changement de la date de naissance du coureur random -- UNIQUEMENT SI ELLE N'EST PAS VIDE
-		// 	update tdf_coureur set annee_naissance = 700 where n_coureur = 1797;
-		$req = 'UPDATE tdf_coureur SET annee_naissance = '.$_POST['anneeNaissanceCoureur'].' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		if(empty($_POST['anneeNaissanceCoureur'])) {
+			$req = 'UPDATE tdf_coureur SET annee_naissance = \'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		} else {
+			$req = 'UPDATE tdf_coureur SET annee_naissance = '.$_POST['anneeNaissanceCoureur'].' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		}
 		majDonnees($conn,$req);
 	}
 
 	// insertion/changement de l'année de a première participation du coureur
 	function setAnneePremiereCoureur($conn) {
-		// -- Ajout de la date_prem du coureur random -- UNIQUEMENT SI ELLE EST VIDE
-		$req = 'INSERT INTO tdf_coureur(n_coureur, annee_prem) VALUES ('.$_GET['numCoureur'].', '.$_POST['anneePremiereCoureur'].')';
-		majDonnees($conn,$req);
-		
-		// -- Changement de la date_prem du coureur random -- UNIQUEMENT SI ELLE N'EST PAS VIDE
-		$req = 'UPDATE tdf_coureur SET annee_prem = '.$_POST['anneePremiereCoureur'].' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		if(empty($_POST['anneePremiereCoureur'])) {
+			$req = 'UPDATE tdf_coureur SET annee_prem = \'\' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		} else {
+			$req = 'UPDATE tdf_coureur SET annee_prem = '.$_POST['anneePremiereCoureur'].' WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
+		}
 		majDonnees($conn,$req);
 	}
 	
@@ -148,8 +136,8 @@
 		setNomCoureur($conn);
 		setPrenomCoureur($conn);
 		setPaysCoureur($conn);
-		//setAnneeNaissanceCoureur($conn);
-		//setAnneePremiereCoureur($conn);
+		setAnneeNaissanceCoureur($conn);
+		setAnneePremiereCoureur($conn);
 	}
 
 
@@ -157,16 +145,18 @@
 	/* -----------------------------------------Vérification du bon remplissage des champs--------------------------------------------- */
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 
-	print_r($_POST);
 	// Vérifie : si les champs obligatoires sont remplis, si les champs sont correctement remplis (regex)
 	// Si tout est vérifié : la page est soumise et les informations envoyées/modifiées
+	print_r($_POST);
 	if(isset($_POST['envoyer'])) {
 		// Même si on ne peut pas modifier numCoureur, si jamais il venait à être vide, il ne faut pas soumettre les informations.
-		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['pays'] == 'NATIONALITÉ')) {
+		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
 			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 		} else {
 			toutInserer();
-			include ("../html/fichierInutileValidation.html");
 		}
 	}
+
+	include ("../html/navBar.html");
+	include ("../html/modificationCoureur.html");
 ?>
