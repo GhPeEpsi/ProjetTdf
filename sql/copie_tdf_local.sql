@@ -28,11 +28,19 @@ VALUES (
 ) + 1, 'GROUT', 'Abel', 2010, 2018);
     
     --Sous requètes utile à l'ajout d'un coureur :
-    select max(n_coureur) from tdf_coureur;
+    select count(*) as nb from tdf_coureur 
+    join tdf_app_nation using (n_coureur)
+    where nom = 'GROUT'
+    and prenom = 'Abel'
+    and code_cio = 'FRA'
+    group by nom, prenom, code_cio;
     --apartenance à un pays :
     INSERT INTO tdf_app_nation (n_coureur, code_cio, annee_debut)
     Values (
-    
+        (
+        select max(n_coureur) from tdf_coureur
+        ), 
+        'FRA', 2010
     );
 
 
@@ -176,3 +184,5 @@ where nom = 'ALONSO MONJE';
 --supprimer un coureur :
 delete from tdf_app_nation where n_coureur=1774;
 delete from tdf_coureur where n_coureur=1774;
+
+update tdf_coureur set nom = 'GROUT' where nom = 'GROUT';
