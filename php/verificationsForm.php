@@ -48,9 +48,17 @@ function testNom($nom, $regex) {
         //echo $nom;
         //echo "<br>";
         $nom = utf8_encode($nom);
+
+        if (iconv_strlen($nom, 'UTF-8') > 30) {
+            echo "<script> alert('Le nom saisi ne doit pas dépasser 30 caractères !')</script>";
+            return NULL;
+        }
+
         return $nom;
     } else {
         //echo "Nom invalide <br>"; 
+        echo "<script> alert('Le nom saisi contient des caractères interdit !')</script>";
+
         return NULL;  
     }
 }
@@ -71,9 +79,17 @@ function testPrenom($prenom, $regex) {
         //echo $prenom;
         //echo "<br>";
         $prenom = html_entity_decode($prenom, ENT_NOQUOTES, "UTF-8");
+
+        if (iconv_strlen($prenom, 'UTF-8') > 30) {
+            echo "<script> alert('Le prenom saisi ne doit pas dépasser 30 caractères !')</script>";
+            return NULL;
+        }
+
         return $prenom;
     } else {
         //echo "Prénom invalide <br>";   
+        echo "<script> alert('Le prenom saisi contient des caractères interdit !')</script>";
+        
         return NULL;
     }
 }
