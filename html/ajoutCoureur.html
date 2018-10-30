@@ -6,22 +6,28 @@
     	<title>Ajout coureur</title>
     	<script> 
     		function chargerDate(elt1){
+    			//on fait en sorte qu'on puisse pas écrire dans le depuisQuand après l'année actuelle pour l'ajax
+    			var fin = new Date();
+				year = fin.getFullYear();
     			var dateN = elt1.value;
-    			var xhr = new XMLHttpRequest();
-				xhr.open('GET', '../php/ajoutCoureur.php?dateN='+dateN, true);
+    			//on ecrit dans le depuis quand que entre 1900 et l'année actuelle
+    			if(elt1.value <= year || elt1.value <= 1900){
+	    			var xhr = new XMLHttpRequest();
+					xhr.open('GET', '../php/ajoutCoureur.php?dateN='+dateN, true);
 
-				var Lire = function()
-				{
-					if (xhr.readyState === 4 && xhr.status === 200)
+					var Lire = function()
 					{
-						var elt = document.getElementById('depuisQ');
-						document.getElementById('depuisQ').innerHTML = xhr.responseText;
-						document.getElementById('depuisQ').value = xhr.responseText;
+						if (xhr.readyState === 4 && xhr.status === 200)
+						{
+							var elt = document.getElementById('depuisQ');
+							document.getElementById('depuisQ').innerHTML = xhr.responseText;
+							document.getElementById('depuisQ').value = xhr.responseText;
+						}
 					}
-				}
 
-				xhr.addEventListener("readystatechange", Lire, false);
-				xhr.send(null);
+					xhr.addEventListener("readystatechange", Lire, false);
+					xhr.send(null);
+				}
 			}
     	</script>
     </head>
@@ -54,8 +60,8 @@
 			 	<br>
 
 			<div>
-			 	<label>Date de naissance</label>    			
-        		<input type="date" name ="dateN" value="<?php afficherDateN();?>" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))" min="1900-01-01" max= "<?php echo date('Y-m-d'); ?>">
+			 	<label>Année de naissance</label>    			
+        		<input type="text" name ="dateN" value="<?php afficherDateN();?>" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))">
     		</div>
 				<br>
 				<br>
