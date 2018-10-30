@@ -112,8 +112,8 @@
 
 				if(!empty($_POST['dateN']) && empty($_POST['depuisQ'])){
 					$verifInt = $_POST['dateN'];
-					if(!ctype_digit($verifInt)){
-						echo("Vous n'avez pas entré une date");
+					if(!ctype_digit($verifInt)|| $verifInt < 1900 || $verifInt > date('Y')){
+						echo("Vous n'avez pas entré une date valide");
 					}else{
 						$annee_naissance = recupAnnee();
 						$depuisQuand = $annee_naissance;
@@ -149,7 +149,7 @@
 					//echo "Vous devez remplir depuis quand si vous insérez une date de naissance";
 				}elseif(!empty($_POST['dateN'])&& (!empty($_POST['depuisQ']))){
 					$verifInt = $_POST['dateN'];
-					if(!ctype_digit($verifInt)){
+					if(!ctype_digit($verifInt)|| $verifInt < 1900 || $verifInt > date('Y')){
 						echo("Vous n'avez pas entré une date valide");
 					}else{
 						$annee_naissance = recupAnnee();
