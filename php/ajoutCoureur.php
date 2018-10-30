@@ -5,14 +5,14 @@
 	//echo '<meta charset="utf-8">';
 	
 	// connexion à la base
-	$db_username = 'ETU2_49';
-	$db_password = 'ETU2_49';
-	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	//$db_username = 'ETU2_49';
+	//$db_password = 'ETU2_49';
+	//$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 	//connection de Jérémy qui resté là après la merge
-	//$db_username = 'copie_tdf_copie';
-	//$db_password = 'copie_tdf_copie';
-	//$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	$db_username = 'copie_tdf_copie';
+	$db_password = 'copie_tdf_copie';
+	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 	
 	/*
@@ -25,9 +25,9 @@
 	//récupérer seulement l'annee de la date entrée
 	if(isset($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
-		$tab1 = explode("-", $dateN);
-		$annee = $tab1[0];
-		echo $annee;
+		//$tab1 = explode("-", $dateN);
+		//$annee = $tab1[0];
+		echo $dateN;
 	}
 
 	if(isset($_POST['Nom'])){
@@ -46,7 +46,7 @@
 		$depuisQuand = $_POST['depuisQ'];
 	}
 
-	if(isset($_POST['dateN'])){
+	if(!empty($_POST['dateN'])){
 		$dateNaissance = $_POST['dateN'];
 	}
 
@@ -86,61 +86,169 @@
 
 			}else{
 
-				if((!empty($_POST['depuisQ']) && isset($_POST['dateN'])) || (isset($_POST['dateN']) && empty($_POST['depuisQ']))){
-					if(empty($_POST['depuisQ'])){
-						$annee_naissance = recupAnnee();
-						$depuisQuand = $annee_naissance;
-						echo "Vous devez remplir depuis quand si vous insérez une date de naissance";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				if(!empty($_POST['dateN']) && empty($_POST['depuisQ'])){
+					$verifInt = $_POST['dateN'];
+					if(!ctype_digit($verifInt)){
+						echo("Vous n'avez pas entré une date");
 					}else{
 						$annee_naissance = recupAnnee();
-						$depuisQuand = (int)$depuisQuand;
-						$annee_naissance = (int)$annee_naissance;
-						// echo $annee_naissance;
-						// echo $depuisQuand;
-						// gettype($depuisQuand);
-						// gettype($annee_naissance);
+						$depuisQuand = $annee_naissance;
+						$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
+						$cur = preparerRequete($conn,$sql);
+						//AfficherTab($cur);
+						//FIN BLOC 1
 
-						if((int)$depuisQuand < (int)$annee_naissance){
-							echo "Vérifier que l'année entrée est inférieure à l'année de naissance";
+
+						//BLOC 2 
+						ajouterParam($cur,':nom',$nom);
+						ajouterParam($cur,':prenom',$prenom);
+						ajouterParam($cur,':annee_naissance',$annee_naissance);
+						$res = majDonneesPreparees($cur);
+						//AfficherTab($res);
+						//FIN BLOC 2
+
+						//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
+						$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
+
+						$cur = preparerRequete($conn,$sql2);
+						//AfficherTab($cur);
+						//FIN BLOC 1
+
+						//BLOC 2 
+						ajouterParam($cur,':nat',$nat);
+						ajouterParam($cur,':depuisQuand',$depuisQuand);
+						$res = majDonneesPreparees($cur);
+						//AfficherTab($res);
+
+						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+					}
+					//echo "Vous devez remplir depuis quand si vous insérez une date de naissance";
+				}elseif(!empty($_POST['dateN'])&& (!empty($_POST['depuisQ']))){
+					$verifInt = $_POST['dateN'];
+					if(!ctype_digit($verifInt)){
+						echo("Vous n'avez pas entré une date valide");
+					}else{
+						$annee_naissance = recupAnnee();
+						$depuisQuand = intval($_POST['depuisQ']);
+					// echo $annee_naissance;
+					// echo $depuisQuand;
+					// echo gettype($depuisQuand);
+					// echo gettype($annee_naissance);
+
+						if($depuisQuand > $annee_naissance){
+						echo "Vérifier que l'année entrée dans \"depuis Quand\" est inférieure à l'année de naissance";
 						}else{
+						//requête pour ajouter un coureur à la base.
+						$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
+						$cur = preparerRequete($conn,$sql);
+						//AfficherTab($cur);
+						//FIN BLOC 1
 
 
-							//requête pour ajouter un coureur à la base.
-							$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
+						//BLOC 2 
+						ajouterParam($cur,':nom',$nom);
+						ajouterParam($cur,':prenom',$prenom);
+						ajouterParam($cur,':annee_naissance',$annee_naissance);
+						$res = majDonneesPreparees($cur);
+						//AfficherTab($res);
+						//FIN BLOC 2
 
-							$cur = preparerRequete($conn,$sql);
-							//AfficherTab($cur);
-							//FIN BLOC 1
+						//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
+						$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
 
+						$cur = preparerRequete($conn,$sql2);
+						//AfficherTab($cur);
+						//FIN BLOC 1
 
-							//BLOC 2 
-							ajouterParam($cur,':nom',$nom);
-							ajouterParam($cur,':prenom',$prenom);
-							ajouterParam($cur,':annee_naissance',$annee_naissance);
-							$res = majDonneesPreparees($cur);
-							//AfficherTab($res);
-							//FIN BLOC 2
+						//BLOC 2 
+						ajouterParam($cur,':nat',$nat);
+						ajouterParam($cur,':depuisQuand',$depuisQuand);
+						$res = majDonneesPreparees($cur);
+						//AfficherTab($res);
 
-							//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
-							$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
-
-							$cur = preparerRequete($conn,$sql2);
-							//AfficherTab($cur);
-							//FIN BLOC 1
-
-							//BLOC 2 
-							ajouterParam($cur,':nat',$nat);
-							ajouterParam($cur,':depuisQuand',$depuisQuand);
-							$res = majDonneesPreparees($cur);
-							//AfficherTab($res);
-
-							echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 						}
 					}
+				}else{
+						$annee_naissance = recupAnnee();
+						$depuisQuand = null;
+					//requête pour ajouter un coureur à la base.
+						$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
+						$cur = preparerRequete($conn,$sql);
+						//AfficherTab($cur);
+						//FIN BLOC 1
+
+
+						//BLOC 2 
+						ajouterParam($cur,':nom',$nom);
+						ajouterParam($cur,':prenom',$prenom);
+						ajouterParam($cur,':annee_naissance',$annee_naissance);
+						$res = majDonneesPreparees($cur);
+						//AfficherTab($res);
+						//FIN BLOC 2
+
+						//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
+						$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
+
+						$cur = preparerRequete($conn,$sql2);
+						//AfficherTab($cur);
+						//FIN BLOC 1
+
+						//BLOC 2 
+						ajouterParam($cur,':nat',$nat);
+						ajouterParam($cur,':depuisQuand',$depuisQuand);
+						$res = majDonneesPreparees($cur);
+						//AfficherTab($res);
+
+						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 				}
-			}
+		 	}
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	//permet d'aller voir les infos d'un coureur qui vient d'être entré :
 	if(isset($_POST['regarder'])){
@@ -164,11 +272,9 @@
 	}
 	
 	function recupAnnee(){
-		if(isset($_POST['dateN'])){
-			 	$dateN = $_POST['dateN'];
-	 			$tab1 = explode("-", $dateN);
-	 			$annee_naissance = $tab1[0];
-	 			return $annee_naissance;
+		if(!empty($_POST['dateN'])){
+			 	$annee_naissance = $_POST['dateN'];
+	 			return intval($annee_naissance);
 	 		}
 	 	return null;
 	}
@@ -207,18 +313,17 @@
 		}
 	}
 
-	function verifDepuisQ(){
-		global $annee_naissance;
-		if(!empty($_POST['depuisQ']) && !empty($annee_naissance)){
-			if((int)$_POST['depuisQ'] < (int)$annee_naissance){
-				echo "Vérifier que l'année entrée est inférieure à l'année de naissance";
-				return FALSE;
-			}else{
-				echo "bite";
-				return TRUE;
-			}
-		} 
-	}
+	// function verifDepuisQ(){
+	// 	global $annee_naissance;
+	// 	if(!empty($_POST['depuisQ']) && !empty($annee_naissance)){
+	// 		if((int)$_POST['depuisQ'] < (int)$annee_naissance){
+	// 			echo "Vérifier que l'année entrée est inférieure à l'année de naissance";
+	// 			return FALSE;
+	// 		}else{
+	// 			return TRUE;
+	// 		}
+	// 	} 
+	// }
 
 	function afficherNom(){
 		global $nom;
@@ -240,6 +345,19 @@
 		echo $depuisQuand;
 	}
 
+	// function listeAnnee(){
+	//   // Variable qui ajoutera l'attribut selected de la liste déroulante
+	//   $selected = '';
+	 
+	//   // Parcours du tableau
+	//   echo '<select name="dateN" onblur="chargerDate(document.getElementById(\'dateN\'))">',"\n";
+	//   for($i=1900; $i<= date('Y'); $i++)
+	//   {
+	//     // Affichage de la ligne
+	//     echo "\t",'<option value="">', $i ,'</option>',"\n";
+	//   }
+	//   echo '</select>',"\n";
+	// }
 
 
 	if(empty($_GET)){
