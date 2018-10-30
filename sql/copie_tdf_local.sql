@@ -197,3 +197,27 @@ insert into tdf_app_nation (n_coureur,code_cio) values (1772,
 
 
 select * from tdf_coureur where n_coureur = '500';
+
+
+
+--Les étapes + le gagnant
+select annee from tdf_annee order by annee; --Permet de choisir l'année
+select count(*) from tdf_etape where annee = 2018; --permet de savoir combien il y a d'étape pour une année donnée
+
+--Requète qui récupère le temps total pour chaque étape en fonction du coureur :
+select n_epreuve, distance, jour, nom, prenom, total_seconde from tdf_etape
+join tdf_temps using (annee, n_epreuve)
+join tdf_coureur using (n_coureur)
+where annee = 2018
+and n_epreuve = 1
+and total_seconde >= all
+(
+    select total_seconde from tdf_etape
+    join tdf_temps using (annee, n_epreuve)
+    join tdf_coureur using (n_coureur)
+    where annee = 2018
+    and n_epreuve = 1
+)
+order by n_epreuve, total_seconde;
+
+
