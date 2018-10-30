@@ -24,9 +24,10 @@
 	}
 
 	//REQUETE :
-	$reqNombreEpreuve = 'select ';
+	$reqNombreEpreuve = 'select n_epreuve from tdf_etape where annee = :annee order by n_epreuve';
+	$curNbEtape = preparerRequete($conn,$reqNombreEpreuve);
 	
-	$reqLigne = 'select n_epreuve, distance, jour, nom, prenom, total_seconde from tdf_etape
+	$reqLigne = 'select n_epreuve, distance, jour, heure, minute, seconde, nom, prenom, total_seconde from tdf_etape
 				join tdf_temps using (annee, n_epreuve)
 				join tdf_coureur using (n_coureur)
 				where annee = :annee
@@ -40,6 +41,7 @@
 					and n_epreuve = :n_epreuve
 				)
 				order by n_epreuve, total_seconde';
+	$curLigne = preparerRequete($conn,$reqLigne);
 	
 	
 	//FONCTIONS DE TRAITEMENT :
@@ -62,10 +64,52 @@
 	}
 	
 	function affichage() {
-		global $annee;
+		global $conn, $annee, $curLigne, $curNbEtape;
+		
+		$style = "style=\"border: 1px solid black;\"";
+		echo "<table $style>";
+		echo "<tr $style>
+				<th $style>N° Epreuve</th>
+				<th $style>Distance (en km)</th>
+				<th $style>Date</th>
+				<th $style>Gagnant</th>
+				<th $style>Temps</th>
+				<th $style>Temps (en s)</th>
+			</tr>";
+		
 		if (isset($annee)) {
+			//récupération du nombre d'étapes :
+			ajouterParam($curNbEtape,':annee',$annee);
+			$nbEtapes = LireDonneesPreparees($curNbEtape, $tabNb);
+
+			//ajout de l'année à la requete d'infos d'étape :
+			ajouterParam($curLigne,':annee',$annee);
+
+			//preparation des dernier parametre plus execution de la requette et affichage :
+			foreach ($tabNb as $epreuve) {
+				ajouterParam($curLigne,':n_epreuve',$epreuve['N_EPREUVE']);
+				LireDonneesPreparees($curLigne, $tab);
+				afficheLigneTableau($tab, $style);
+				
+			}
 			
+			echo "</table>";
 		}
+		else {
+			echo "</table>";
+			echo "<p>Pas encore d'année selectionné !</p>";
+		}
+	}
+	
+	function afficheLigneTableau($tab, $style) {
+		echo '<tr '.$style.'>
+				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
+				<th '.$style.'>'.$tab[0]['DISTANCE'].'</th>
+				<th '.$style.'>'.$tab[0]['JOUR'].'</th>
+				<th '.$style.'>'.utf8_encode($tab[0]['NOM']). ' ' . utf8_encode($tab[0]['PRENOM']).'</th>
+				<th '.$style.'>'. $tab[0]['HEURE']. 'h/' .$tab[0]['MINUTE']. 'min/' .$tab[0]['SECONDE'].'s</th>
+				<th '.$style.'>'.$tab[0]['TOTAL_SECONDE'].'</th>
+			</tr>';
 	}
 
 

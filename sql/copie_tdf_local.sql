@@ -202,10 +202,10 @@ select * from tdf_coureur where n_coureur = '500';
 
 --Les étapes + le gagnant
 select annee from tdf_annee order by annee; --Permet de choisir l'année
-select count(*) from tdf_etape where annee = 2018; --permet de savoir combien il y a d'étape pour une année donnée
+select n_epreuve from tdf_etape where annee = 2012 order by n_epreuve; --permet de savoir combien il y a d'étape pour une année donnée
 
 --Requète qui récupère le temps total pour chaque étape en fonction du coureur :
-select n_epreuve, distance, jour, nom, prenom, total_seconde from tdf_etape
+select n_epreuve, distance, jour, heure, minute, seconde, nom, prenom, total_seconde from tdf_etape
 join tdf_temps using (annee, n_epreuve)
 join tdf_coureur using (n_coureur)
 where annee = 2018
@@ -219,5 +219,12 @@ and total_seconde >= all
     and n_epreuve = 1
 )
 order by n_epreuve, total_seconde;
+
+
+----------------------------- a lancer une fois révisions terminées
+drop table ten_match;
+drop table ten_joueur;
+-----------------------------
+
 
 
