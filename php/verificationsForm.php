@@ -96,10 +96,10 @@ function testPrenom($prenom, $regex) {
 
 function testDate($date) {
     $regexDate = "#^[0-9]{4}$#";
-    if (preg_match($regexDate, $date) && intval($date) > 1900 && intval($date) <= date("Y")) {
+    if (preg_match($regexDate, $date) && intval($date) > 1900 && intval($date) <= intval(date("Y"))) {
         return $date;
     } else {
-        echo "<script>alert('L\'année saisie n\'est pas valide')</script>"
+        echo "<script>alert('L\'année saisie n\'est pas valide')</script>";
         return NULL;
     }
 }
