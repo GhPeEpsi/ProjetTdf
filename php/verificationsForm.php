@@ -1,7 +1,7 @@
 <?php
 mb_internal_encoding("UTF-8");
 //$regex =  mb_convert_encoding("#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,40}$#", "UTF-8");
-$regex = "#^[a-zA-ZÀÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,40}$#";
+$regex = "#^[a-zA-ZÀÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,}$#";
 //iconv_set_encoding($regex1, "UTF-8");
 //$regex2 = "#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÝàáâãäåçèéêëìíîïñðòóôõöýÿæÆœŒø' -]{2,40}$#";
 
@@ -96,9 +96,10 @@ function testPrenom($prenom, $regex) {
 
 function testDate($date) {
     $regexDate = "#^[0-9]{4}$#";
-    if (preg_match($regexDate, $date)) {
+    if (preg_match($regexDate, $date) && intval($date) > 1900 && intval($date) <= intval(date("Y"))) {
         return $date;
     } else {
+        echo "<script>alert('L\'année saisie n\'est pas valide')</script>";
         return NULL;
     }
 }
