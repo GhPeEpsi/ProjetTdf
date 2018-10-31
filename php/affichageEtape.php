@@ -24,23 +24,12 @@
 	}
 
 	//REQUETE :
-	$reqNombreEpreuve = 'select n_epreuve from tdf_etape where annee = :annee order by n_epreuve';
-	$curNbEtape = preparerRequete($conn,$reqNombreEpreuve);
-	
-	$reqLigne = 'select n_epreuve, distance, jour, heure, minute, seconde, nom, prenom, total_seconde from tdf_etape
+	$reqLigne = 'select n_epreuve, nom, prenom, heure, minute, seconde, total_seconde, distance, jour from tdf_etape
 				join tdf_temps using (annee, n_epreuve)
 				join tdf_coureur using (n_coureur)
 				where annee = :annee
-				and n_epreuve = :n_epreuve
-				and total_seconde >= all
-				(
-					select total_seconde from tdf_etape
-					join tdf_temps using (annee, n_epreuve)
-					join tdf_coureur using (n_coureur)
-					where annee = :annee
-					and n_epreuve = :n_epreuve
-				)
-				order by n_epreuve, total_seconde';
+				and rang_arrivee = 1
+				order by n_epreuve';
 	$curLigne = preparerRequete($conn,$reqLigne);
 	
 	
@@ -63,9 +52,11 @@
 		}
 	}
 	
+	//affichage du tableau :
 	function affichage() {
 		global $conn, $annee, $curLigne, $curNbEtape;
 		
+		//affichage du tableau quoi qu'il ce passe :
 		$style = "style=\"border: 1px solid black;\"";
 		echo "<table $style>";
 		echo "<tr $style>
@@ -77,20 +68,37 @@
 				<th $style>Temps (en s)</th>
 			</tr>";
 		
+		//affichage des données si une annee est entrée :
 		if (isset($annee)) {
-			//récupération du nombre d'étapes :
-			ajouterParam($curNbEtape,':annee',$annee);
-			$nbEtapes = LireDonneesPreparees($curNbEtape, $tabNb);
-
 			//ajout de l'année à la requete d'infos d'étape :
 			ajouterParam($curLigne,':annee',$annee);
+			$nbEpreuve = LireDonneesPreparees($curLigne, $tab);
+			
+			//detection de plusieur vainqueur par etape :
+			$tmp=-150; //sert a garder en memoire le n_epreuve précédent pour savoir s'il y a plusieur gagnant par étape :
+			$tabEpMultiGagn;
+			foreach ($tab as $epreuve) {
+				if ($tmp == $epreuve['N_EPREUVE']) {
+					$tabEpMultiGagn[]=$epreuve['N_EPREUVE'];
+				}
+				$tmp = $epreuve['N_EPREUVE'];
+			}
 
 			//preparation des dernier parametre plus execution de la requette et affichage :
-			foreach ($tabNb as $epreuve) {
-				ajouterParam($curLigne,':n_epreuve',$epreuve['N_EPREUVE']);
-				LireDonneesPreparees($curLigne, $tab);
-				afficheLigneTableau($tab, $style);
-				
+			$j=0;//sert a parcourir tabEpMultiGagn
+			for ($i = $tab[0]['N_EPREUVE'] ; $i<$nbEpreuve ; $i++) {
+				$epreuve = array();
+				if (isset($tabEpMultiGagn[$j]) && ($tab[$i]['N_EPREUVE'] == $tabEpMultiGagn[$j])) { //il faut que si n_epreuve est save dans le tableau alorson envoi un tableau complet
+					$epreuve[] = $tab[$i];
+					
+					if (!isset($tabEpMultiGagn[$j+1]) || ($tabEpMultiGagn[$j] != $tabEpMultiGagn[$j+1]))
+						afficheLigneTableau($epreuve, $style);
+					$j++;
+				}
+				else {
+					$epreuve = $tab[$i];
+					afficheLigneTableau($epreuve, $style);
+				}
 			}
 			
 			echo "</table>";
@@ -102,14 +110,21 @@
 	}
 	
 	function afficheLigneTableau($tab, $style) {
-		echo '<tr '.$style.'>
-				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
-				<th '.$style.'>'.$tab[0]['DISTANCE'].'</th>
-				<th '.$style.'>'.$tab[0]['JOUR'].'</th>
-				<th '.$style.'>'.utf8_encode($tab[0]['NOM']). ' ' . utf8_encode($tab[0]['PRENOM']).'</th>
-				<th '.$style.'>'. $tab[0]['HEURE']. 'h/' .$tab[0]['MINUTE']. 'min/' .$tab[0]['SECONDE'].'s</th>
-				<th '.$style.'>'.$tab[0]['TOTAL_SECONDE'].'</th>
-			</tr>';
+		print_r($tab);
+		echo '<br><br><br><br><br><br><br>';
+		
+		
+		
+		
+		
+		/*echo '<tr '.$style.'>
+				<th '.$style.'>'.$tab['N_EPREUVE'].'</th>
+				<th '.$style.'>'.$tab['DISTANCE'].'</th>
+				<th '.$style.'>'.$tab['JOUR'].'</th>
+				<th '.$style.'>'.utf8_encode($tab['NOM']). ' ' . utf8_encode($tab['PRENOM']).'</th>
+				<th '.$style.'>'.$tab['HEURE']. 'h/' .$tab['MINUTE']. 'min/' .$tab['SECONDE'].'s</th>
+				<th '.$style.'>'.$tab['TOTAL_SECONDE'].'</th>
+			</tr>';*/
 	}
 
 

@@ -218,12 +218,27 @@ and total_seconde >= all
     where annee = 2018
     and n_epreuve = 1
 )
-order by n_epreuve, total_seconde;
+order by n_epreuve, total_seconde; ---pas la bonne il faut utiliser le rang d'arrivé
+
+--requete avec le rang d'arrivée :
+select n_epreuve, nom, prenom, rang_arrivee from tdf_etape
+join tdf_temps using (annee, n_epreuve)
+join tdf_coureur using (n_coureur)
+where annee = 2018
+and rang_arrivee = 1
+order by n_epreuve;
 
 
 ----------------------------- a lancer une fois révisions terminées
 drop table ten_match;
 drop table ten_joueur;
+create table ten_match (numMatch number(3),numJoueur_1 number(3),numJoueur_2 number(3), resultat number(1));
+
+select * from ten_joueur where encourse=1;
+select * from ten_match;
+
+insert into ten_match(numMatch, numjoueur_1, numjoueur_2, resultat) values((select max(nummatch) from ten_match)+1, 1,2,1);
+insert into ten_match(numMatch, numjoueur_1, numjoueur_2, resultat) values(1, 1,2,1);
 -----------------------------
 
 
