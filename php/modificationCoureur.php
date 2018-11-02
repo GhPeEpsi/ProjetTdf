@@ -156,11 +156,25 @@
 		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
 			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires') </script>";
 		} else {
-			if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur'])) && !empty(testDate($_POST['anneePremiereCoureur']))) {
-				if ($_POST['anneePremiereCoureur'] >= $_POST['anneeNaissanceCoureur']) {
+			if(!empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur'])) && !empty(testDate($_POST['anneePremiereCoureur']))) {
+					if ($_POST['anneePremiereCoureur'] >= $_POST['anneeNaissanceCoureur']) {
+						toutInserer();
+					} else {
+						echo "<script> alert('La première année de participation doit être supérieure ou égale à l'année de naissance') </script>";
+					}
+				}
+			} else if (empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testDate($_POST['anneePremiereCoureur']))) {
+					echo "<script> alert('Le coureur ne peut pas posséder une première année de participation s'il ne possède pas d'année de naissance') </script>";
+				}
+			} else if (empty($_POST['anneeNaissanceCoureur']) && empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex))) {
 					toutInserer();
-				} else {
-					echo "<script> alert('La première année de participation doit être supérieure ou égale à l'année de naissance') </script>";
+				}
+			} else if (!empty($_POST['anneeNaissanceCoureur']) && empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur']))) {
+					toutInserer();
 				}
 			}
 		}
