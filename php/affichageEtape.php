@@ -31,7 +31,7 @@
 				and rang_arrivee = 1
 				order by n_epreuve';
 	$curLigne = preparerRequete($conn,$reqLigne);
-	
+	/*
 	
 	//FONCTIONS DE TRAITEMENT :
 	//Récupération de la liste des années
@@ -124,10 +124,10 @@
 				<th '.$style.'>'.utf8_encode($tab['NOM']). ' ' . utf8_encode($tab['PRENOM']).'</th>
 				<th '.$style.'>'.$tab['HEURE']. 'h/' .$tab['MINUTE']. 'min/' .$tab['SECONDE'].'s</th>
 				<th '.$style.'>'.$tab['TOTAL_SECONDE'].'</th>
-			</tr>';*/
+			</tr>';
 	}
 
-
+ */
 	
 
 	//LE FICHIER HTML:

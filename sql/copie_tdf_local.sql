@@ -221,10 +221,10 @@ and total_seconde >= all
 order by n_epreuve, total_seconde; ---pas la bonne il faut utiliser le rang d'arrivé
 
 --requete avec le rang d'arrivée :
-select n_epreuve, nom, prenom, rang_arrivee from tdf_etape
+select n_epreuve, nom, prenom, rang_arrivee, heure, minute, seconde, total_seconde from tdf_etape
 join tdf_temps using (annee, n_epreuve)
 join tdf_coureur using (n_coureur)
-where annee = 2018
+where annee = 1986
 and rang_arrivee = 1
 order by n_epreuve;
 
