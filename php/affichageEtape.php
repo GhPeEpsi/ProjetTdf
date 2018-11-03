@@ -31,7 +31,15 @@
 				and rang_arrivee = 1
 				order by n_epreuve';
 	$curLigne = preparerRequete($conn,$reqLigne);
-	/*
+	
+	$reqNbVaiqueur = 'select n_epreuve, count(*) as nb from tdf_etape
+					join tdf_temps using (annee, n_epreuve)
+					where annee = :annee
+					and rang_arrivee = 1
+					group by n_epreuve
+					order by n_epreuve';
+	$curNbVainqueur = preparerRequete($conn,$reqNbVaiqueur);
+	
 	
 	//FONCTIONS DE TRAITEMENT :
 	//Récupération de la liste des années
@@ -45,7 +53,7 @@
 		
 		foreach ($tab as $sousTab) {
 			$val = $sousTab['ANNEE'];
-			if (!empty($annee) && $val = $annee)
+			if (!empty($annee) && $val == $annee)
 				echo '<option value="'.$val.'" selected>'.$val.'</option>';
 			else
 				echo '<option value="'.$val.'">'.$val.'</option>';
@@ -54,7 +62,7 @@
 	
 	//affichage du tableau :
 	function affichage() {
-		global $conn, $annee, $curLigne, $curNbEtape;
+		global $conn, $annee, $curLigne, $curNbVainqueur;
 		
 		//affichage du tableau quoi qu'il ce passe :
 		$style = "style=\"border: 1px solid black;\"";
@@ -70,38 +78,25 @@
 		
 		//affichage des données si une annee est entrée :
 		if (isset($annee)) {
-			//ajout de l'année à la requete d'infos d'étape :
+			//ajout de l'année aux requetes :
 			ajouterParam($curLigne,':annee',$annee);
-			$nbEpreuve = LireDonneesPreparees($curLigne, $tab);
+			ajouterParam($curNbVainqueur,':annee',$annee);
 			
-			//detection de plusieur vainqueur par etape :
-			$tmp=-150; //sert a garder en memoire le n_epreuve précédent pour savoir s'il y a plusieur gagnant par étape :
-			$tabEpMultiGagn;
-			foreach ($tab as $epreuve) {
-				if ($tmp == $epreuve['N_EPREUVE']) {
-					$tabEpMultiGagn[]=$epreuve['N_EPREUVE'];
-				}
-				$tmp = $epreuve['N_EPREUVE'];
-			}
+			//résultat :
+			$nbEpreuve = LireDonneesPreparees($curLigne, $tabRes);
+			$nbVainqueur = LireDonneesPreparees($curNbVainqueur, $tabNb);
 
-			//preparation des dernier parametre plus execution de la requette et affichage :
-			$j=0;//sert a parcourir tabEpMultiGagn
-			for ($i = $tab[0]['N_EPREUVE'] ; $i<$nbEpreuve ; $i++) {
-				$epreuve = array();
-				if (isset($tabEpMultiGagn[$j]) && ($tab[$i]['N_EPREUVE'] == $tabEpMultiGagn[$j])) { //il faut que si n_epreuve est save dans le tableau alorson envoi un tableau complet
-					$epreuve[] = $tab[$i];
-					
-					if (!isset($tabEpMultiGagn[$j+1]) || ($tabEpMultiGagn[$j] != $tabEpMultiGagn[$j+1]))
-						afficheLigneTableau($epreuve, $style);
+			//boucle d'affichage :
+			$j =0; //parcour du tableau de resultat
+			//afficheLigneTableau($tabNb, $style);
+			foreach ($tabNb as $etape) {
+				$tab = array();
+				for ($i = 0 ; $i<$etape['NB'] ; $i++) {
+					$tab[] = $tabRes[$j];
 					$j++;
 				}
-				else {
-					$epreuve = $tab[$i];
-					afficheLigneTableau($epreuve, $style);
-				}
+				afficheLigneTableau($tab, $style);
 			}
-			
-			echo "</table>";
 		}
 		else {
 			echo "</table>";
@@ -109,26 +104,61 @@
 		}
 	}
 	
-	function afficheLigneTableau($tab, $style) {
-		print_r($tab);
-		echo '<br><br><br><br><br><br><br>';
+	function fabriqueCondition($EpMultiGagn) {
+		echo '<h1>coucou1</h1>';
+		$condition =
+		(
+			(
+				isset($epreuve[0]['N_EPREUVE'])
+				&&
+				($epreuve[0]['N_EPREUVE'] != $EpMultiGagn)
+			)
+			|| 
+			(
+				isset($epreuve['N_EPREUVE'])
+				&&
+				($epreuve['N_EPREUVE'] != $EpMultiGagn)
+			)
+		);
 		
-		
-		
-		
-		
-		/*echo '<tr '.$style.'>
-				<th '.$style.'>'.$tab['N_EPREUVE'].'</th>
-				<th '.$style.'>'.$tab['DISTANCE'].'</th>
-				<th '.$style.'>'.$tab['JOUR'].'</th>
-				<th '.$style.'>'.utf8_encode($tab['NOM']). ' ' . utf8_encode($tab['PRENOM']).'</th>
-				<th '.$style.'>'.$tab['HEURE']. 'h/' .$tab['MINUTE']. 'min/' .$tab['SECONDE'].'s</th>
-				<th '.$style.'>'.$tab['TOTAL_SECONDE'].'</th>
-			</tr>';
+		return $condition;
 	}
-
- */
 	
+	function afficheLigneTableau($tab, $style) {
+		/*echo '<pre>';
+		print_r($tab);
+		echo '</pre><br><br><br><br><br><br><br>';*/
+		
+		if (!isset($tab[1])) {
+			echo '<tr '.$style.'>
+				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
+				<th '.$style.'>'.$tab[0]['DISTANCE'].'</th>
+				<th '.$style.'>'.$tab[0]['JOUR'].'</th>
+				<th '.$style.'>'.utf8_encode($tab[0]['NOM']). ' ' . utf8_encode($tab[0]['PRENOM']).'</th>
+				<th '.$style.'>'.$tab[0]['HEURE']. 'h/' .$tab[0]['MINUTE']. 'min/' .$tab[0]['SECONDE'].'s</th>
+				<th '.$style.'>'.$tab[0]['TOTAL_SECONDE'].'</th>
+				</tr>';
+		}
+		else {
+			echo '<tr '.$style.'>
+				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
+				<th '.$style.'>'.$tab[0]['DISTANCE'].'</th>
+				<th '.$style.'>'.$tab[0]['JOUR'].'</th>
+				<th '.$style.'>'. afficheNomPrenom($tab).'</th>
+				<th '.$style.'>'.$tab[0]['HEURE']. 'h/' .$tab[0]['MINUTE']. 'min/' .$tab[0]['SECONDE'].'s</th>
+				<th '.$style.'>'.$tab[0]['TOTAL_SECONDE'].'</th>
+				</tr>';
+		}
+	}
+	
+	function afficheNomPrenom($tab) {
+		$retour = '';
+		foreach ($tab as $ligne) {
+			$retour = $retour . utf8_encode($ligne['NOM']). ' ' . utf8_encode($ligne['PRENOM']).'<br>';
+		}
+
+		return $retour;
+	}
 
 	//LE FICHIER HTML:
 	include("../html/affichageEtape.html");

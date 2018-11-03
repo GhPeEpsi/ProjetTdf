@@ -20,8 +20,8 @@
 	// $mdp = 'projet_php';
 	// $db = fabriquerChaineConnexion2();
 
-	$login = 'copie_tdf_copie';
-	$mdp = 'copie_tdf_copie';
+	$login = 'copie_tdf';
+	$mdp = 'copie_tdf';
 	$db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$login,$mdp);

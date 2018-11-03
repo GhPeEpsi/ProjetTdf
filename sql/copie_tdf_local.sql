@@ -229,16 +229,44 @@ and rang_arrivee = 1
 order by n_epreuve;
 
 
+select n_epreuve, count(*) as nb from tdf_etape
+join tdf_temps using (annee, n_epreuve)
+where annee = 1986
+and rang_arrivee = 1
+group by n_epreuve
+order by n_epreuve;
+
+
+
+
+
+
+
+
+
+
+
 ----------------------------- a lancer une fois révisions terminées
 drop table ten_match;
 drop table ten_joueur;
+
+create table ten_joueur(numJoueur number(3),nom  char(12),prenom char(12), encourse number(1));
 create table ten_match (numMatch number(3),numJoueur_1 number(3),numJoueur_2 number(3), resultat number(1));
 
-select * from ten_joueur where encourse=1;
+insert into ten_joueur values (1, 'connors ','Sylvian',1);
+insert into ten_joueur values (2, 'porcq ','Bjorn',1);
+insert into ten_joueur values (3, 'noah ','Didier',1);
+insert into ten_joueur values (4, 'santoro ','Laurent',1);
+insert into ten_joueur values (5, 'mcenroe ','Samir',1);
+insert into ten_joueur values (6, 'nadal ','Robert',1);
+insert into ten_joueur values (7, 'federer ','Fabienne',1);
+insert into ten_joueur values (8, 'roddick ','Christelle',1);
+commit;
+
+
+select * from ten_joueur;
 select * from ten_match;
 
-insert into ten_match(numMatch, numjoueur_1, numjoueur_2, resultat) values((select max(nummatch) from ten_match)+1, 1,2,1);
-insert into ten_match(numMatch, numjoueur_1, numjoueur_2, resultat) values(1, 1,2,1);
 -----------------------------
 
 
