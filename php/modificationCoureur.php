@@ -4,13 +4,18 @@
 	include ("verificationsForm.php");
 	
 
-	$login = 'ETU2_49';
-	$mdp = 'ETU2_49';
-	$db = fabriquerChaineConnexion();
+	// $login = 'ETU2_49';
+	// $mdp = 'ETU2_49';
+	// $db = fabriquerChaineConnexion();
 
-	//$login = 'projet_php';
-	//$mdp = 'projet_php';
+	$login = 'copie_tdf';
+	$mdp = 'copie_tdf';
+	$db = fabriquerChaineConnexion2();
+
+	//$login = 'copie_tdf_copie';
+	//$mdp = 'copie_tdf_copie';
 	//$db = fabriquerChaineConnexion2();
+
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	
 	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';
@@ -131,11 +136,25 @@
 	//fonction qui permet de lancer toutes les fonctions d'insertion :
 	function toutInserer() {
 		global $conn, $regex;
-		setNomCoureur($conn, $regex);
-		setPrenomCoureur($conn, $regex);
-		setPaysCoureur($conn);
-		setAnneeNaissanceCoureur($conn);
-		setAnneePremiereCoureur($conn);
+		
+		$req = 'select count(*) as nb from tdf_coureur 
+				join tdf_app_nation using (n_coureur)
+				where nom = \''.$_POST['nomCoureur'].'\'
+				and prenom = \''.$_POST['prenomCoureur'].'\'
+				and code_cio = \''.$_POST['nationCoureur'].'\'';
+				
+		LireDonnees1($conn, $req, $tab);
+		
+		if ($tab[0]['NB'] == 0) {
+			setNomCoureur($conn, $regex);
+			setPrenomCoureur($conn, $regex);
+			setPaysCoureur($conn);
+			setAnneeNaissanceCoureur($conn);
+			setAnneePremiereCoureur($conn);
+		}
+		else {
+			echo '<script>alert(\'Vous ne pouvez pas entrer ces informations un coureur du meme nom, prenom, pays existe deja\');</script>';
+		}
 	}
 
 
@@ -151,20 +170,27 @@
 		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
 			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires') </script>";
 		} else {
-			if (empty(testNom($_POST['nomCoureur'], $regex)) || empty(testPrenom($_POST['prenomCoureur'], $regex)) || empty(testDate($_POST['anneeNaissanceCoureur']))) {
-				if (empty(testNom($_POST['nomCoureur'], $regex))) {
-					echo "<script> alert('Le nom saisi est incorrect') </script>";
+			if(!empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur'])) && !empty(testDate($_POST['anneePremiereCoureur']))) {
+					if ($_POST['anneePremiereCoureur'] >= $_POST['anneeNaissanceCoureur']) {
+						toutInserer();
+					} else {
+						echo "<script> alert('La première année de participation doit être supérieure ou égale à l'année de naissance') </script>";
+					}
 				}
-				if (empty(testPrenom($_POST['prenomCoureur'], $regex))) {
-					echo "<script> alert('Le prénom saisi est incorrect') </script>";
+			} else if (empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testDate($_POST['anneePremiereCoureur']))) {
+					echo "<script> alert('Le coureur ne peut pas posséder une première année de participation s'il ne possède pas d'année de naissance') </script>";
 				}
-				if (empty(testDate($_POST['anneeNaissanceCoureur']))) {
-					echo "<script> alert('La date de naissance saisie est incorrect') </script>";
+			} else if (empty($_POST['anneeNaissanceCoureur']) && empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex))) {
+					toutInserer();
 				}
-			} else {
-				toutInserer();
+			} else if (!empty($_POST['anneeNaissanceCoureur']) && empty($_POST['anneePremiereCoureur'])) {
+				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur']))) {
+					toutInserer();
+				}
 			}
-			
 		}
 	}
 
