@@ -237,7 +237,11 @@ group by n_epreuve
 order by n_epreuve;
 
 
-
+select count(*) from tdf_coureur 
+join tdf_app_nation using (n_coureur)
+where nom = '.$_POST['nomCoureur'].'
+and prenom = '.$_POST['prenomCoureur'].'
+and code_cio = '.$_POST['nationCoureur']
 
 
 

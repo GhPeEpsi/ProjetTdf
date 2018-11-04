@@ -136,11 +136,25 @@
 	//fonction qui permet de lancer toutes les fonctions d'insertion :
 	function toutInserer() {
 		global $conn, $regex;
-		setNomCoureur($conn, $regex);
-		setPrenomCoureur($conn, $regex);
-		setPaysCoureur($conn);
-		setAnneeNaissanceCoureur($conn);
-		setAnneePremiereCoureur($conn);
+		
+		$req = 'select count(*) as nb from tdf_coureur 
+				join tdf_app_nation using (n_coureur)
+				where nom = \''.$_POST['nomCoureur'].'\'
+				and prenom = \''.$_POST['prenomCoureur'].'\'
+				and code_cio = \''.$_POST['nationCoureur'].'\'';
+				
+		LireDonnees1($conn, $req, $tab);
+		
+		if ($tab[0]['NB'] == 0) {
+			setNomCoureur($conn, $regex);
+			setPrenomCoureur($conn, $regex);
+			setPaysCoureur($conn);
+			setAnneeNaissanceCoureur($conn);
+			setAnneePremiereCoureur($conn);
+		}
+		else {
+			echo '<script>alert(\'Vous ne pouvez pas entrer ces informations un coureur du meme nom, prenom, pays existe deja\');</script>';
+		}
 	}
 
 
