@@ -4,13 +4,13 @@
 	include ("verificationsForm.php");
 	
 
-	// $login = 'ETU2_49';
-	// $mdp = 'ETU2_49';
-	// $db = fabriquerChaineConnexion();
+	$login = 'ETU2_49';
+	$mdp = 'ETU2_49';
+	$db = fabriquerChaineConnexion();
 
-	$login = 'copie_tdf';
-	$mdp = 'copie_tdf';
-	$db = fabriquerChaineConnexion2();
+	// $login = 'copie_tdf';
+	// $mdp = 'copie_tdf';
+	// $db = fabriquerChaineConnexion2();
 
 	//$login = 'copie_tdf_copie';
 	//$mdp = 'copie_tdf_copie';
@@ -151,9 +151,8 @@
 			setPaysCoureur($conn);
 			setAnneeNaissanceCoureur($conn);
 			setAnneePremiereCoureur($conn);
-		}
-		else {
-			echo '<script>alert(\'Vous ne pouvez pas entrer ces informations un coureur du meme nom, prenom, pays existe deja\');</script>';
+		} else {
+			echo '<script>alert(\'Un coureur ne peut pas posséder les même nom, prenom, et nationalité d\'un coureur qui existe déjà\');</script>';
 		}
 	}
 
