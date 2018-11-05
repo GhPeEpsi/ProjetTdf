@@ -12,17 +12,17 @@
 	include ("util_affichage.php");
 	include ("../html/navBar.html");
 
-	// $login = 'ETU2_49';
-	// $mdp = 'ETU2_49';
-	// $db = fabriquerChaineConnexion();	
+	$login = 'ETU2_49';
+	$mdp = 'ETU2_49';
+	$db = fabriquerChaineConnexion();	
 
 	// $login = 'projet_php';
 	// $mdp = 'projet_php';
 	// $db = fabriquerChaineConnexion2();
 
-	$login = 'copie_tdf';
-	$mdp = 'copie_tdf';
-	$db = fabriquerChaineConnexion2();
+	// $login = 'copie_tdf';
+	// $mdp = 'copie_tdf';
+	// $db = fabriquerChaineConnexion2();
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
 
