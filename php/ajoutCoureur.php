@@ -127,7 +127,14 @@
 						ajouterParam($cur,':nom',$nom);
 						ajouterParam($cur,':prenom',$prenom);
 						ajouterParam($cur,':annee_naissance',$annee_naissance);
-						$res = majDonneesPreparees($cur);
+						if (nonExistant()) {
+							$res = majDonneesPreparees($cur);
+						}
+						else {
+							echo "<p>Le coureur existe deja</p>";
+							echo '<input type="submit" name="continuer" value="Continuer" >';
+							return;
+						}
 						//AfficherTab($res);
 						//FIN BLOC 2
 
@@ -141,7 +148,14 @@
 						//BLOC 2 
 						ajouterParam($cur,':nat',$nat);
 						ajouterParam($cur,':depuisQuand',$depuisQuand);
-						$res = majDonneesPreparees($cur);
+						if (nonExistant()) {
+							$res = majDonneesPreparees($cur);
+						}
+						else {
+							echo "<p>Le coureur existe deja</p>";
+							echo '<input type="submit" name="continuer" value="Continuer" >';
+							return;
+						}
 						//AfficherTab($res);
 
 						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
@@ -173,7 +187,10 @@
 						ajouterParam($cur,':nom',$nom);
 						ajouterParam($cur,':prenom',$prenom);
 						ajouterParam($cur,':annee_naissance',$annee_naissance);
-						$res = majDonneesPreparees($cur);
+						
+						if (nonExistant()) {
+							$res = majDonneesPreparees($cur);
+						}
 						//AfficherTab($res);
 						//FIN BLOC 2
 
@@ -187,10 +204,16 @@
 						//BLOC 2 
 						ajouterParam($cur,':nat',$nat);
 						ajouterParam($cur,':depuisQuand',$depuisQuand);
-						$res = majDonneesPreparees($cur);
+						if (nonExistant()) {
+							$res = majDonneesPreparees($cur);
+						}
 						//AfficherTab($res);
-
-						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+						if (nonExistant()) {
+							echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+						}
+						else {
+							echo "<p>Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité</p>";
+						}
 						}
 					}
 				}else{
@@ -207,7 +230,15 @@
 						ajouterParam($cur,':nom',$nom);
 						ajouterParam($cur,':prenom',$prenom);
 						ajouterParam($cur,':annee_naissance',$annee_naissance);
-						$res = majDonneesPreparees($cur);
+						if (nonExistant()) {
+							$res = majDonneesPreparees($cur);
+						}
+						else {
+							echo "<p>Le coureur existe deja</p>";
+							echo '<input type="submit" name="continuer" value="Continuer" >';
+							return;
+						}
+						
 						//AfficherTab($res);
 						//FIN BLOC 2
 
@@ -221,7 +252,14 @@
 						//BLOC 2 
 						ajouterParam($cur,':nat',$nat);
 						ajouterParam($cur,':depuisQuand',$depuisQuand);
-						$res = majDonneesPreparees($cur);
+						if (nonExistant()) {
+							$res = majDonneesPreparees($cur);
+						}
+						else {
+							echo "<p>Le coureur existe deja</p>";
+							echo '<input type="button" name="continuer" >';
+							return;
+						}
 						//AfficherTab($res);
 
 						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
@@ -244,7 +282,23 @@
 
 
 
-
+	//verifier que le coureur qu'on veut entrer n'existe pas deja :
+	function nonExistant() {
+		global $conn, $nom, $prenom, $nat;
+		
+		$req = 'select count(*) as nb from tdf_coureur 
+				join tdf_app_nation using (n_coureur)
+				where nom = \''.$nom.'\'
+				and prenom = \''.$prenom.'\'
+				and code_cio = \''.$nat.'\'';
+				
+		LireDonnees1($conn, $req, $tab);
+		
+		if ($tab[0]['NB'] == 0) {
+			return true;
+		}
+		return false;
+	}
 
 
 

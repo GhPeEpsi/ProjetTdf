@@ -139,8 +139,8 @@
 		
 		$req = 'select count(*) as nb from tdf_coureur 
 				join tdf_app_nation using (n_coureur)
-				where nom = \''.$_POST['nomCoureur'].'\'
-				and prenom = \''.$_POST['prenomCoureur'].'\'
+				where nom = \''.testNom($_POST['nomCoureur'], $regex).'\'
+				and prenom = \''.testPrenom($_POST['prenomCoureur'], $regex).'\'
 				and code_cio = \''.$_POST['nationCoureur'].'\'';
 				
 		LireDonnees1($conn, $req, $tab);
