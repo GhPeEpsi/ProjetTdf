@@ -4,6 +4,28 @@
     	<meta charset="utf-8">
     	<meta name ="viewport" content="width=device-width, initial-scale=1">
     	<title>Ajout sponsor</title>
+    	<script> 
+    		function chargerNom(elt1){
+    			alert('salut1');
+    			var nom = elt1.value;
+	    		var xhr = new XMLHttpRequest();
+				xhr.open('GET', '../php/ajoutSponsor.php?nom='+nom, true);
+
+					var Lire = function()
+					{
+						if (xhr.readyState === 4 && xhr.status === 200)
+						{
+							var elt = document.getElementById('nomAbrege');
+							document.getElementById('nomAbrege').innerHTML = xhr.responseText;
+							document.getElementById('nomAbrege').value = xhr.responseText;
+						}
+					}
+
+					xhr.addEventListener("readystatechange", Lire, false);
+					xhr.send(null);
+				}
+			}
+    	</script>
     </head>
 	<body>
     	<style type="text/css">.error{color: red}</style>
@@ -14,7 +36,7 @@
 			
     		<div>
         		<label> Nom exacte : </label>
-				<input type = text name = "nom" id = "nom" value ="" placeholder="Saisir" required> <?php //afficherNom();?> <!-- c'était de le value -->
+				<input type = text name = "nom" id = "nom" value ="<?php afficherNom();?>" placeholder="Saisir" required onblur="chargerNom(document.getElementById('nom'))">
 				<span class="error">* </span>
 				<span class="error" id="nomErreur"></span>
     		</div>
@@ -23,7 +45,7 @@
 
     		<div>
         		<label> Nom abrégé :</label>
-        		<input type="text" name = "nomAbrege" id ="nomAbrege" value ="" placeholder="Saisir" required> <?php //afficherPrenom();?> <!-- c'était de le value -->
+        		<input type="text" name = "nomAbrege" id ="nomAbrege" value ="<?php afficherNomAbrege() ?>" placeholder="Saisir" required> <?php //afficherPrenom();?> <!-- c'était de le value -->
         		<span class="error">* </span>
         		<span class="error" id="prenomErreur"></span>
     		</div>
