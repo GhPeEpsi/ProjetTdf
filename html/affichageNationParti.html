@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Nations Participantes</title>
+	</head>
+	
+	<body>
+		<form method="post" name="formFiltre" action=""> 
+			<select name="filtres">
+				<option value="0">Filtres</option>
+				<option value="spon" <?php select('spon');?>>Nations des Sponsors</option>
+				<option value="cour" <?php select('cour');?>>Nations des Coureurs</option>
+				<option value="tous" <?php select('tous');?>>Toutes les Nations</option>
+				<option value="exis" <?php select('exis');?>>Nations encore existantes</option>
+			</select>
+			<input type="submit" name="continuer" value="Valider">
+		</form>
+	
+		<?php affichage()?>
+	</body>
+</html>
