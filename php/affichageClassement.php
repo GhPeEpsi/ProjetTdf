@@ -51,13 +51,13 @@
 			
 			//résultat :
 			$nbLignes = LireDonneesPreparees($curLigne, $tabRes);
-			echo '<pre>';
-			print_r($tabRes);
 
 			//boucle d'affichage :
-			for ($i = 0; $i < $nbLignes; $i++) {
-				afficheLigneTableau($tabRes, $i, $style);
+			foreach ($tabRes as $ligne) {
+				//echo "salut";
+				afficheLigneTableau($ligne, $style);
 			}
+			echo "</table>";
 		}
 		else {
 			echo "</table>";
@@ -65,13 +65,12 @@
 		}
 	}
 
-	function afficheLigneTableau($tab, $i, $style) {
-		
+	function afficheLigneTableau($tab, $style) {
 		echo '<tr '.$style.'>
-			<th '.$style.'>'.$tab[$i]['RANG'].'</th>
-			<th '.$style.'>'.$tab[$i]['CODE_PAYS'].'</th>
-			<th '.$style.'>'.utf8_encode($tab[$i]['NOM']). ' ' . utf8_encode($tab[$i]['PRENOM']).'</th>
-			<th '.$style.'>'.$tab[$i]['TEMPS'].'</th>
+			<th '.$style.'>'.$tab['RANG'].'</th>
+			<th '.$style.'>'.$tab['CODE_PAYS'].'</th>
+			<th '.$style.'>'.utf8_encode($tab['NOM']). ' ' . utf8_encode($tab['PRENOM']).'</th>
+			<th '.$style.'>'.$tab['TEMPS'].'</th>
 			</tr>';
 	}
 
