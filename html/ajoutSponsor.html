@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name ="viewport" content="width=device-width, initial-scale=1">
+    	<title>Ajout coureur</title>
+    	<script> 
+    		function chargerDate(elt1){
+    			//on fait en sorte qu'on puisse pas écrire dans le depuisQuand après l'année actuelle pour l'ajax
+    			var fin = new Date();
+				year = fin.getFullYear();
+    			var dateN = elt1.value;
+    			//on ecrit dans le depuis quand que entre 1900 et l'année actuelle
+    			if(elt1.value <= year || elt1.value <= 1900){
+	    			var xhr = new XMLHttpRequest();
+					xhr.open('GET', '../php/ajoutCoureur.php?dateN='+dateN, true);
+
+					var Lire = function()
+					{
+						if (xhr.readyState === 4 && xhr.status === 200)
+						{
+							var elt = document.getElementById('depuisQ');
+							document.getElementById('depuisQ').innerHTML = xhr.responseText;
+							document.getElementById('depuisQ').value = xhr.responseText;
+						}
+					}
+
+					xhr.addEventListener("readystatechange", Lire, false);
+					xhr.send(null);
+				}
+			}
+    	</script>
+    </head>
+	<body>
+    	<style type="text/css">.error{color: red}</style>
+    	<h3> Veuillez remplir tous les champs pour l'ajout d'un coureur : </h3>
+
+    	<p><span class="error" >* champs requis </span></p>
+		<form name="formVerifCoureur" action="" method="post">
+			
+			<!-- Message Hidden qui permet desavoir si on peut aller afficher les informations ou si aucun coureur n'a été rentré-->
+			<input name="droitPassage" type="hidden" value="<?php droitPassage();?>">
+			
+    		<div>
+        		<label> Nom : </label>
+				<input type = text name = "Nom" id = "nom" value ="<?php afficherNom();?>" placeholder="Saisir" required>
+				<span class="error">* </span>
+				<span class="error" id="nomErreur"></span>
+    		</div>
+    			<br>
+    			<br>
+
+    		<div>
+        		<label> Prénom :</label>
+        		<input type="text" name = "prenom" id ="prenom" value ="<?php afficherPrenom();?>" placeholder="Saisir" required>
+        		<span class="error">* </span>
+        		<span class="error" id="prenomErreur"></span>
+    		</div>
+			 	<br>
+			 	<br>
+
+			<div>
+			 	<label>Année de naissance</label>    			
+        		<input type="text" name ="dateN" value="<?php afficherDateN();?>" id = "dateN" onblur="chargerDate(document.getElementById('dateN'))">
+    		</div>
+				<br>
+				<br>
+
+			<select required name="nationalite">
+				<option value ="">Nationalité</option>
+				<?php remplirOption($tab,$nbLignes); ?>
+			</select>
+			<span class="error">* </span>
+			<?php ajoutSelection();?>
+				<br>
+				<br>
+
+			<label>Depuis quand ?</label>
+
+    			<div>
+        			<input type="text" name ="depuisQ" value="<?php afficherDepuisQ();?>" id = "depuisQ">
+    			</div>
+    			<br>
+				<br>
+				<input type="submit" name="verifier" value="Valider" > 
+				<input type="reset"> 
+				<input type="submit" name="regarder" value="Voir Coureur">
+			<br>
+			<span class="error" id ="MessErreur"></span>
+			
+		</form>
+		<span class="error"> <?php afficherTexteFinal(); ?> </span>
+  </body>
+</html>
+
+
+<!-- question : est-ce que faut faire en php le fait que si pas tout rempli alors on efface pas tout      resolu -->
+
+<!-- Penser à régler probleme de nom et prenom identiques mais nationamité different qui devrait s'insérer dans la base et ce n'est pas le cas  -->
