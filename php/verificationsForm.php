@@ -104,4 +104,25 @@ function testDate($date) {
     }
 }
 
+function testNomSponsor($sponsor) {
+    $regexSp = "#^.{2,30}$#";
+    if (preg_match($regexSp, $sponsor)){
+        //retire caractères interdits et convertit en majuscules
+        $sponsor = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($sponsor, FALSE)));
+
+
+        if (iconv_strlen($sponsor, 'UTF-8') > 30) {
+            echo "<script> alert('Le nom de sponsor saisi ne doit pas dépasser 30 caractères !')</script>";
+            return NULL;
+        }
+
+        return $sponsor;
+    } else {
+        //echo "Nom invalide <br>"; 
+        echo "<script> alert('Le nom de sponsor saisi contient des caractères interdit !')</script>";
+
+        return NULL;  
+    }
+}
+
 ?>
