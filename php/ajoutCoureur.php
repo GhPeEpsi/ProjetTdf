@@ -292,6 +292,9 @@
 		echo $depuisQuand;
 	}
 
-	include ("../html/navBar.html");
-	include ("../html/ajoutCoureur.html");
+	//insertion des 
+	if(empty($_GET)){
+		include ("../html/navBar.html");
+		include ("../html/ajoutCoureur.html");
+	}
 ?>
