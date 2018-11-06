@@ -1,5 +1,5 @@
 ﻿<?php
-	include ("../html/navBar.html");
+	
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
@@ -25,6 +25,7 @@
 	//récupérer seulement l'annee de la date entrée
 	if(isset($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
+		echo $dateN;
 	}
 
 	if(isset($_POST['Nom'])){
@@ -291,8 +292,6 @@
 		echo $depuisQuand;
 	}
 
-	//insertion des 
-	if(empty($_GET)){
-		include ("../html/ajoutCoureur.html");
-	}
+	include ("../html/navBar.html");
+	include ("../html/ajoutCoureur.html");
 ?>
