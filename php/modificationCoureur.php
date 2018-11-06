@@ -163,7 +163,6 @@
 
 	// Vérifie : si les champs obligatoires sont remplis, si les champs sont correctement remplis (regex)
 	// Si tout est vérifié : la page est soumise et les informations envoyées/modifiées
-	print_r($_POST);
 	if(isset($_POST['envoyer'])) {
 		// Même si on ne peut pas modifier numCoureur, si jamais il venait à être vide, il ne faut pas soumettre les informations.
 		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
@@ -176,10 +175,6 @@
 					} else {
 						echo "<script> alert('La première année de participation doit être supérieure ou égale à l'année de naissance') </script>";
 					}
-				}
-			} else if (empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
-				if (!empty(testDate($_POST['anneePremiereCoureur']))) {
-					echo "<script> alert('Le coureur ne peut pas posséder une première année de participation s'il ne possède pas d'année de naissance') </script>";
 				}
 			} else if (empty($_POST['anneeNaissanceCoureur']) && empty($_POST['anneePremiereCoureur'])) {
 				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex))) {
