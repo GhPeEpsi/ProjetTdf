@@ -104,31 +104,4 @@ function testDate($date) {
     }
 }
 
-
-
-
-
-
-
-
-
-// Si nom et prenom sont definis : test leur validité
-if (!empty($_POST['nom']) && !empty($_POST['prenom'])) {
-    $nom = mb_convert_encoding($_POST['nom'], "UTF-8");
-    $prenom = mb_convert_encoding($_POST['prenom'], "UTF-8");
-
-    if (testNom($nom, $regex) != NULL) {
-        # code...
-    } else {
-        # code...
-    }
-
-    if (testPrenom($nom, $regex) != NULL) {
-        # code...
-    } else {
-        # code...
-    }
-    
-}
-
 ?>

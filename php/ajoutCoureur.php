@@ -1,13 +1,14 @@
 ﻿<?php
+	include ("../html/navBar.html");
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
-	//echo '<meta charset="utf-8">';
 
+	$texteFinal = "";
 	// connexion à la base
-	//$db_username = 'ETU2_49';
-	//$db_password = 'ETU2_49';
-	//$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	$db_username = 'ETU2_49';
+	$db_password = 'ETU2_49';
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 	//connection de Jérémy qui resté là après la merge
 	//$db_username = 'copie_tdf_copie';
@@ -16,15 +17,14 @@
 	//$db = fabriquerChaineConnexion();
 
 
-	$db_username = 'copie_tdf';
-	$db_password = 'copie_tdf';
-	$db = fabriquerChaineConnexion2();
+	//$db_username = 'copie_tdf';
+	//$db_password = 'copie_tdf';
+	//$db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//récupérer seulement l'annee de la date entrée
 	if(isset($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
-		//echo $dateN;
 	}
 
 	if(isset($_POST['Nom'])){
@@ -61,11 +61,11 @@
 			if($nom == NULL || $prenom == NULL){
 
 				if($nom == NULL){
-					echo "<script> alert('Le nom entré n\'est pas valide, recommencer'); </script>";
+					//echo "<script> alert('Le nom entré n\'est pas valide, recommencer'); </script>";
 				}
 
 				if($prenom == NULL){
-					echo "<script> alert('Le prenom entré n\'est pas valide, recommencer'); </script>";
+					//echo "<script> alert('Le prenom entré n\'est pas valide, recommencer'); </script>";
 				}
 
 			}else{
@@ -74,7 +74,7 @@
 					$verifInt = $_POST['dateN'];
 					
 					if(!ctype_digit($verifInt)|| $verifInt < 1900 || $verifInt > date('Y')){
-						echo("Vous n'avez pas entré une date valide");
+						$textFinal = $texteFinal."<br> Vous n'avez pas entré une date valide.";
 					}else{
 						$annee_naissance = recupAnnee();
 						$depuisQuand = $annee_naissance;
@@ -101,22 +101,22 @@
 						}
 
 						if ($passage) {
-							echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+							$textFinal = $texteFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 						}
 						else {
-							echo "<p>Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité</p>";
+							$textFinal = $texteFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
 						}
 					}
 				}elseif(!empty($_POST['dateN'])&& (!empty($_POST['depuisQ']))){
 					$verifInt = $_POST['dateN'];
 					if(!ctype_digit($verifInt)|| $verifInt < 1900 || $verifInt > date('Y')){
-						echo("Vous n'avez pas entré une date valide");
+						$textFinal = $texteFinal."<br> Vous n'avez pas entré une date valide";
 					}else{
 						$annee_naissance = recupAnnee();
 						$depuisQuand = intval($_POST['depuisQ']);
 
 						if($depuisQuand > $annee_naissance){
-							echo "Vérifier que l'année entrée dans \"depuis Quand\" est inférieure à l'année de naissance";
+							$textFinal = $texteFinal."<br> Vérifier que l'année entrée dans \"depuis Quand\" est inférieure à l'année de naissance";
 						}else{
 							//requête pour ajouter un coureur à la base.
 							$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
@@ -143,10 +143,10 @@
 							}
 							
 							if ($passage) {
-								echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+								$textFinal = $texteFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 							}
 							else {
-								echo "<p>Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité</p>";
+								$textFinal = $texteFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
 							}
 						}
 					}
@@ -177,10 +177,10 @@
 					}
 
 					if ($passage) {
-						echo "Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+						$textFinal = $texteFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 					}
 					else {
-						echo "<p>Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité</p>";
+						$textFinal = $texteFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
 					}
 				}
 			}
@@ -189,6 +189,11 @@
 
 	//FUNCTION :
 	
+	function afficherTexteFinal(){
+		global $textFinal;
+		echo $textFinal;
+	}
+
 	//verifier que le coureur qu'on veut entrer n'existe pas deja :
 	function nonExistant() {
 		global $conn, $nom, $prenom, $nat;
@@ -288,7 +293,6 @@
 
 	//insertion des 
 	if(empty($_GET)){
-		include ("../html/navBar.html");
 		include ("../html/ajoutCoureur.html");
 	}
 ?>
