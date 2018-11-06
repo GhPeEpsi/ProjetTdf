@@ -250,10 +250,47 @@ join tdf_sponsor sp using (n_equipe, n_sponsor)
 where annee = 2018
 order by sp.nom;
 
-
+--requete pr les pays des sponsors :
 select distinct tdf_nation.nom from tdf_nation 
 join tdf_sponsor using (code_cio) order by nom;
 
+--requete pour les pays des coureurs :
+select distinct tdf_nation.nom from tdf_nation 
+join tdf_app_nation using (code_cio)
+join tdf_coureur using (n_coureur)
+order by nom;
+
+--Toutes :
+select distinct Nom from
+(
+    select distinct tdf_nation.nom as Nom from tdf_nation 
+    join tdf_sponsor using (code_cio)
+    union
+    select distinct tdf_nation.nom as Nom from tdf_nation 
+    join tdf_app_nation using (code_cio)
+    join tdf_coureur using (n_coureur)
+)
+order by nom;
+
+--pays tjr existant :
+select distinct Nom from
+(
+    select distinct tdf_nation.nom as Nom from tdf_nation 
+    join tdf_sponsor using (code_cio)
+    where annee_disparition is null
+    union
+    select distinct tdf_nation.nom as Nom from tdf_nation 
+    join tdf_app_nation using (code_cio)
+    join tdf_coureur using (n_coureur)
+    where annee_disparition is null
+)
+order by nom;
+
+
+--ajout sponsor :
+select * from tdf_sponsor;
+Insert into tdf_sponsor(n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
+values((select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
 
 
 ----------------------------- a lancer une fois révisions terminées

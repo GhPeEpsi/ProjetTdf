@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	</head>
   <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<a class="navbar-brand" href="../index.html">Tour de France</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -22,26 +22,36 @@
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="../php/ajoutCoureur.php">Ajouter</a>
 							<a class="dropdown-item" href="../php/choixCoureur.php">Modifier</a>
-							<a class="dropdown-item" href="../php/choixCoureur.php">Information</a>
+							<a class="dropdown-item" href="../php/choixCoureur.php">Informations</a>
 							<a class="dropdown-item" href="../php/supprimerCoureur.php">Supprimer</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Information par année
+							Sponsor
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="../php/ajoutSponsor.php">Ajouter</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Informations par année
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="../php/affichageClassement.php">Classement général</a>
 							<a class="dropdown-item" href="../php/affichageEtape.php">Étape en fonction de l'année</a>
-							<a class="dropdown-item" href="../php/affichageCoureurSponsor.php">Coureur et leur sponsor</a>
+							<a class="dropdown-item" href="../php/affichageCoureurSponsor.php">Coureurs et leur sponsor</a>
 						</div>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Information général
+							Informations générales
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="../php/affichageVille.php">Villes parcourue</a>
-							<!-- <a class="dropdown-item" href="php/affichageCoureurSponsor.php">Coureur et leur sponsor</a> -->
+							<a class="dropdown-item" href="../php/affichageVille.php">Villes parcourues</a>
+							<a class="dropdown-item" href="../php/affichagePays.php">Pays visités</a>
+							<a class="dropdown-item" href="../php/affichageNationParti.php">Nations participantes</a>
 						</div>
 					</li>
 				</ul>
