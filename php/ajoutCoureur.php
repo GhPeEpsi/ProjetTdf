@@ -24,7 +24,7 @@
 	//récupérer seulement l'annee de la date entrée
 	if(isset($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
-		echo $dateN;
+		//echo $dateN;
 	}
 
 	if(isset($_POST['Nom'])){
