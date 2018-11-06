@@ -12,20 +12,24 @@
 
 
 	//connection de Jérémy qui resté là après la merge
-	// $db_username = 'copie_tdf_copie';
-	// $db_password = 'copie_tdf_copie';
-	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	$db_username = 'copie_tdf_copie';
+	$db_password = 'copie_tdf_copie';
+	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 
 
-	$db_username = 'projet_php';
-	$db_password = 'projet_php';
-	$db = fabriquerChaineConnexion2();
+	// $db_username = 'projet_php';
+	// $db_password = 'projet_php';
+	// $db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//traitement :
 	
 	
+	$nat = ajoutSelection();
+	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A mettre dans la fonction remplir option au debut
+	$nbLignes = LireDonnees1($conn,$req,$tab);
+
 	
 	
 
@@ -37,47 +41,47 @@
 	}
 
 	//verifier que le coureur qu'on veut entrer n'existe pas deja :
-	function nonExistant() {
-		global $conn, $nom, $prenom, $nat;
+	// function nonExistant() {
+	// 	global $conn, $nom, $prenom, $nat;
 
-		$req = 'select count(*) as nb from tdf_coureur 
-		join tdf_app_nation using (n_coureur)
-		where nom = \''.$nom.'\'
-		and prenom = \''.$prenom.'\'
-		and code_cio = \''.$nat.'\'';
+	// 	$req = 'select count(*) as nb from tdf_coureur 
+	// 	join tdf_app_nation using (n_coureur)
+	// 	where nom = \''.$nom.'\'
+	// 	and prenom = \''.$prenom.'\'
+	// 	and code_cio = \''.$nat.'\'';
 
-		LireDonnees1($conn, $req, $tab);
+	// 	LireDonnees1($conn, $req, $tab);
 
-		if ($tab[0]['NB'] == 0) {
-			return true;
-		}
-		return false;
-	}
+	// 	if ($tab[0]['NB'] == 0) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	//permet d'aller voir les infos d'un coureur qui vient d'être entré :
-	if(isset($_POST['regarder'])){
-		if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
-			$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
-			LireDonnees1($conn,$sql3,$tab3);
-			header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
-		}
-	}
+	// if(isset($_POST['regarder'])){
+	// 	if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
+	// 		$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
+	// 		LireDonnees1($conn,$sql3,$tab3);
+	// 		header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
+	// 	}
+	// }
 
-	function droitPassage() {
-		if (isset($_POST['verifier']) && isset($_POST['droitPassage']) && ($_POST['droitPassage']=="false")) {
-			echo "true";
-			return;
-		}
-		else if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
-			echo "true";
-			return;
-		}
-		echo "false";
-	}
+	// function droitPassage() {
+	// 	if (isset($_POST['verifier']) && isset($_POST['droitPassage']) && ($_POST['droitPassage']=="false")) {
+	// 		echo "true";
+	// 		return;
+	// 	}
+	// 	else if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
+	// 		echo "true";
+	// 		return;
+	// 	}
+	// 	echo "false";
+	// }
 
 	function recupAnnee(){
-		if(!empty($_POST['dateN'])){
-			$annee_naissance = $_POST['dateN'];
+		if(!empty($_POST['dateC'])){
+			$annee_naissance = $_POST['dateC'];
 			return intval($annee_naissance);
 		}
 		return null;
@@ -86,7 +90,7 @@
 
 	// On remplis la liste deroulante avec les nationalité de la base
 	function remplirOption($tab,$nbLignes) {
-		global $nat;
+		
 		for ($i=0; $i<$nbLignes; $i++) {
 			if ($nat == $tab[$i]['CODE_CIO']) {
 				$tab[$i]["NOM"] = utf8_encode($tab[$i]["NOM"]);
@@ -118,24 +122,14 @@
 	echo $nom;
 	}
 
-	function afficherPrenom(){
-	global $prenom;
-	echo $prenom;
+	function afficherNomAbrege(){
+	global $nomAbrege;
+	echo $nomAbrege;
 	}
 
-	function afficherDateN(){
-	global $dateNaissance;
-	echo $dateNaissance;
+	function afficherDateC(){
+	global $dateCreation;
+	echo $dateCreation;
 	}
-
-	function afficherDepuisQ(){
-		global $depuisQuand;
-		echo $depuisQuand;
-	}
-
-	//insertion des 
-	if(empty($_GET)){
-		
-		include ("../html/ajoutCoureur.html");
-	}
+	include ("../html/ajoutSponsor.html");
 ?>
