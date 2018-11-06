@@ -12,9 +12,6 @@
     	<p><span class="error" >* champs requis </span></p>
 		<form name="formAjoutSponsor" action="" method="post">
 			
-			<!-- Message Hidden qui permet desavoir si on peut aller afficher les informations ou si aucun coureur n'a été rentré-->
-			<!-- <input name="droitPassage" type="hidden" value="<?php droitPassage();?>"> -->
-			
     		<div>
         		<label> Nom exacte : </label>
 				<input type = text name = "nom" id = "nom" value ="" placeholder="Saisir" required> <?php //afficherNom();?> <!-- c'était de le value -->
@@ -26,7 +23,7 @@
 
     		<div>
         		<label> Nom abrégé :</label>
-        		<input type="text" name = "prenom" id ="nomAbrege" value ="" placeholder="Saisir" required> <?php //afficherPrenom();?> <!-- c'était de le value -->
+        		<input type="text" name = "nomAbrege" id ="nomAbrege" value ="" placeholder="Saisir" required> <?php //afficherPrenom();?> <!-- c'était de le value -->
         		<span class="error">* </span>
         		<span class="error" id="prenomErreur"></span>
     		</div>
@@ -51,10 +48,10 @@
 				<input type="submit" name="verifier" value="Valider" > 
 				<input type="reset">
 			<br>
-			<span class="error" id ="MessErreur"></span>
+			<!-- <span class="error" id ="MessErreur"></span> -->
 			
 		</form>
-		<span class="error"> <?php afficherTexteFinal(); ?> </span>
+		<!-- <span class="error"> <?php afficherTexteFinal(); ?> </span> -->
   </body>
 </html>
 

@@ -27,18 +27,27 @@
 	
 	
 	$nat = ajoutSelection();
-	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A mettre dans la fonction remplir option au debut
+	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A voir pour mettre dans la fonction remplir option au debut
 	$nbLignes = LireDonnees1($conn,$req,$tab);
+
+	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
+	if(isset($_POST['verifier'])){
+
+		//verfication du bon remplissage des champs obligatoire :
+		if (empty($_POST['nom']) || empty($_POST['nomAbrege']) || $_POST['nationalite'] == ''){
+			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
+		}
+	}
 
 	
 	
 
 	//FUNCTION :
 	
-	function afficherTexteFinal(){
-		global $textFinal;
-		echo $textFinal;
-	}
+	// function afficherTexteFinal(){
+	// 	global $textFinal;
+	// 	echo $textFinal;
+	// }
 
 	//verifier que le coureur qu'on veut entrer n'existe pas deja :
 	// function nonExistant() {
@@ -131,5 +140,8 @@
 	global $dateCreation;
 	echo $dateCreation;
 	}
-	include ("../html/ajoutSponsor.html");
+	if (empty($GET)) {
+		include ("../html/ajoutSponsor.html");
+	}
+
 ?>
