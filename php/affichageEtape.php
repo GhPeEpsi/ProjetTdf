@@ -3,17 +3,17 @@
 	include ("util_affichage.php");
 	include ("../html/navBar.html");
 
-	/*Serveur UNICAEN
+	/*Serveur UNICAEN*/
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
 	$db = fabriquerChaineConnexion();
 	$conn = OuvrirConnexion($db,$login,$mdp);
-	*/
+	
 	/*Bastien Localhost*/
-	$login = 'copie_tdf';
+	/*$login = 'copie_tdf';
 	$mdp = 'copie_tdf';
 	$db = fabriquerChaineConnexion2();
-	$conn = OuvrirConnexion($db,$login,$mdp);
+	$conn = OuvrirConnexion($db,$login,$mdp);*/
 	
 	//PROGRAMME PRINCIPAL :
 	$annee;
