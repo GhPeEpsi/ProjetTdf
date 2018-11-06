@@ -46,7 +46,7 @@
 	function getPrenomCoureur($conn) {
 		$req = 'SELECT prenom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
-		echo utf8_encode($tab[0]['PRENOM']);
+		echo $tab[0]['PRENOM'];
 	}
 
 	// récupération du pays du coureur
