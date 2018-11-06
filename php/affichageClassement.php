@@ -53,8 +53,6 @@
 			$nbLignes = LireDonneesPreparees($curLigne, $tabRes);
 
 			//boucle d'affichage :
-			$j =0; //parcour du tableau de resultat
-			//afficheLigneTableau($tabNb, $style);
 			for ($i = 0; $i < $nbLignes; $i++) {
 				afficheLigneTableau($tabRes, $i, $style);
 			}
@@ -70,7 +68,7 @@
 		echo '<tr '.$style.'>
 			<th '.$style.'>'.$tab[$i]['RANG'].'</th>
 			<th '.$style.'>'.$tab[$i]['CODE_PAYS'].'</th>
-			<th '.$style.'>'.utf8_encode($tab[0]['NOM']). ' ' . utf8_encode($tab[0]['PRENOM']).'</th>
+			<th '.$style.'>'.utf8_encode($tab[$i]['NOM']). ' ' . utf8_encode($tab[$i]['PRENOM']).'</th>
 			<th '.$style.'>'.$tab[$i]['TEMPS'].'</th>
 			</tr>';
 	}
