@@ -42,7 +42,7 @@ function supprimeCaracteresSpeciaux($str, $encoding='UTF-8') {
 
 
 function testNom($nom, $regex) {
-    if (preg_match($regex, $nom) && !(preg_match("#--|''#", $nom))) {
+    if (preg_match($regex, $nom) && !(preg_match("#---|''#", $nom)) && (preg_match('#(--)?#', $nom))){
         //retire caractères interdits et convertit en majuscules
         $nom = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($nom, FALSE)));
         //echo $nom;

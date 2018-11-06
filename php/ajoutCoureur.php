@@ -1,5 +1,9 @@
 ﻿<?php
 	
+	if(empty($_GET)) {
+		include ("../html/navBar.html");
+	}
+
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
@@ -295,7 +299,7 @@
 
 	//insertion des 
 	if(empty($_GET)){
-		include ("../html/navBar.html");
+		
 		include ("../html/ajoutCoureur.html");
 	}
 ?>

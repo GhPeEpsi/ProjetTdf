@@ -51,6 +51,7 @@
 
 	// récupération du pays du coureur
 	function getPaysCoureur($conn) {
+		echo 'toto';
 		$req = 'SELECT tdf_nation.nom FROM tdf_nation JOIN tdf_app_nation USING (code_cio) WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		return utf8_encode($tab[0]['NOM']);
