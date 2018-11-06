@@ -64,7 +64,5 @@
 	}
 		
 	echo "</table>";
-
-	include("../html/affichageVille.html")
 	
 ?>
