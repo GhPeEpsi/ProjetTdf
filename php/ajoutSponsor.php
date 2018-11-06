@@ -29,7 +29,7 @@
 
 	if(!empty($_POST['nom'])){
 		$nom = $_POST['nom'];
-		$nom = testNom($nom, $regex);
+		$nom = testNomSponsor($nom, $regex);
 	}
 
 	if(!empty($_POST['nomAbrege'])){
