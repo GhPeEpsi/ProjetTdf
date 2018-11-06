@@ -4,11 +4,17 @@
 	include ("../html/navBar.html");
 
 	/*Serveur UNICAEN*/
-	$login = 'ETU2_49';
-	$mdp = 'ETU2_49';
-	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	// $login = 'ETU2_49';
+	// $mdp = 'ETU2_49';
+	// $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion();
-	$conn = OuvrirConnexion($db,$login,$mdp);
+	// $conn = OuvrirConnexion($db,$login,$mdp);
+	
+	
+	$db_username = 'projet_php';
+	$db_password = 'projet_php';
+	$db = fabriquerChaineConnexion2();
+	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
     //PROGRAMME PRINCIPAL :
 	$annee;
@@ -50,8 +56,7 @@
 			$j =0; //parcour du tableau de resultat
 			//afficheLigneTableau($tabNb, $style);
 			for ($i = 0; $i < $nbLignes; $i++) {
-					afficheLigneTableau($tabRes, $i, $style);
-				}
+				afficheLigneTableau($tabRes, $i, $style);
 			}
 		}
 		else {
