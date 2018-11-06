@@ -5,14 +5,7 @@
 		<title>Information d'un tour de france étape par étape</title>
 	</head>
 	<body>
-		<form action= "" method="post" enctype="multipart/form-data">
-			<fieldset><legend><b>Pour quelle année voulez vous consulter des informations ?</b></legend><br/>
-				<select name="annee" style="width:400px;">
-					<?php listeAnnee(); ?>
-				</select>
-				<input type="submit" name="verifier" value="Vérifier">
-			</fieldset><br/>
-		</form>
+		<?php include('choixAnnee.php');?>
 		
 		<?php affichage(); ?>
 	</body>

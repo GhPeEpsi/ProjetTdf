@@ -241,10 +241,14 @@ select count(*) from tdf_coureur
 join tdf_app_nation using (n_coureur)
 where nom = '.$_POST['nomCoureur'].'
 and prenom = '.$_POST['prenomCoureur'].'
-and code_cio = '.$_POST['nationCoureur']
+and code_cio = '.$_POST['nationCoureur']';
 
 
-
+select co.nom as "Nom du Coureur", co.prenom as "Prenom du Coureur", sp.nom as "Nom du Sponsor" from tdf_coureur co
+join tdf_parti_coureur using (n_coureur)
+join tdf_sponsor sp using (n_equipe, n_sponsor)
+where annee = 2018
+order by sp.nom;
 
 
 

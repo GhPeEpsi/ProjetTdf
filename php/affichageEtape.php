@@ -42,7 +42,7 @@
 	
 	
 	//FONCTIONS DE TRAITEMENT :
-	//Récupération de la liste des années
+	/*//Récupération de la liste des années
 	function listeAnnee() {
 		global $conn, $annee;
 		$req = "select annee from tdf_annee order by annee";
@@ -58,7 +58,7 @@
 			else
 				echo '<option value="'.$val.'">'.$val.'</option>';
 		}
-	}
+	}*/
 	
 	//affichage du tableau :
 	function affichage() {
