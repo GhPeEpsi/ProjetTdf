@@ -12,19 +12,10 @@
 	include ("util_affichage.php");
 	include ("../html/navBar.html");
 
-	$login = 'ETU2_49';
-	$mdp = 'ETU2_49';
-	$db = fabriquerChaineConnexion();	
-
-	// $login = 'projet_php';
-	// $mdp = 'projet_php';
-	// $db = fabriquerChaineConnexion2();
-
-	// $login = 'copie_tdf';
-	// $mdp = 'copie_tdf';
-	// $db = fabriquerChaineConnexion2();
-
-	$conn = OuvrirConnexion($db,$login,$mdp);
+	 $db_username = 'ETU2_49';
+	 $db_password = 'ETU2_49';
+	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 $conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	$req = 'SELECT * FROM tdf_coureur order by nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
@@ -41,7 +32,6 @@
 
 	function listeCoureurs($tab,$nbLignes) {
 		for ($i=0; $i<$nbLignes; $i++) {
-			$tab[$i]["PRENOM"] = utf8_encode($tab[$i]["PRENOM"]);
 			echo '<option value="'.$tab[$i]["N_COUREUR"].'">'.$tab[$i]['NOM'].' '.$tab[$i]['PRENOM'];
 			echo '</option>';
 		}

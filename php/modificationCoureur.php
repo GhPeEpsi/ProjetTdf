@@ -6,7 +6,8 @@
 
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
-	$db = fabriquerChaineConnexion();
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	// $db = fabriquerChaineConnexion();
 
 	// $login = 'copie_tdf';
 	// $mdp = 'copie_tdf';
@@ -50,6 +51,7 @@
 
 	// récupération du pays du coureur
 	function getPaysCoureur($conn) {
+		echo 'toto';
 		$req = 'SELECT tdf_nation.nom FROM tdf_nation JOIN tdf_app_nation USING (code_cio) WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		return utf8_encode($tab[0]['NOM']);
@@ -166,14 +168,14 @@
 	if(isset($_POST['envoyer'])) {
 		// Même si on ne peut pas modifier numCoureur, si jamais il venait à être vide, il ne faut pas soumettre les informations.
 		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
-			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires') </script>";
+			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires'); </script>";
 		} else {
 			if(!empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
 				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur'])) && !empty(testDate($_POST['anneePremiereCoureur']))) {
 					if ($_POST['anneePremiereCoureur'] >= $_POST['anneeNaissanceCoureur']) {
 						toutInserer();
 					} else {
-						echo "<script> alert('La première année de participation doit être supérieure ou égale à l'année de naissance') </script>";
+						echo "<script> alert('La première année de participation doit être supérieure ou égale à l\'année de naissance'); </script>";
 					}
 				}
 			} else if (empty($_POST['anneeNaissanceCoureur']) && empty($_POST['anneePremiereCoureur'])) {

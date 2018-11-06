@@ -6,7 +6,8 @@
 	/*Serveur UNICAEN*/
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
-	$db = fabriquerChaineConnexion();
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	// $db = fabriquerChaineConnexion();
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	
 	/*Bastien Localhost*/

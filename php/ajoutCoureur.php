@@ -1,19 +1,24 @@
 ﻿<?php
 	
+	if(empty($_GET)) {
+		include ("../html/navBar.html");
+	}
+
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
 
 	$texteFinal = "";
 	// connexion à la base
-	$db_username = 'ETU2_49';
-	$db_password = 'ETU2_49';
-	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 $db_username = 'ETU2_49';
+	 $db_password = 'ETU2_49';
+	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+
 
 	//connection de Jérémy qui resté là après la merge
-	//$db_username = 'copie_tdf_copie';
-	//$db_password = 'copie_tdf_copie';
-	//$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	// $db_username = 'copie_tdf_copie';
+	// $db_password = 'copie_tdf_copie';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 
 
@@ -292,6 +297,9 @@
 		echo $depuisQuand;
 	}
 
-	include ("../html/navBar.html");
-	include ("../html/ajoutCoureur.html");
+	//insertion des 
+	if(empty($_GET)){
+		
+		include ("../html/ajoutCoureur.html");
+	}
 ?>
