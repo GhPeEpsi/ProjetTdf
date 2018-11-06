@@ -51,6 +51,8 @@
 			
 			//résultat :
 			$nbLignes = LireDonneesPreparees($curLigne, $tabRes);
+			echo '<pre>';
+			print_r($tabRes);
 
 			//boucle d'affichage :
 			$j =0; //parcour du tableau de resultat
