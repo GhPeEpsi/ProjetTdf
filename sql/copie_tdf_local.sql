@@ -251,6 +251,8 @@ where annee = 2018
 order by sp.nom;
 
 
+select distinct tdf_nation.nom from tdf_nation 
+join tdf_sponsor using (code_cio) order by nom;
 
 
 
