@@ -286,6 +286,13 @@ select distinct Nom from
 )
 order by nom;
 
+
+--ajout sponsor :
+select * from tdf_sponsor;
+Insert into tdf_sponsor(n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
+values((select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
+
+
 ----------------------------- a lancer une fois révisions terminées
 drop table ten_match;
 drop table ten_joueur;
