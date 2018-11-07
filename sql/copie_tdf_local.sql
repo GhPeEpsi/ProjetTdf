@@ -292,7 +292,7 @@ select * from tdf_sponsor order by n_equipe, annee_sponsor desc;
 Insert into tdf_sponsor(n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
 values((select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
 
-select * from 
+select * from ;
 
 
 select * from tdf_classements_generaux;
