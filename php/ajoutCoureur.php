@@ -27,18 +27,18 @@
 	//$db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
-	//récupérer seulement l'annee de la date entrée
-	if(isset($_GET['dateN'])){
+	//récupérer l'annee entrée
+	if(!empty($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
 		echo $dateN;
 	}
 
-	if(isset($_POST['Nom'])){
+	if(!empty($_POST['Nom'])){
 		$nom = $_POST['Nom'];
 		$nom = testNom($nom, $regex);
 	}
 
-	if(isset($_POST['prenom'])){
+	if(!empty($_POST['prenom'])){
 		$prenom = $_POST['prenom'];
 		$prenom = testPrenom($prenom, $regex);
 	}

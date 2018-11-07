@@ -1,5 +1,7 @@
 ﻿<?php
-	include ("../html/navBar.html");
+	if(empty($_GET)) {
+		include ("../html/navBar.html");
+	}
 	include ("pdo_oracle.php");
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
@@ -12,20 +14,43 @@
 
 
 	//connection de Jérémy qui resté là après la merge
-	$db_username = 'copie_tdf_copie';
-	$db_password = 'copie_tdf_copie';
-	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	// $db_username = 'copie_tdf_copie';
+	// $db_password = 'copie_tdf_copie';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 
 
-	// $db_username = 'projet_php';
-	// $db_password = 'projet_php';
-	// $db = fabriquerChaineConnexion2();
+	$db_username = 'projet_php';
+	$db_password = 'projet_php';
+	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//traitement :
 	
-	
+	if (isset($_GET['nom'])) {
+		$nom = testNomSponsor($_GET['nom']);
+		if($nom != NULL) {
+			echo substr($nom, 0, 3);
+		}
+	}
+
+	if(!empty($_POST['nom'])){
+		$nom = $_POST['nom'];
+		$nom = testNomSponsor($nom, $regex);
+	}
+
+	if(!empty($_POST['nomAbrege'])){
+		$nomAbrege = $_POST['nomAbrege'];
+	}
+
+	// if(!empty($_POST['nom'])){
+	// 	$nom = $_POST['nom'];
+	// 	$nom = testNomSponsor($nom, $regex);
+	// 	$temporaire = $_POST['nomAbrege'];
+	// 	$nomAbrege = substr($nom, 0, 3);
+	// 	echo $nomAbrege;
+	// }
+
 	$nat = ajoutSelection();
 	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A voir pour mettre dans la fonction remplir option au debut
 	$nbLignes = LireDonnees1($conn,$req,$tab);
@@ -131,14 +156,14 @@
 	echo $nom;
 	}
 
-	function afficherNomAbrege(){
-	global $nomAbrege;
-	echo $nomAbrege;
-	}
-
 	function afficherDateC(){
 	global $dateCreation;
 	echo $dateCreation;
+	}
+
+	function afficherNomAbrege(){
+		global $nomAbrege;
+		echo $nomAbrege;
 	}
 	if (empty($GET)) {
 		include ("../html/ajoutSponsor.html");
