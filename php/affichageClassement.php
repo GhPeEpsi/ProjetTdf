@@ -48,7 +48,7 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 				<th $style>Rang</th>
 				<th $style>Nation</th>
 				<th $style>Coureur</th>
-				<th $style>Temps(en s)</th>
+				<th $style>Temps</th>
 			</tr>";
 
 			//boucle d'affichage :
