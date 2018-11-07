@@ -25,7 +25,9 @@
 	}
 
 	//REQUETE :
-	$reqLigne = 'select rang, code_pays, nom, prenom, temps from tdf_classements_generaux where annee = :annee order by rang';
+	$reqLigne = 'select distinct rang, code_pays, nom, prenom, temps  from tdf_classements_generaux join
+tdf_parti_coureur 
+using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R\'order by rang';
 	$curLigne = preparerRequete($conn,$reqLigne);
     
     //affichage du tableau :
@@ -41,7 +43,7 @@
 				<th $style>Rang</th>
 				<th $style>Nation</th>
 				<th $style>Coureur</th>
-				<th $style>Temps</th>
+				<th $style>Temps(en s)</th>
 			</tr>";
 		
 		//affichage des données si une annee est entrée :
@@ -69,7 +71,7 @@
 		echo '<tr '.$style.'>
 			<th '.$style.'>'.$tab['RANG'].'</th>
 			<th '.$style.'>'.$tab['CODE_PAYS'].'</th>
-			<th '.$style.'>'.utf8_encode($tab['NOM']). ' ' . utf8_encode($tab['PRENOM']).'</th>
+			<th '.$style.'>'.$tab['NOM']. ' ' .$tab['PRENOM'].'</th>
 			<th '.$style.'>'.$tab['TEMPS'].'</th>
 			</tr>';
 	}
