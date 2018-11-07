@@ -22,7 +22,6 @@
 - ajoutCoureur(l.155) : Le coureur existe déjà*,* veuillez [...] le prénom* [...]
 - ajoutCoureur(l.189) : Le coureur existe déjà*,* veuillez [...] le prénom* [...]
 - ajoutSponsor(l.70 à 114) : Supprimer le contenu (inutile)
-- modificationCoureur(l.157) : [...] les mêmes* nom, prénom* [...]
 - supprimerCoureur(l.39) : ***Vous ne pouvez pas supprimer de coureur pour le moment. Chaque coureur a participé à au moins 1 Tour de France***
 - supprimerCoureur(l.69) : Coureur bien supprimé* de la base
 - verificationsForm(l.60) : [...] caractères interdits* !
