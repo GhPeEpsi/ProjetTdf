@@ -8,9 +8,9 @@
 
 	$texteFinal = "";
 	// connexion à la base
-	 //$db_username = 'ETU2_49';
-	 // $db_password = 'ETU2_49';
-	 // $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 $db_username = 'ETU2_49';
+	 $db_password = 'ETU2_49';
+	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 
 	//connection de Jérémy qui resté là après la merge
@@ -20,9 +20,9 @@
 	//$db = fabriquerChaineConnexion();
 
 
-	$db_username = 'projet_php';
-	$db_password = 'projet_php';
-	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	// $db_username = 'copie_tdf';
+	// $db_password = 'copie_tdf';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//traitement :
@@ -112,6 +112,25 @@
 	// 	}
 	// 	echo "false";
 	// }
+	
+	function remplirDernierSponsor() {
+		global $conn;
+		$req = 'select n_equipe, n_sponsor, nom, na_sponsor, code_cio,annee_sponsor 
+				from tdf_sponsor where (n_equipe, n_sponsor) in
+				(
+					select n_equipe, max(n_sponsor)
+					from tdf_sponsor
+					group by n_equipe
+				)
+				order by n_equipe';
+		
+		$nb = LireDonnees1($conn, $req, $tab);
+		
+		foreach ($tab as $sponsor) {
+			echo '<option value='. $sponsor['N_EQUIPE'] .'>'. $sponsor['NOM'] .'</option>';
+		}
+			
+	}
 
 	function recupAnnee(){
 		if(!empty($_POST['dateC'])){
