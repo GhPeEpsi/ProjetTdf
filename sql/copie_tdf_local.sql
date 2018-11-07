@@ -292,6 +292,16 @@ select * from tdf_sponsor order by n_equipe, annee_sponsor desc;
 Insert into tdf_sponsor(n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
 values((select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
 
+
+select n_equipe, n_sponsor, nom, na_sponsor, code_cio,annee_sponsor 
+from tdf_sponsor where (n_equipe, n_sponsor) in
+(
+    select n_equipe, max(n_sponsor)
+    from tdf_sponsor
+    group by n_equipe
+)
+order by n_equipe;
+
 select * from ;
 
 

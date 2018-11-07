@@ -4,17 +4,17 @@
     include ("../html/navBar.html");
 
     /* Serveur UNICAEN */
-    // $login = 'ETU2_49';
-    // $mdp = 'ETU2_49';
-    // $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
-    // $db = fabriquerChaineConnexion();
-    // $conn = OuvrirConnexion($db,$login,$mdp);
+    $login = 'ETU2_49';
+    $mdp = 'ETU2_49';
+    $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+    $db = fabriquerChaineConnexion();
+    $conn = OuvrirConnexion($db,$login,$mdp);
 
     /* Localhost Noé */
-    $login = 'copie_tdf_copie';
-    $mdp = 'copie_tdf_copie';
-    $db = fabriquerChaineConnexion2();
-    $conn = OuvrirConnexion($db,$login,$mdp);
+    // $login = 'copie_tdf_copie';
+    // $mdp = 'copie_tdf_copie';
+    // $db = fabriquerChaineConnexion2();
+    // $conn = OuvrirConnexion($db,$login,$mdp);
 
     //PROGRAMME PRINCIPAL :
     $annee;

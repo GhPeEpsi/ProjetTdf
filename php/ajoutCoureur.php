@@ -10,15 +10,15 @@
 
 	$texteFinal = "";
 	// connexion à la base
-	 $db_username = 'ETU2_49';
-	 $db_password = 'ETU2_49';
-	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 // $db_username = 'ETU2_49';
+	 // $db_password = 'ETU2_49';
+	 // $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 
 	//connection de Jérémy qui resté là après la merge
-	// $db_username = 'copie_tdf_copie';
-	// $db_password = 'copie_tdf_copie';
-	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	$db_username = 'copie_tdf_copie';
+	$db_password = 'copie_tdf_copie';
+	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 
 
@@ -45,9 +45,9 @@
 
 	$nat = ajoutSelection();
 
-	if(!empty($_POST['depuisQ'])){
-		$depuisQuand = $_POST['depuisQ'];
-	}
+	// if(!empty($_POST['depuisQ'])){
+	// 	$depuisQuand = $_POST['depuisQ'];
+	// }
 
 	if(!empty($_POST['dateN'])){
 		$dateNaissance = $_POST['dateN'];
@@ -119,7 +119,7 @@
 						$textFinal = $texteFinal."<br> Vous n'avez pas entré une date valide";
 					}else{
 						$annee_naissance = recupAnnee();
-						$depuisQuand = intval($_POST['depuisQ']);
+						$depuisQuand = $annee_naissance;
 
 						if($depuisQuand > $annee_naissance){
 							$textFinal = $texteFinal."<br> Vérifier que l'année entrée dans \"depuis Quand\" est inférieure à l'année de naissance";
@@ -156,6 +156,8 @@
 							}
 						}
 					}
+				}elseif (empty($_POST['dateN']) && !empty($_POST['depuisQ'])) {
+						$textFinal = $texteFinal."<br> Vous devez entrer une année de naissance si vous remplissez depuisQ";
 				}else{
 					$annee_naissance = recupAnnee();
 					$depuisQuand = null;
@@ -270,7 +272,7 @@
 		if (!empty($_POST)) {
 			if (isset($_POST['nationalite'])) {
 				$nat = $_POST['nationalite'];
-				if($nat != "Nationalité"){
+				if($nat != ""){
 					return $nat;
 				}
 			}
