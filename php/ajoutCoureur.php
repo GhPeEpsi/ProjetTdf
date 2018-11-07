@@ -58,6 +58,7 @@
 	
 	if (isset($_POST['verifier1'])) {
 		include "validerAjoutCoureur.php";
+		// $textFinal = $textFinal.'<input type="submit" name="verifier" value="Valider" >';
 	}
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if(isset($_POST['verifier'])){
@@ -198,7 +199,12 @@
 		}
 	}
 
-	//FUNCTION :
+	//FUNCTION :	
+	
+	function afficherTextFinal1(){
+		global $textFinal1;
+		echo $textFinal1;
+	}	
 	
 	function afficherTextFinal(){
 		global $textFinal;

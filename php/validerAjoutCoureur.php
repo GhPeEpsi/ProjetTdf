@@ -79,11 +79,6 @@
 						$textFinal1 = $textFinal1."<br> Vous devez entrer une année de naissance si vous remplissez depuisQ";
 					}
 				}
-			}
-
-	function afficherTextFinal1(){
-		global $textFinal1;
-		echo $textFinal1;
-	}		
+			}	
 
 ?>
