@@ -347,7 +347,9 @@ select * from tdf_coureur;
 order by n_coureur desc;
 
 
-
+select count(*) from tdf_coureur
+join TDF_PARTI_COUREUR using (n_coureur)
+where n_coureur = 1584;
 
 ----------------------------- a lancer une fois révisions terminées
 drop table ten_match;
