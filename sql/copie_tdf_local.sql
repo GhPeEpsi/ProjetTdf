@@ -290,7 +290,7 @@ order by nom;
 --ajout sponsor :
 select * 
 from tdf_sponsor 
-where n_equipe= 7
+where nom= 'AUBER 93939393'
 order by annee_sponsor desc;
 
 
