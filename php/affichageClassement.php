@@ -41,7 +41,7 @@
 				<th $style>Rang</th>
 				<th $style>Nation</th>
 				<th $style>Coureur</th>
-				<th $style>Temps</th>
+				<th $style>Temps(en s)</th>
 			</tr>";
 		
 		//affichage des données si une annee est entrée :
