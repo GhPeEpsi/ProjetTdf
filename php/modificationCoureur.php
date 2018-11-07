@@ -168,9 +168,19 @@
 				and prenom = \''.testPrenom($_POST['prenomCoureur'], $regex).'\'';
 				
 		LireDonnees1($conn, $req, $tab);
+		
+		$req1 = 'select nom, prenom from tdf_coureur where n_coureur = '.$_GET['numCoureur'];
+		LireDonnees1($conn, $req1, $tab1);
+		
+		if (($tab1[0]['NOM'] == $_POST['nomCoureur']) && ($tab1[0]['PRENOM'] == $_POST['prenomCoureur'])) {
+			$nomPrenomOk = true;
+		}
+		else {
+			$nomPrenomOk = false;
+		}
 
 		// if (($_POST['nomCoureur'] != $nomInchangeable) || ($_POST['nationCoureur'] != $paysInchangeable) || ($_POST['prenomCoureur'] != $prenomInchangeable)) {
-			if ($tab[0]['NB'] != 0) {
+			if (($tab[0]['NB'] != 0) && !$nomPrenomOk) {
 				echo '<script>alert(\'Un coureur ne peut pas posséder les mêmes nom et prénom qu\'un coureur qui existe déjà\');</script>';
 			} else {
 				setNomCoureur($conn, $regex);
@@ -184,7 +194,7 @@
 		// }
 	}
 
-
+		
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 	/* -----------------------------------------Vérification du bon remplissage des champs--------------------------------------------- */
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
