@@ -6,7 +6,7 @@
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
 
-	$texteFinal = "";
+	$textFinal = "";
 	// connexion à la base
 	 $db_username = 'ETU2_49';
 	 $db_password = 'ETU2_49';
@@ -24,9 +24,8 @@
 	// $db_password = 'copie_tdf';
 	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
-
-	//traitement :
 	
+	//traitement :
 	if (isset($_GET['nom'])) {
 		$nom = testNomSponsor($_GET['nom']);
 		if($nom != NULL) {
@@ -45,85 +44,79 @@
 	$nat = ajoutSelection();
 	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A voir pour mettre dans la fonction remplir option au debut
 	$nbLignes = LireDonnees1($conn,$req,$tab);
+	
+	$reqAjout = 'Insert into tdf_sponsor(n_equipe, n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
+				values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee)';
+	
+	$curAjout = preparerRequete($conn,$reqAjout);
+	
+	
 
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if(isset($_POST['verifier'])){
 
 		//verfication du bon remplissage des champs obligatoire :
+		//Si on oublie les un des champs et ca passe pas :
 		if (empty($_POST['nom']) || empty($_POST['nomAbrege']) || $_POST['nationalite'] == ''){
-			$textFinal = $texteFinal."<br> Vous n'avez pastout rempli";
-		}else{
-			if(!empty($_POST['nom'])){
+			$textFinal = $textFinal."<br> Vous n'avez pastout rempli";
+		}else{ //sinon on récupére les infos
+			if(!empty($_POST['nom'])){ //Test et modifications du nom
 				$nom = $_POST['nom'];
 				$nom = testNomSponsor($nom, $regex);
 			}
-			if(!empty($_POST['nomAbrege'])){
+			if(!empty($_POST['nomAbrege'])){ //Test et modifications du nom abregé
 				$nomAbrege = $_POST['nomAbrege'];
 				$nomAbrege = testNomAbrege($nomAbrege, $regex);
 			}
 
-			if(!empty($_POST['dateC'])){
+			if(!empty($_POST['dateC'])){ //Test et modifications de la date
 				$verifInt = $_POST['dateC'];
 				if(!ctype_digit($verifInt)|| $verifInt != date('Y')){
-						$textFinal = $texteFinal."<br> Vous n'avez pas entré une année valide";
-					}else{
-						$dateC = recupAnnee();
-					}
+					$textFinal = $textFinal."<br> Vous n'avez pas entré une année valide";
+				}else{
+					$dateC = recupAnnee();
+				}
+			}
+			
+			if ($textFinal == "") {
+				enregistrementDonnées();
 			}
 		}
 	}
 
+	//print_r($_POST);
+	//récupération du numéro de sponsor :
+	$numSpon = 'null';
+	if (isset($_POST['sponsor'])) {
+		$numSpon = $_POST['sponsor'];
+	}
+	
 	
 	
 
 	//FUNCTION :
+	function enregistrementDonnées() {
+		global $curAjout, $dateC, $nomAbrege, $nom, $numSpon;
+		
+		if ($numSpon == "null") {
+			echo "c'est la merde";
+		}
+		/*
+		ajouterParam($curAjout,':date',$dateC);
+		ajouterParam($curAjout,':nas',$nomAbrege);
+		ajouterParam($curAjout,':nom',$nom);
+		
+		majDonneesPreparees($curAjout);
+		*/
+	}
 	
 	function afficherTexteFinal(){
 		global $textFinal;
 		echo $textFinal;
 	}
-
-	//verifier que le coureur qu'on veut entrer n'existe pas deja :
-	// function nonExistant() {
-	// 	global $conn, $nom, $prenom, $nat;
-
-	// 	$req = 'select count(*) as nb from tdf_coureur 
-	// 	join tdf_app_nation using (n_coureur)
-	// 	where nom = \''.$nom.'\'
-	// 	and prenom = \''.$prenom.'\'
-	// 	and code_cio = \''.$nat.'\'';
-
-	// 	LireDonnees1($conn, $req, $tab);
-
-	// 	if ($tab[0]['NB'] == 0) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
-	//permet d'aller voir les infos d'un coureur qui vient d'être entré :
-	// if(isset($_POST['regarder'])){
-	// 	if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
-	// 		$sql3 = "SELECT max(n_coureur) as max from tdf_coureur";
-	// 		LireDonnees1($conn,$sql3,$tab3);
-	// 		header ("location:affichageCoureur.php?numCoureur=".$tab3[0]['MAX']);
-	// 	}
-	// }
-
-	// function droitPassage() {
-	// 	if (isset($_POST['verifier']) && isset($_POST['droitPassage']) && ($_POST['droitPassage']=="false")) {
-	// 		echo "true";
-	// 		return;
-	// 	}
-	// 	else if (isset($_POST['droitPassage']) && $_POST['droitPassage']=="true") {
-	// 		echo "true";
-	// 		return;
-	// 	}
-	// 	echo "false";
-	// }
 	
 	function remplirDernierSponsor() {
-		global $conn;
+		global $conn, $numSpon;
 		$req = 'select n_equipe, n_sponsor, nom, na_sponsor, code_cio,annee_sponsor 
 				from tdf_sponsor where (n_equipe, n_sponsor) in
 				(
@@ -138,7 +131,10 @@
 		echo '<option value="null">Choisir un sponsor a mettre à jour</option>';
 		
 		foreach ($tab as $sponsor) {
-			echo '<option value="'. $sponsor['N_EQUIPE'] .'">'. $sponsor['NOM'] .'</option>';
+			if (($numSpon == 'null') || ($numSpon != $sponsor['N_EQUIPE']))
+				echo '<option value="'. $sponsor['N_EQUIPE'] .'">'. $sponsor['NOM'] .'</option>';
+			else
+				echo '<option value="'. $sponsor['N_EQUIPE'] .'" selected>'. $sponsor['NOM'] .'</option>';
 		}
 			
 	}
@@ -149,6 +145,12 @@
 			return intval($dateC);
 		}
 		return null;
+	}
+	
+	function peutRemplir() {
+		if (!isset($_POST['verifier']) || (isset($_POST['verifier']) && $_POST['sponsor']!= 'null')) {
+			echo 'readonly=""';
+		}
 	}
 
 

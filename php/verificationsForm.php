@@ -132,7 +132,7 @@ function testNomSponsor($sponsor) {
 }
 
 function testNomAbrege($sponsor) {
-    $regexSp = "#^.{,3}$#";
+    $regexSp = "#^.{0,}$#";
     if (preg_match($regexSp, $sponsor)){
         //retire caractères interdits et convertit en majuscules
         $sponsor = strtoupper(supprimeAccents($sponsor, FALSE));
