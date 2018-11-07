@@ -321,6 +321,34 @@ select * from ;
 
 
 select * from tdf_classements_generaux;
+
+
+--recupe des infos sur un coureur :
+select * from tdf_coureur;
+(
+    select n_coureur, tdf_coureur.nom as Nom, prenom, annee_naissance, tdf_nation.nom as Pays, count(*) as "Nb Participation" from tdf_coureur
+    join tdf_app_nation using (n_coureur)
+    join tdf_nation using (code_cio)
+    join tdf_parti_coureur using (n_coureur)
+    group by n_coureur, tdf_coureur.nom, prenom, annee_naissance, tdf_nation.nom
+)union(
+    (
+        select n_coureur, tdf_coureur.nom as Nom, prenom, annee_naissance, tdf_nation.nom as Pays, 0 as "Nb Participation" from tdf_coureur
+        join tdf_app_nation using (n_coureur)
+        join tdf_nation using (code_cio)
+    )minus(
+        select n_coureur, tdf_coureur.nom as Nom, prenom, annee_naissance, tdf_nation.nom as Pays, 0 as "Nb Participation" from tdf_coureur
+        join tdf_app_nation using (n_coureur)
+        join tdf_nation using (code_cio)
+        join tdf_parti_coureur using (n_coureur)
+        group by n_coureur, tdf_coureur.nom, prenom, annee_naissance, tdf_nation.nom
+    )
+)
+order by n_coureur desc;
+
+
+
+
 ----------------------------- a lancer une fois révisions terminées
 drop table ten_match;
 drop table ten_joueur;

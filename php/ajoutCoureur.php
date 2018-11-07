@@ -22,9 +22,9 @@
 	//$db = fabriquerChaineConnexion();
 
 
-	//$db_username = 'copie_tdf';
-	//$db_password = 'copie_tdf';
-	//$db = fabriquerChaineConnexion2();
+	$db_username = 'projet_php';
+	$db_password = 'projet_php';
+	$db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//récupérer l'annee entrée

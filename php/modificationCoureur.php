@@ -4,14 +4,14 @@
 	include ("verificationsForm.php");
 	
 
-	$login = 'ETU2_49';
-	$mdp = 'ETU2_49';
-	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	// $login = 'ETU2_49';
+	// $mdp = 'ETU2_49';
+	// $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion();
 
-	// $login = 'copie_tdf';
-	// $mdp = 'copie_tdf';
-	// $db = fabriquerChaineConnexion2();
+	$login = 'projet_php';
+	$mdp = 'projet_php';
+	$db = fabriquerChaineConnexion2();
 
 	//$login = 'copie_tdf_copie';
 	//$mdp = 'copie_tdf_copie';
@@ -21,6 +21,11 @@
 	
 	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
+	
+	if (!isset($_GET['numCoureur']) || empty($_GET['numCoureur'])) {
+		echo 'on ne touche pas à l\'url svp !';
+		return;
+	}
 
 
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
