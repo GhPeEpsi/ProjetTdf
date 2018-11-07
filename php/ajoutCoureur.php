@@ -22,9 +22,9 @@
 	//$db = fabriquerChaineConnexion();
 
 
-	$db_username = 'projet_php';
-	$db_password = 'projet_php';
-	$db = fabriquerChaineConnexion2();
+	// $db_username = 'projet_php';
+	// $db_password = 'projet_php';
+	// $db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//récupérer l'annee entrée
@@ -217,9 +217,9 @@
 		global $conn, $nom, $prenom, $nat;
 		
 		$req = 'select count(*) as nb from tdf_coureur
-		where nom = \''.$nom.'\'
-		and prenom = \''.$prenom.'\'';
-
+		where nom = '.$conn->quote($nom).'
+		and prenom = '.$conn->quote($prenom);
+		
 		LireDonnees1($conn, $req, $tab);
 
 		if ($tab[0]['NB'] == 0) {

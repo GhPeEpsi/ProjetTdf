@@ -11,17 +11,17 @@
 
 
 	//Serveur UNICAEN
-	// $login = 'ETU2_49';
-	// $mdp = 'ETU2_49';
-	// $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
-	// $conn = OuvrirConnexion($db,$login,$mdp);
+	$login = 'ETU2_49';
+	$mdp = 'ETU2_49';
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	$conn = OuvrirConnexion($db,$login,$mdp);
 	
 	//Bastien Localhost
-	$login = 'projet_php';
-	$mdp = 'projet_php';
-	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	// $login = 'projet_php';
+	// $mdp = 'projet_php';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion2();
-	$conn = OuvrirConnexion($db,$login,$mdp);
+	// $conn = OuvrirConnexion($db,$login,$mdp);
 
 
 	if (!empty($_GET['numCoureur'])) {

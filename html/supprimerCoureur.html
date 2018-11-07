@@ -4,16 +4,24 @@
 		<meta charset="utf-8">
 		<title>Supprimer un coureur</title>
 		<script src="../js/choixCoureur.js"></script>
+		<script>
+			function toutCocher2() {
+				var item = document.getElementsByName('aSupprimer[]');
+				for (i=0;i<item.length;i++){
+					item[i].checked = monFormulaire.tout.checked;
+				}
+			}
+		</script>
 	</head>
 	
 	<body>
 		<p>Pour supprimer un coureur il faut que ce dernier n'ai jamais couru à un tour de france !</p>
 		
 		<!-- Affichage des informations du coureur : -->
-		<form method="post" action="">
-		<?php 
-			afficheListe();
-		?>
+		<form method="post" name="monFormulaire"action="">
+		
+		<?php afficheListe(); ?>
+		
 		</form>
 		
 	</body>

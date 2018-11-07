@@ -4,14 +4,14 @@
 	include ("verificationsForm.php");
 	
 
-	// $login = 'ETU2_49';
-	// $mdp = 'ETU2_49';
-	// $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	$login = 'ETU2_49';
+	$mdp = 'ETU2_49';
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion();
 
-	$login = 'projet_php';
-	$mdp = 'projet_php';
-	$db = fabriquerChaineConnexion2();
+	// $login = 'projet_php';
+	// $mdp = 'projet_php';
+	// $db = fabriquerChaineConnexion2();
 
 	//$login = 'copie_tdf_copie';
 	//$mdp = 'copie_tdf_copie';

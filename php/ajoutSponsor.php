@@ -8,9 +8,9 @@
 
 	
 	// connexion à la base
-	 // $db_username = 'ETU2_49';
-	 // $db_password = 'ETU2_49';
-	 // $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 $db_username = 'ETU2_49';
+	 $db_password = 'ETU2_49';
+	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 
 	//connection de Jérémy qui resté là après la merge
@@ -20,9 +20,9 @@
 	//$db = fabriquerChaineConnexion();
 
 
-	 $db_username = 'projet_php';
-	 $db_password = 'projet_php';
-	 $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	 // $db_username = 'projet_php';
+	 // $db_password = 'projet_php';
+	 // $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	
 	//traitement :
