@@ -6,11 +6,11 @@
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
 
-	$textFinal = "";
+	
 	// connexion à la base
-	 $db_username = 'ETU2_49';
-	 $db_password = 'ETU2_49';
-	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 // $db_username = 'ETU2_49';
+	 // $db_password = 'ETU2_49';
+	 // $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 
 	//connection de Jérémy qui resté là après la merge
@@ -20,12 +20,17 @@
 	//$db = fabriquerChaineConnexion();
 
 
-	// $db_username = 'copie_tdf';
-	// $db_password = 'copie_tdf';
-	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	 $db_username = 'projet_php';
+	 $db_password = 'projet_php';
+	 $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	
 	//traitement :
+	//permet de sauvegarder les commentaires et de les afficher à la fin :
+	$textFinal = "";
+	//permet de reremplire ou pas les champs lors de rafraichissement
+	$reaffichage = true;
+	
 	if (isset($_GET['nom'])) {
 		$nom = testNomSponsor($_GET['nom']);
 		if($nom != NULL) {
@@ -41,24 +46,13 @@
 	// 	echo $nomAbrege;
 	// }
 
-	$nat = ajoutSelection();
-	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A voir pour mettre dans la fonction remplir option au debut
-	$nbLignes = LireDonnees1($conn,$req,$tab);
-	
-	$reqAjout = 'Insert into tdf_sponsor(n_equipe, n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
-				values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee)';
-	
-	$curAjout = preparerRequete($conn,$reqAjout);
-	
-	
-
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if(isset($_POST['verifier'])){
 
 		//verfication du bon remplissage des champs obligatoire :
 		//Si on oublie les un des champs et ca passe pas :
 		if (empty($_POST['nom']) || empty($_POST['nomAbrege']) || $_POST['nationalite'] == ''){
-			$textFinal = $textFinal."<br> Vous n'avez pastout rempli";
+			$textFinal = $textFinal."<br> Vous n'avez pas tout rempli";
 		}else{ //sinon on récupére les infos
 			if(!empty($_POST['nom'])){ //Test et modifications du nom
 				$nom = $_POST['nom'];
@@ -74,16 +68,14 @@
 				if(!ctype_digit($verifInt)|| $verifInt != date('Y')){
 					$textFinal = $textFinal."<br> Vous n'avez pas entré une année valide";
 				}else{
-					$dateC = recupAnnee();
+					$annee = recupAnnee();
 				}
 			}
 			
-			if (!empty($_POST['nationalite'])) {
-				$cio = $_POST['nationalite'];
-			}
+			$cio = recupNation();			
 			
 			if (!empty($_POST['sponsor'])) {
-				$numSpon = $_POST['sponsor'];
+				$n_equipe = $_POST['sponsor'];
 			}
 			
 			if ($textFinal == "") {
@@ -97,29 +89,37 @@
 
 	//FUNCTION :
 	function enregistrementDonnées() {
-		global $conn, $curAjout, $dateC, $nomAbrege, $nom, $numSpon,$cio;
+		global $conn, $annee, $nomAbrege, $nom, $n_equipe,$cio, $textFinal, $reaffichage;
 		
+		//vérification de l'absence de sponsor de meme nom code_cio et nom abrégé :
 		$req = 'select count(*) from tdf_sponsor 
-		where na_sponsor = :na
+		where na_sponsor = :nomAbrege
 		and nom = :nom
 		and code_cio = :cio';
 		$cur = preparerRequete($conn,$req);
-		
-		ajouterParam($cur,':na',$nomAbrege);
+		//éxecution
+		ajouterParam($cur,':nomAbrege',$nomAbrege);
 		ajouterParam($cur,':nom',$nom);
 		ajouterParam($cur,':cio',$cio);
 		LireDonneesPreparees($cur, $tab);
 		
+		//requete d'insertion dans la base :
+		$reqAjout = 'Insert into tdf_sponsor(n_equipe, n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
+				values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nom, :nomAbrege, :cio, :annee)';
+		$curAjout = preparerRequete($conn,$reqAjout);
+		
 		//print_r($tab);
 		
 		if ($tab[0]['COUNT(*)'] == 0) {
-			//echo "<h1>$dateC ; $nomAbrege ; $nom ; $numSpon ; $cio</h1>";
-			ajouterParam($curAjout,':annee',$dateC);
-			ajouterParam($curAjout,':nas',$nomAbrege);
-			ajouterParam($curAjout,':nomSpon',$nom);
-			ajouterParam($curAjout,':n_equipe',$numSpon);
+			//echo "<h1>$dateC ; $nomAbrege ; $nom ; $n_equipe ; $cio</h1>";
+			ajouterParam($curAjout,':annee',$annee);
+			ajouterParam($curAjout,':nomAbrege',$nomAbrege);
+			ajouterParam($curAjout,':nom',$nom);
+			ajouterParam($curAjout,':n_equipe',$n_equipe);
 			ajouterParam($curAjout,':cio',$cio);
 			majDonneesPreparees($curAjout);
+			$textFinal = $textFinal . "Sponsor bien enregistré pour l'équipe $n_equipe !!";
+			$reaffichage = $false;
 		}
 	}
 	
@@ -129,7 +129,7 @@
 	}
 	
 	function remplirDernierSponsor() {
-		global $conn, $numSpon;
+		global $conn, $n_equipe, $reaffichage;
 		$req = 'select n_equipe, n_sponsor, nom, na_sponsor, code_cio,annee_sponsor 
 				from tdf_sponsor where (n_equipe, n_sponsor) in
 				(
@@ -144,10 +144,14 @@
 		echo '<option value="null">Choisir un sponsor a mettre à jour</option>';
 		
 		foreach ($tab as $sponsor) {
-			if (($numSpon == 'null') || ($numSpon != $sponsor['N_EQUIPE']))
-				echo '<option value="'. $sponsor['N_EQUIPE'] .'">'. $sponsor['NOM'] .'</option>';
+			if ($reaffichage) {
+				if(($n_equipe == 'null') || ($n_equipe != $sponsor['N_EQUIPE']))
+					echo '<option value="'. $sponsor['N_EQUIPE'] .'">'. $sponsor['NOM'] .'</option>';
+				else
+					echo '<option value="'. $sponsor['N_EQUIPE'] .'" selected>'. $sponsor['NOM'] .'</option>';
+			}
 			else
-				echo '<option value="'. $sponsor['N_EQUIPE'] .'" selected>'. $sponsor['NOM'] .'</option>';
+				echo '<option value="'. $sponsor['N_EQUIPE'] .'">'. $sponsor['NOM'] .'</option>';
 		}
 			
 	}
@@ -159,33 +163,32 @@
 		}
 		return null;
 	}
-	
-	function peutRemplir() {
-		if (!isset($_POST['verifier']) || (isset($_POST['verifier']) && $_POST['sponsor']!= 'null')) {
-			echo 'readonly=""';
-		}
-	}
 
 
 	// On remplis la liste deroulante avec les nationalité de la base
-	function remplirOption($tab,$nbLignes) {
+	function afficherNationalitées() {
+		global $conn, $reaffichage;
+		$cio = recupNation();
 		
-		for ($i=0; $i<$nbLignes; $i++) {
-			if ($nat == $tab[$i]['CODE_CIO']) {
-				$tab[$i]["NOM"] = utf8_encode($tab[$i]["NOM"]);
-				echo '<option value="'.$tab[$i]['CODE_CIO'].'" selected>'.$tab[$i]['NOM'];
+		//requete de récupération des nations :
+		$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';  //A voir pour mettre dans la fonction remplir option au debut
+		$nbLignes = LireDonnees1($conn,$req,$tab);
+		
+		foreach ($tab as $pays) {
+			if (($cio == $pays['CODE_CIO']) && ($reaffichage)) {
+				$pays["NOM"] = utf8_encode($pays["NOM"]);
+				echo '<option value="'.$pays['CODE_CIO'].'" selected>'.$pays['NOM'];
 				echo '</option>';
 			}
 			else{
-				$tab[$i]["NOM"] = utf8_encode($tab[$i]["NOM"]);
-				echo '<option value="'.$tab[$i]['CODE_CIO'].'">'.$tab[$i]['NOM'];
+				$pays["NOM"] = utf8_encode($pays["NOM"]);
+				echo '<option value="'.$pays['CODE_CIO'].'">'.$pays['NOM'];
 				echo '</option>';
 			}
 		}
 	}
-
-	//retourne la nationalité sélectionnée
-	function ajoutSelection(){
+	
+	function recupNation() {
 		if (!empty($_POST)) {
 			if (isset($_POST['nationalite'])) {
 				$nat = $_POST['nationalite'];
@@ -197,19 +200,23 @@
 	}
 
 	function afficherNom(){
-	global $nom;
-	echo $nom;
+		global $nom, $reaffichage;
+		if ($reaffichage)
+			echo $nom;
 	}
 
 	function afficherDateC(){
-	global $dateCreation;
-	echo $dateCreation;
+		global $annee, $reaffichage;
+		if ($reaffichage)
+			echo $annee;
 	}
 
 	function afficherNomAbrege(){
-		global $nomAbrege;
-		echo $nomAbrege;
+		global $nomAbrege, $reaffichage;
+		if ($reaffichage)
+			echo $nomAbrege;
 	}
+	
 	if (empty($GET)) {
 		include ("../html/ajoutSponsor.html");
 	}

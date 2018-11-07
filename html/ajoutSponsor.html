@@ -40,23 +40,21 @@
 
 			<div>
 			 	<label>Année de création :</label>    			
-        		<input type="text" name ="dateC" value="" id = "dateC" placeholder="Saisir année courante" > <?php //afficherDateN();?> <!-- c'était de le value -->
+        		<input type="text" name ="dateC" value="<?php afficherDateC() ?>" id = "dateC" placeholder="Saisir année courante" > <?php //afficherDateN();?> <!-- c'était de le value -->
     		</div>
 				<br>
 				<br>
 
 			<select required name="nationalite">
 				<option value ="">Nationalité</option>
-				<?php remplirOption($tab,$nbLignes); ?>
+				<?php afficherNationalitées(); ?>
 			</select>
 			<span class="error">* </span>
-			<?php ajoutSelection();?>
 				<br>
 				<br>
 				<input type="submit" name="verifier" value="Valider" > 
 				<input type="reset">
 			<br>
-			<!-- <span class="error" id ="MessErreur"></span> -->
 			
 		</form>
 		<span class="error"> <?php afficherTexteFinal(); ?> </span>
