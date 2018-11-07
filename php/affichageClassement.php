@@ -33,18 +33,6 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
     //affichage du tableau :
 	function affichageClassement() {
 		global $conn, $annee, $curLigne;
-
-		//echo "<h1>Classement général du Tour de France ".$annee"</h1>";
-		
-		//affichage du tableau quoi qu'il ce passe :
-		$style = "style=\"border: 1px solid black;\"";
-		echo "<table $style>";
-		echo "<tr $style>
-				<th $style>Rang</th>
-				<th $style>Nation</th>
-				<th $style>Coureur</th>
-				<th $style>Temps(en s)</th>
-			</tr>";
 		
 		//affichage des données si une annee est entrée :
 		if (isset($annee)) {
@@ -53,6 +41,15 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 			
 			//résultat :
 			$nbLignes = LireDonneesPreparees($curLigne, $tabRes);
+
+			$style = "style=\"border: 1px solid black;\"";
+			echo "<table $style>";
+			echo "<tr $style>
+				<th $style>Rang</th>
+				<th $style>Nation</th>
+				<th $style>Coureur</th>
+				<th $style>Temps</th>
+			</tr>";
 
 			//boucle d'affichage :
 			foreach ($tabRes as $ligne) {
@@ -72,8 +69,16 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 			<th '.$style.'>'.$tab['RANG'].'</th>
 			<th '.$style.'>'.$tab['CODE_PAYS'].'</th>
 			<th '.$style.'>'.$tab['NOM']. ' ' .$tab['PRENOM'].'</th>
-			<th '.$style.'>'.$tab['TEMPS'].'</th>
+			<th '.$style.'>'.getTemps($tab['TEMPS']).'</th>
 			</tr>';
+	}
+
+	function getTemps($temps) {
+		$heures = floor(intval($temps) / 3600);
+		$minutes =  floor((intval($temps) % 3600) / 60);
+		$secondes = floor((intval($temps) % 3600) % 60);
+
+		return $heures."h".$minutes."\'".$secondes."\'\'";
 	}
 
 	//LE FICHIER HTML:

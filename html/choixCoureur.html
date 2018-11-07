@@ -2,20 +2,57 @@
 <html lang="fr">
 	<head>
 		<meta charset="utf-8">
-		<title>Choix d'un coureur</title>
+		<title>Gerer les coureurs</title>
 		<!-- <script src="../js/choixCoureur.js"></script> -->
 	</head>
 	<body>
 		<form name="formuaireChoixCoureur" action= "" method="post" enctype="multipart/form-data">
-			<p><h1>Choisir un coureur</h1></p><br/>
-			<fieldset><legend><b>Identité du coureur à modifier</b></legend><br/>
-					<select name="nomCoureur" style="width:400px;">
-						<?php listeCoureurs($tab,$nbLignes); ?>
-					</select><br/><br/>
-			</fieldset><br/>
-			<input type="button" name="annuler" value="Annuler" onclick="window.location.href='../'">&nbsp;&nbsp;&nbsp;
-			<input type="submit" name="infos" value="Informations">&nbsp;&nbsp;&nbsp;
-			<input type="submit" name="modifier" value="Modifier le coureur">&nbsp;&nbsp;&nbsp;
+			
+			<table class="table">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">
+							<a href="choixCoureur.php?tri=n_coureur&sens=asc">#</a>
+							<a href="choixCoureur.php?tri=n_coureur&sens=asc">↑</a>
+							<a href="choixCoureur.php?tri=n_coureur&sens=desc">↓</a>
+						</th>
+						<th scope="col">
+							<a href="choixCoureur.php?tri=nom&sens=asc">Nom</a>
+							<a href="choixCoureur.php?tri=nom&sens=asc">↑</a>
+							<a href="choixCoureur.php?tri=nom&sens=desc">↓</a>
+						</th>
+						<th scope="col">
+							<a href="choixCoureur.php?tri=prenom&sens=asc">Prenom</a>
+							<a href="choixCoureur.php?tri=prenom&sens=asc">↑</a>
+							<a href="choixCoureur.php?tri=prenom&sens=desc">↓</a>
+						</th>
+						<th scope="col">
+							<a href="choixCoureur.php?tri=naissance&sens=asc">Année naissance</a>
+							<a href="choixCoureur.php?tri=naissance&sens=asc">↑</a>
+							<a href="choixCoureur.php?tri=naissance&sens=desc">↓</a>
+						</th>
+						<th scope="col">
+							<a href="choixCoureur.php?tri=nation&sens=asc">Nation</a>
+							<a href="choixCoureur.php?tri=nation&sens=asc">↑</a>
+							<a href="choixCoureur.php?tri=nation&sens=desc">↓</a>
+						</th>
+						<th scope="col">
+							<a href="choixCoureur.php?tri=nb&sens=asc">Nb tdf</a>
+							<a href="choixCoureur.php?tri=nb&sens=asc">↑</a>
+							<a href="choixCoureur.php?tri=nb&sens=desc">↓</a>
+						</th>
+						<th scope="col">Modifier</th>
+						<th scope="col">Informations</th>
+						<th scope="col">Supprimer</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php affichageTableau();?>
+				</tbody>
+			</table>
+			
+			
+			
 		</form>
 	</body>
 </html>
