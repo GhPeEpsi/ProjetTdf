@@ -14,18 +14,25 @@
 
 
 	//connection de Jérémy qui resté là après la merge
-	$db_username = 'copie_tdf_copie';
-	$db_password = 'copie_tdf_copie';
-	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	// $db_username = 'copie_tdf_copie';
+	// $db_password = 'copie_tdf_copie';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	//$db = fabriquerChaineConnexion();
 
 
-	// $db_username = 'projet_php';
-	// $db_password = 'projet_php';
-	// $db = fabriquerChaineConnexion2();
+	$db_username = 'projet_php';
+	$db_password = 'projet_php';
+	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
 	//traitement :
+	
+	if (isset($_GET['nom'])) {
+		$nom = testNomSponsor($_GET['nom']);
+		if($nom != NULL) {
+			echo substr($nom, 0, 3);
+		}
+	}
 
 	if(!empty($_POST['nom'])){
 		$nom = $_POST['nom'];
