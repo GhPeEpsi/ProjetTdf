@@ -78,6 +78,10 @@
 				}
 			}
 			
+			if (!empty($_POST['nationalite'])) {
+				$cio = $_POST['nationalite'];
+			}
+			
 			if ($textFinal == "") {
 				enregistrementDonnées();
 			}
@@ -96,18 +100,28 @@
 
 	//FUNCTION :
 	function enregistrementDonnées() {
-		global $curAjout, $dateC, $nomAbrege, $nom, $numSpon;
+		global $conn, $curAjout, $dateC, $nomAbrege, $nom, $numSpon,$cio;
 		
-		if ($numSpon == "null") {
-			echo "c'est la merde";
-		}
-		/*
 		ajouterParam($curAjout,':date',$dateC);
 		ajouterParam($curAjout,':nas',$nomAbrege);
 		ajouterParam($curAjout,':nom',$nom);
+		ajouterParam($curAjout,':n_equipe',$numSpon);
 		
-		majDonneesPreparees($curAjout);
-		*/
+		$req = 'select count(*) from tdf_sponsor 
+		where na_sponsor = :na
+		and nom = :nom
+		and code_cio = :cio';
+		$cur = preparerRequete($conn,$req);
+		
+		ajouterParam($cur,':na',$nomAbrege);
+		ajouterParam($cur,':nom',$nom);
+		ajouterParam($cur,':cio',$cio);
+		LireDonneesPreparees($cur, $tab);
+		
+		if ($tab[0]['COUNT(*)'] == 0) {
+			majDonneesPreparees($curAjout);
+		}
+		
 	}
 	
 	function afficherTexteFinal(){
