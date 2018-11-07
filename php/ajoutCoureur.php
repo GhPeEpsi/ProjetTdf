@@ -177,8 +177,7 @@
 						$res = majDonneesPreparees($cur);
 						$passage = true;
 					}
-
-					echo ('on est là');
+					
 					//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
 					$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
 
@@ -217,11 +216,9 @@
 	function nonExistant() {
 		global $conn, $nom, $prenom, $nat;
 
-		$req = 'select count(*) as nb from tdf_coureur 
-		join tdf_app_nation using (n_coureur)
+		$req = 'select count(*) as nb from tdf_coureur
 		where nom = \''.$nom.'\'
-		and prenom = \''.$prenom.'\'
-		and code_cio = \''.$nat.'\'';
+		and prenom = \''.$prenom.'\'';
 
 		LireDonnees1($conn, $req, $tab);
 
