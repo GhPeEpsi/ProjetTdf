@@ -161,7 +161,7 @@
 						}
 					}
 				}elseif (empty($_POST['dateN']) && !empty($_POST['depuisQ'])) {
-						$textFinal = $textFinal."<br> Vous devez entrer une année de naissance si vous remplissez depuisQ";
+						$textFinal = $textFinal."<br> Vous devez entrer une année de naissance si vous remplissez le champs Depuis Quand.";
 				}else{
 					$annee_naissance = recupAnnee();
 					$depuisQuand = null;
@@ -177,6 +177,8 @@
 						$res = majDonneesPreparees($cur);
 						$passage = true;
 					}
+
+					echo ('on est là');
 					//requête pour ajouter annee_debut à la table tdf_app_nation en fonction du depuisQ rentré
 					$sql2 = "INSERT INTO tdf_app_nation(n_coureur, code_cio,annee_debut) VALUES ((select max(n_coureur) from tdf_coureur),:nat, :depuisQuand)";
 
