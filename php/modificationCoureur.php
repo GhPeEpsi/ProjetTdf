@@ -167,8 +167,11 @@
 	// Si tout est vérifié : la page est soumise et les informations envoyées/modifiées
 	if(isset($_POST['envoyer'])) {
 		// Même si on ne peut pas modifier numCoureur, si jamais il venait à être vide, il ne faut pas soumettre les informations.
-		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) {
-			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires'); </script>";
+		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ') || (isset($_POST['n_coureur']) && ($_POST['n_coureur'] != $_POST['numCoureur']))) {
+			if ((isset($_POST['n_coureur']) && ($_POST['n_coureur'] != $_POST['numCoureur'])))
+				echo "<script> alert('On triche pas et on laisse le num coureur comme il est SVP !'); </script>";
+			else
+				echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires'); </script>";
 		} else {
 			if(!empty($_POST['anneeNaissanceCoureur']) && !empty($_POST['anneePremiereCoureur'])) {
 				if (!empty(testNom($_POST['nomCoureur'], $regex)) && !empty(testPrenom($_POST['prenomCoureur'], $regex)) && !empty(testDate($_POST['anneeNaissanceCoureur'])) && !empty(testDate($_POST['anneePremiereCoureur']))) {
@@ -188,6 +191,12 @@
 				}
 			}
 		}
+	}
+	
+	// sauvegarde le n_coureur
+	function echoHidden() {
+		if (isset($_GET['numCoureur']))
+			echo '<input type="hidden" name="n_coureur" value="'.$_GET['numCoureur'].'">';
 	}
 
 	include ("../html/navBar.html");

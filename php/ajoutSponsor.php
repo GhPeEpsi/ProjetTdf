@@ -135,8 +135,10 @@
 		
 		$nb = LireDonnees1($conn, $req, $tab);
 		
+		echo '<option value="null">Choisir un sponsor a mettre à jour</option>';
+		
 		foreach ($tab as $sponsor) {
-			echo '<option value='. $sponsor['N_EQUIPE'] .'>'. $sponsor['NOM'] .'</option>';
+			echo '<option value="'. $sponsor['N_EQUIPE'] .'">'. $sponsor['NOM'] .'</option>';
 		}
 			
 	}
