@@ -32,8 +32,10 @@ function supprimeCaracteresSpeciaux($str, $encoding='UTF-8') {
     $str = preg_replace('#&([A-za-z])(?:slash|tilde);#', '\1', $str);
 
     // Supprimer les tirets en début et fin de chaine
-    $str = preg_replace('#^-|-$#', '', $str);
-
+    while (preg_match('#^-|-$#', $str)) {
+        $str = preg_replace('#^-|-$#', '', $str);
+    }
+    
     // Supprime les espaces après et/ou avant des tirets
     $str = preg_replace('# - |- | -#', '-', $str);
 
@@ -42,7 +44,7 @@ function supprimeCaracteresSpeciaux($str, $encoding='UTF-8') {
 
 
 function testNom($nom, $regex) {
-    if (preg_match($regex, $nom) && !(preg_match("#---|''#", $nom)) && (preg_match('#(--)?#', $nom))){
+    if (preg_match($regex, $nom) && !(preg_match("#---|''#", $nom))){
         //retire caractères interdits et convertit en majuscules
         $nom = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($nom, FALSE)));
         //echo $nom;
@@ -51,6 +53,12 @@ function testNom($nom, $regex) {
 
         if (iconv_strlen($nom, 'UTF-8') > 30) {
             echo "<script> alert('Le nom saisi ne doit pas dépasser 30 caractères !')</script>";
+            return NULL;
+        }
+
+        $array = preg_split("#--#", $nom);
+        if (count($array) > 2) {
+            echo "<script> alert('Vous ne pouvez saisir de doubles-tirets qu\'une fois !')</script>";
             return NULL;
         }
 
@@ -108,7 +116,7 @@ function testNomSponsor($sponsor) {
     $regexSp = "#^.{2,30}$#";
     if (preg_match($regexSp, $sponsor)){
         //retire caractères interdits et convertit en majuscules
-        $sponsor = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($sponsor, FALSE)));
+        $sponsor = strtoupper(supprimeAccents($sponsor, FALSE));
 
 
         if (iconv_strlen($sponsor, 'UTF-8') > 30) {
@@ -126,10 +134,10 @@ function testNomSponsor($sponsor) {
 }
 
 function testNomAbrege($sponsor) {
-    $regexSp = "#^.{2,30}$#";
+    $regexSp = "#^.{0,}$#";
     if (preg_match($regexSp, $sponsor)){
         //retire caractères interdits et convertit en majuscules
-        $sponsor = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($sponsor, FALSE)));
+        $sponsor = strtoupper(supprimeAccents($sponsor, FALSE));
 
 
         if (iconv_strlen($sponsor, 'UTF-8') > 3) {

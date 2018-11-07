@@ -289,9 +289,13 @@ order by nom;
 
 --ajout sponsor :
 select * from tdf_sponsor order by n_equipe, annee_sponsor desc;
-Insert into tdf_sponsor(n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
-values((select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
+Insert into tdf_sponsor(n_equipe, n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
+values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
 
+select count(*) from tdf_sponsor 
+where na_sponsor = :na
+and nom = :nom
+and code_cio = :cio;
 
 select n_equipe, n_sponsor, nom, na_sponsor, code_cio,annee_sponsor 
 from tdf_sponsor where (n_equipe, n_sponsor) in
