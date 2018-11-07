@@ -71,7 +71,7 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 		echo '<tr '.$style.'>
 			<th '.$style.'>'.$tab['RANG'].'</th>
 			<th '.$style.'>'.$tab['CODE_PAYS'].'</th>
-			<th '.$style.'>'.utf8_encode($tab['NOM']). ' ' . utf8_encode($tab['PRENOM']).'</th>
+			<th '.$style.'>'.$tab['NOM']. ' ' .$tab['PRENOM'].'</th>
 			<th '.$style.'>'.$tab['TEMPS'].'</th>
 			</tr>';
 	}
