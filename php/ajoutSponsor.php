@@ -34,15 +34,6 @@
 		}
 	}
 
-	if(!empty($_POST['nom'])){
-		$nom = $_POST['nom'];
-		$nom = testNomSponsor($nom, $regex);
-	}
-
-	if(!empty($_POST['nomAbrege'])){
-		$nomAbrege = $_POST['nomAbrege'];
-	}
-
 	// if(!empty($_POST['nom'])){
 	// 	$nom = $_POST['nom'];
 	// 	$nom = testNomSponsor($nom, $regex);
@@ -60,7 +51,25 @@
 
 		//verfication du bon remplissage des champs obligatoire :
 		if (empty($_POST['nom']) || empty($_POST['nomAbrege']) || $_POST['nationalite'] == ''){
-			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
+			$textFinal = $texteFinal."<br> Vous n'avez pastout rempli";
+		}else{
+			if(!empty($_POST['nom'])){
+				$nom = $_POST['nom'];
+				$nom = testNomSponsor($nom, $regex);
+			}
+			if(!empty($_POST['nomAbrege'])){
+				$nomAbrege = $_POST['nomAbrege'];
+				$nomAbrege = testNomAbrege($nomAbrege, $regex);
+			}
+
+			if(!empty($_POST['dateC'])){
+				$verifInt = $_POST['dateC'];
+				if(!ctype_digit($verifInt)|| $verifInt != date('Y')){
+						$textFinal = $texteFinal."<br> Vous n'avez pas entré une année valide";
+					}else{
+						$dateC = recupAnnee();
+					}
+			}
 		}
 	}
 
@@ -69,10 +78,10 @@
 
 	//FUNCTION :
 	
-	// function afficherTexteFinal(){
-	// 	global $textFinal;
-	// 	echo $textFinal;
-	// }
+	function afficherTexteFinal(){
+		global $textFinal;
+		echo $textFinal;
+	}
 
 	//verifier que le coureur qu'on veut entrer n'existe pas deja :
 	// function nonExistant() {
@@ -134,8 +143,8 @@
 
 	function recupAnnee(){
 		if(!empty($_POST['dateC'])){
-			$annee_naissance = $_POST['dateC'];
-			return intval($annee_naissance);
+			$dateC = $_POST['dateC'];
+			return intval($dateC);
 		}
 		return null;
 	}
