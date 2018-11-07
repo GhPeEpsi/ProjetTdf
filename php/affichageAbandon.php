@@ -55,9 +55,15 @@
             
             //boucle d'affichage :
             $nbLignes = LireDonneesPreparees($curseur,$tab);
-            $tab = array();
-            for($i=0; $i<$nbLignes; $i++) {
-                afficheLigneTableau($tab, $style);
+            $j=0;
+            foreach($tab as $ligne) {
+                // echo "<PRE>";
+                // print_r($ligne);
+                // echo "</PRE>";
+                $tableau = array();
+                $tableau[] = $tab[$j];
+                $j++;
+                afficheLigneTableau($tableau, $style);
             }
         }
         else {
@@ -72,9 +78,9 @@
             echo '<tr '.$style.'>
                   <th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
                   <th '.$style.'>'.utf8_encode($tab[0]['NOM']). ' ' . utf8_encode($tab[0]['PRENOM']).'</th>
-                  <th '.$style.'>'.$tab[0]['LIBELLE'].'</th>
-                  <th '.$style.'>'.$tab[0]['COMMENTAIRE'].'</th>
-                  <th '.$style.'>'.$tab[0]['RAISON'].'</th>
+                  <th '.$style.'>'.utf8_encode($tab[0]['LIBELLE']).'</th>
+                  <th '.$style.'>'.utf8_encode($tab[0]['COMMENTAIRE']).'</th>
+                  <th '.$style.'>'.utf8_encode($tab[0]['RAISON']).'</th>
                   </tr>';
         }
         else {
@@ -93,7 +99,6 @@
         foreach ($tab as $ligne) {
             $retour = $retour . utf8_encode($ligne['NOM']). ' ' . utf8_encode($ligne['PRENOM']).'<br>';
         }
-
         return $retour;
     }
 
