@@ -8,7 +8,7 @@
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
 
-	$texteFinal = "";
+	$textFinal = "";
 	// connexion à la base
 	 $db_username = 'ETU2_49';
 	 $db_password = 'ETU2_49';
@@ -56,6 +56,10 @@
 	$req = 'SELECT code_cio, nom FROM tdf_nation where annee_disparition is null order by nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
 	
+	if (isset($_POST['verifier1'])) {
+		include "validerAjoutCoureur.php";
+		// $textFinal = $textFinal.'<input type="submit" name="verifier" value="Valider" >';
+	}
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if(isset($_POST['verifier'])){
 
@@ -80,7 +84,7 @@
 					$verifInt = $_POST['dateN'];
 					
 					if(!ctype_digit($verifInt)|| $verifInt < 1900 || $verifInt > date('Y')){
-						$textFinal = $texteFinal."<br> Vous n'avez pas entré une date valide.";
+						$textFinal = $textFinal."<br> Vous n'avez pas entré une date valide.";
 					}else{
 						$annee_naissance = recupAnnee();
 						$depuisQuand = $annee_naissance;
@@ -107,22 +111,22 @@
 						}
 
 						if ($passage) {
-							$textFinal = $texteFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+							$textFinal = $textFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 						}
 						else {
-							$textFinal = $texteFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
+							$textFinal = $textFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
 						}
 					}
 				}elseif(!empty($_POST['dateN'])&& (!empty($_POST['depuisQ']))){
 					$verifInt = $_POST['dateN'];
 					if(!ctype_digit($verifInt)|| $verifInt < 1900 || $verifInt > date('Y')){
-						$textFinal = $texteFinal."<br> Vous n'avez pas entré une date valide";
+						$textFinal = $textFinal."<br> Vous n'avez pas entré une date valide";
 					}else{
 						$annee_naissance = recupAnnee();
 						$depuisQuand = $annee_naissance;
 
 						if($depuisQuand > $annee_naissance){
-							$textFinal = $texteFinal."<br> Vérifier que l'année entrée dans \"depuis Quand\" est inférieure à l'année de naissance";
+							$textFinal = $textFinal."<br> Vérifier que l'année entrée dans \"depuis Quand\" est inférieure à l'année de naissance";
 						}else{
 							//requête pour ajouter un coureur à la base.
 							$sql = "INSERT INTO tdf_coureur(n_coureur, nom, prenom, annee_naissance) VALUES ((select max(n_coureur) from tdf_coureur) + 1, :nom, :prenom, :annee_naissance)";
@@ -149,15 +153,15 @@
 							}
 							
 							if ($passage) {
-								$textFinal = $texteFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+								$textFinal = $textFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 							}
 							else {
-								$textFinal = $texteFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
+								$textFinal = $textFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
 							}
 						}
 					}
 				}elseif (empty($_POST['dateN']) && !empty($_POST['depuisQ'])) {
-						$textFinal = $texteFinal."<br> Vous devez entrer une année de naissance si vous remplissez depuisQ";
+						$textFinal = $textFinal."<br> Vous devez entrer une année de naissance si vous remplissez depuisQ";
 				}else{
 					$annee_naissance = recupAnnee();
 					$depuisQuand = null;
@@ -185,19 +189,24 @@
 					}
 
 					if ($passage) {
-						$textFinal = $texteFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
+						$textFinal = $textFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 					}
 					else {
-						$textFinal = $texteFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
+						$textFinal = $textFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
 					}
 				}
 			}
 		}
 	}
 
-	//FUNCTION :
+	//FUNCTION :	
 	
-	function afficherTexteFinal(){
+	function afficherTextFinal1(){
+		global $textFinal1;
+		echo $textFinal1;
+	}	
+	
+	function afficherTextFinal(){
 		global $textFinal;
 		echo $textFinal;
 	}
