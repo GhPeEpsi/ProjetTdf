@@ -32,8 +32,10 @@ function supprimeCaracteresSpeciaux($str, $encoding='UTF-8') {
     $str = preg_replace('#&([A-za-z])(?:slash|tilde);#', '\1', $str);
 
     // Supprimer les tirets en début et fin de chaine
-    $str = preg_replace('#^-|-$#', '', $str);
-
+    while (preg_match('#^-|-$#'), $str) {
+        $str = preg_replace('#^-|-$#', '', $str);
+    }
+    
     // Supprime les espaces après et/ou avant des tirets
     $str = preg_replace('# - |- | -#', '-', $str);
 
