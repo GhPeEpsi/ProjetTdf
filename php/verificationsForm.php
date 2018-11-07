@@ -55,7 +55,7 @@ function testNom($nom, $regex) {
         }
 
         $array = preg_split("#--#", $nom);
-        if (count($array > 2)) {
+        if (count($array) > 2) {
             echo "<script> alert('Vous ne pouvez saisir de doubles-tirets qu'une fois !')</script>";
             return NULL;
         }
