@@ -25,7 +25,9 @@
 	}
 
 	//REQUETE :
-	$reqLigne = 'select rang, code_pays, nom, prenom, temps from tdf_classements_generaux where annee = :annee order by rang';
+	$reqLigne = 'select rang, code_pays, nom, prenom, temps  from tdf_classements_generaux join
+tdf_parti_coureur 
+using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != 'R'order by rang;';
 	$curLigne = preparerRequete($conn,$reqLigne);
     
     //affichage du tableau :
