@@ -11,14 +11,15 @@
 
     	<p><span class="error" >* champs requis </span></p>
 		
-		<form name="formChoixSponsor" action="" method="post">
-			<select name="sponsor" onblur="this.form.submit();">
-				<?php  remplirDernierSponsor();?>
-			</select><br><br>
-		</form>
 		
 		
 		<form name="formAjoutSponsor" action="" method="post">
+			<select name="sponsor">
+				<?php  remplirDernierSponsor();?>
+			</select><br><br>
+			
+			
+			
     		<div>
         		<label> Nom exacte : </label>
 				<input type = text name = "nom" id = "nom" value ="<?php afficherNom();?>" placeholder="Saisir" required>

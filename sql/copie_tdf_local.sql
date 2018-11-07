@@ -288,9 +288,20 @@ order by nom;
 
 
 --ajout sponsor :
-select * from tdf_sponsor order by n_equipe, annee_sponsor desc;
+select * 
+from tdf_sponsor 
+where n_equipe= 7
+order by annee_sponsor desc;
+
+
+commit;
+
 Insert into tdf_sponsor(n_equipe, n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
 values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
+
+Insert into tdf_sponsor(n_equipe, n_sponsor, nom, na_sponsor, code_cio, annee_sponsor)
+				values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nomSpon, :nas, :cio, :annee);
+
 
 select count(*) from tdf_sponsor 
 where na_sponsor = :na

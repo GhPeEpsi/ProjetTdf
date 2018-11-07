@@ -82,30 +82,22 @@
 				$cio = $_POST['nationalite'];
 			}
 			
+			if (!empty($_POST['sponsor'])) {
+				$numSpon = $_POST['sponsor'];
+			}
+			
 			if ($textFinal == "") {
 				enregistrementDonnées();
 			}
 		}
 	}
-
+	
 	//print_r($_POST);
-	//récupération du numéro de sponsor :
-	$numSpon = 'null';
-	if (isset($_POST['sponsor'])) {
-		$numSpon = $_POST['sponsor'];
-	}
-	
-	
 	
 
 	//FUNCTION :
 	function enregistrementDonnées() {
 		global $conn, $curAjout, $dateC, $nomAbrege, $nom, $numSpon,$cio;
-		
-		ajouterParam($curAjout,':date',$dateC);
-		ajouterParam($curAjout,':nas',$nomAbrege);
-		ajouterParam($curAjout,':nom',$nom);
-		ajouterParam($curAjout,':n_equipe',$numSpon);
 		
 		$req = 'select count(*) from tdf_sponsor 
 		where na_sponsor = :na
@@ -118,10 +110,17 @@
 		ajouterParam($cur,':cio',$cio);
 		LireDonneesPreparees($cur, $tab);
 		
+		//print_r($tab);
+		
 		if ($tab[0]['COUNT(*)'] == 0) {
+			//echo "<h1>$dateC ; $nomAbrege ; $nom ; $numSpon ; $cio</h1>";
+			ajouterParam($curAjout,':annee',$dateC);
+			ajouterParam($curAjout,':nas',$nomAbrege);
+			ajouterParam($curAjout,':nomSpon',$nom);
+			ajouterParam($curAjout,':n_equipe',$numSpon);
+			ajouterParam($curAjout,':cio',$cio);
 			majDonneesPreparees($curAjout);
 		}
-		
 	}
 	
 	function afficherTexteFinal(){
