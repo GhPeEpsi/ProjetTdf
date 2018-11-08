@@ -119,7 +119,7 @@
 			ajouterParam($curAjout,':cio',$cio);
 			majDonneesPreparees($curAjout);
 			$textFinal = $textFinal . "Sponsor bien enregistré pour l'équipe $n_equipe !!";
-			$reaffichage = $false;
+			$reaffichage = false;
 		}
 	}
 	
