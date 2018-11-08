@@ -13,7 +13,7 @@ function supprimeAccents($str, $isPrenom, $encoding='UTF-8') {
     // Exemple : "&ecute;" => "e", "&Ecute;" => "E", "à" => "a" ...
     //remplace seulement le premier caractère si la chaine est un prénom
     if ($isPrenom) {
-        $str = preg_replace('#^&([A-za-z])(?:acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);
+        $str = preg_replace('#^&([A-za-z])(?:lig|acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);
     } else {
         $str = preg_replace('#&([A-za-z])(?:acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);
     }
