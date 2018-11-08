@@ -110,7 +110,7 @@
 		
 		//print_r($tab);
 		
-		if ($tab[0]['COUNT(*)'] == 0) {
+		if ($tab[0]['COUNT(*)'] == 0 && $n_equipe == null) {
 			//echo "<h1>$dateC ; $nomAbrege ; $nom ; $n_equipe ; $cio</h1>";
 			ajouterParam($curAjout,':annee',$annee);
 			ajouterParam($curAjout,':nomAbrege',$nomAbrege);
@@ -120,6 +120,8 @@
 			majDonneesPreparees($curAjout);
 			$textFinal = $textFinal . "Sponsor bien enregistré pour l'équipe $n_equipe !!";
 			$reaffichage = false;
+		}else{
+			$textFinal = $textFinal . "Veuillez sélectionner un sponsor à mettre à jour. ";
 		}
 	}
 	
