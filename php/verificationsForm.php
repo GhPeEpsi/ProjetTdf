@@ -39,7 +39,7 @@ function supprimeCaracteresSpeciaux($str, $encoding='UTF-8') {
     // Supprime les espaces après et/ou avant des tirets
     $str = preg_replace('# - |- | -#', '-', $str);
     // Supprime les espaces après et/ou avant des apostrophes
-    $str = preg_replace('# \' |\' #', '-', $str);
+    $str = preg_replace('# \' |\' #', '\'', $str);
 
     return $str;
 }
