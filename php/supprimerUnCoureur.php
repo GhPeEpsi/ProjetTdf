@@ -64,6 +64,7 @@
 		$reqCoureur = "delete from tdf_coureur where n_coureur=".$n_coureur;
 		majDonnees($conn,$reqAppNation);
 		majDonnees($conn,$reqCoureur);
+		header('Location: choixCoureur.php');
 		echo "<p>Coureur bien enlevé de la base !</p>";
 	}
 
