@@ -38,13 +38,15 @@ function supprimeCaracteresSpeciaux($str, $encoding='UTF-8') {
     
     // Supprime les espaces après et/ou avant des tirets
     $str = preg_replace('# - |- | -#', '-', $str);
+    // Supprime les espaces après et/ou avant des apostrophes
+    $str = preg_replace('# \' |\' #', '-', $str);
 
     return $str;
 }
 
 
 function testNom($nom, $regex) {
-    if (preg_match($regex, $nom) && !(preg_match("#---|''#", $nom))){
+    if (preg_match($regex, $nom) && !(preg_match("#---|''|^'$|^-$#", $nom))){
         //retire caractères interdits et convertit en majuscules
         $nom = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($nom, FALSE)));
         //echo $nom;
@@ -65,19 +67,22 @@ function testNom($nom, $regex) {
         return $nom;
     } else {
         //echo "Nom invalide <br>"; 
-        echo "<script> alert('Le nom saisi contient des caractères interdit !')</script>";
+        echo "<script> alert('Le nom saisi n'est pas valide !)</script>";
 
         return NULL;  
     }
 }
 
 function testPrenom($prenom, $regex) {
-    if (preg_match($regex, $prenom) && !(preg_match("#--|''#", $prenom))) {
+    if (preg_match($regex, $prenom) && !(preg_match("#--|''|^'$|^-$#", $prenom))) {
         
         $prenom = mb_strtolower($prenom, "UTF-8");
         $array = preg_split("#('|-| )#", $prenom, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         
         foreach ($array as $key => $value) {
+            $array2 = preg_split('//', $array[$key], -1, PREG_SPLIT_NO_EMPTY);
+            $array2[0] = supprimeCaracteresSpeciaux($array2[0]);
+            $array[$key] = implode($array2);
             $array[$key] = $value = ucfirst(supprimeAccents($value, TRUE));
         }
 
@@ -96,7 +101,7 @@ function testPrenom($prenom, $regex) {
         return $prenom;
     } else {
         //echo "Prénom invalide <br>";   
-        echo "<script> alert('Le prenom saisi contient des caractères interdit !')</script>";
+        echo "<script> alert('Le prenom saisi n'est pas valide !')</script>";
         
         return NULL;
     }
