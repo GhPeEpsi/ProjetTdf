@@ -60,7 +60,7 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 		}
 		else {
 			echo "</table>";
-			echo "<p>Pas encore d'année selectionné !</p>";
+			echo "<p>Pas encore d'année selectionnée !</p>";
 		}
 	}
 
@@ -78,7 +78,7 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 		$minutes =  floor((intval($temps) % 3600) / 60);
 		$secondes = floor((intval($temps) % 3600) % 60);
 
-		return $heures."h".$minutes."\'".$secondes."\'\'";
+		return $heures."h".$minutes."'".$secondes."''";
 	}
 
 	//LE FICHIER HTML:
