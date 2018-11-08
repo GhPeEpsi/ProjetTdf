@@ -67,7 +67,7 @@ function testNom($nom, $regex) {
         return $nom;
     } else {
         //echo "Nom invalide <br>"; 
-        echo "<script> alert('Le nom saisi n\'est pas valide !)</script>";
+        echo "<script> alert('Le nom saisi n\'est pas valide !')</script>";
 
         return NULL;  
     }
