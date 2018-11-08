@@ -15,6 +15,11 @@
 	$mdp = 'copie_tdf';
 	$db = fabriquerChaineConnexion2();
 	$conn = OuvrirConnexion($db,$login,$mdp);*/
+
+	//Jérémy Localhost
+	// $db_username = 'copie_tdf_copie';
+	// $db_password = 'copie_tdf_copie';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	
 	//PROGRAMME PRINCIPAL :
 	$annee;
@@ -101,7 +106,7 @@
 		}
 		else {
 			echo "</table>";
-			echo "<p>Pas encore d'année selectionné !</p>";
+			echo "<p>Pas encore d'année selectionnée !</p>";
 		}
 	}
 	
@@ -135,7 +140,7 @@
 				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
 				<th '.$style.'>'.$tab[0]['DISTANCE'].'</th>
 				<th '.$style.'>'.$tab[0]['JOUR'].'</th>
-				<th '.$style.'>'.utf8_encode($tab[0]['NOM']). ' ' . utf8_encode($tab[0]['PRENOM']).'</th>
+				<th '.$style.'>'.$tab[0]['NOM']. ' ' .$tab[0]['PRENOM'].'</th>
 				<th '.$style.'>'.$tab[0]['HEURE']. 'h/' .$tab[0]['MINUTE']. 'min/' .$tab[0]['SECONDE'].'s</th>
 				<th '.$style.'>'.$tab[0]['TOTAL_SECONDE'].'</th>
 				</tr>';
@@ -155,7 +160,7 @@
 	function afficheNomPrenom($tab) {
 		$retour = '';
 		foreach ($tab as $ligne) {
-			$retour = $retour . utf8_encode($ligne['NOM']). ' ' . utf8_encode($ligne['PRENOM']).'<br>';
+			$retour = $retour . $ligne['NOM']. ' ' . $ligne['PRENOM'].'<br>';
 		}
 
 		return $retour;
