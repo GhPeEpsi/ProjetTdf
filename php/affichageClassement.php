@@ -17,6 +17,8 @@
 	// $conn = OuvrirConnexion($db,$db_username,$db_password);
 
     //PROGRAMME PRINCIPAL :
+    $orderBy = choixOrderBy();
+
 	$annee;
 	if (isset($_POST['verifier'])) {
 		if (isset($_POST['annee']) && $_POST['annee'] != "pasBon") {
@@ -24,12 +26,50 @@
 		}
 	}
 
+	if (isset($_GET['annee'])) {
+		$annee = $_GET['annee'];
+	}
+	// print_r($_POST);
+
 	//REQUETE :
 	$reqLigne = 'select distinct rang, code_pays, nom, prenom, temps  from tdf_classements_generaux join
 tdf_parti_coureur 
-using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R\'order by rang';
+using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R\''.$orderBy;
+
 	$curLigne = preparerRequete($conn,$reqLigne);
     
+
+	function choixOrderBy() {
+		if (isset($_GET['tri']))
+			$tri = $_GET['tri'];
+		else
+			$tri = 'null';
+		
+		if (isset($_GET['sens']))
+			$sens = $_GET['sens'];
+		else
+			$sens = 'null';
+		
+		$retour= "";
+		
+		switch($tri) {
+			case 'rang' : $retour = $retour . 'order by rang';break;
+			case 'nation' : $retour = $retour . 'order by CODE_PAYS';break;
+			case 'coureur' : $retour = $retour . 'order by nom';break;
+			case 'temps' : $retour = $retour . 'order by temps';break;
+			default : $retour = $retour . 'order by rang';
+		}
+		
+		switch ($sens) {
+			case 'asc' : $retour = $retour . ' asc';break;
+			case 'desc' : $retour = $retour . ' desc';break;
+			default : $retour = $retour . ' asc';
+		}
+		
+		return $retour;
+	}
+
+
     //affichage du tableau :
 	function affichageClassement() {
 		global $conn, $annee, $curLigne;
@@ -44,12 +84,28 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 
 			$style = "style=\"border: 1px solid black;\"";
 			echo "<table $style>";
-			echo "<tr $style>
-				<th $style>Rang</th>
-				<th $style>Nation</th>
-				<th $style>Coureur</th>
-				<th $style>Temps</th>
-			</tr>";
+			echo '<tr $style>
+				<th $style>
+					<a href="affichageClassement.php?tri=rang&sens=asc&annee='.$annee.'">#</a>
+					<a href="affichageClassement.php?tri=rang&sens=asc&annee='.$annee.'">↑</a>
+					<a href="affichageClassement.php?tri=rang&sens=desc&annee='.$annee.'">↓</a>
+				</th>
+				<th $style>
+					<a href="affichageClassement.php?tri=nation&sens=asc&annee='.$annee.'">Nation</a>
+					<a href="affichageClassement.php?tri=nation&sens=asc&annee='.$annee.'">↑</a>
+					<a href="affichageClassement.php?tri=nation&sens=desc&annee='.$annee.'">↓</a>
+					</th>
+				<th $style>
+					<a href="affichageClassement.php?tri=coureur&sens=asc&annee='.$annee.'">Coureur</a>
+					<a href="affichageClassement.php?tri=coureur&sens=asc&annee='.$annee.'">↑</a>
+					<a href="affichageClassement.php?tri=coureur&sens=desc&annee='.$annee.'">↓</a>
+				</th>
+				<th $style>
+					<a href="affichageClassement.php?tri=temps&sens=asc&annee='.$annee.'">Temps</a>
+					<a href="affichageClassement.php?tri=temps&sens=asc&annee='.$annee.'">↑</a>
+					<a href="affichageClassement.php?tri=temps&sens=desc&annee='.$annee.'">↓</a>
+				</th>
+			</tr>';
 
 			//boucle d'affichage :
 			foreach ($tabRes as $ligne) {
@@ -79,6 +135,11 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 		$secondes = floor((intval($temps) % 3600) % 60);
 
 		return $heures."h".$minutes."'".$secondes."''";
+	}
+
+	function saveAnnee(){
+		global $annee;
+		echo '<input type ="hidden" name="saveAnnee" value ="'.$annee.'">';
 	}
 
 	//LE FICHIER HTML:
