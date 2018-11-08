@@ -30,7 +30,7 @@
 	
 	//$style = "style=\"border: 1px solid black;\"";
 	echo "<h4> Ville étapes depuis la création du tour de France :  </h4>";
-	echo "<table>";
+	echo '<table style="margin :auto">';
 	echo "<tr>
 	<th style= \"border: 1px solid black;\" >Ville de départ</th>
 	<th style= \"border: 1px solid black;\">Ville d'arrivée</th></tr>";

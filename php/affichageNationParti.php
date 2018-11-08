@@ -63,9 +63,9 @@
 	function affichage() {
 		global $nb, $tab;
 
-		$style = 'style= "border: 1px solid black;"';
+		$style = 'style= "border: 1px solid black; margin : auto; text-align :center;"';
 		
-		echo "<table>";
+		echo "<table $style>";
 		foreach ($tab as $pays) {
 			echo "<tr>";
 			echo "<th $style>".$pays['NOM']."</th>";

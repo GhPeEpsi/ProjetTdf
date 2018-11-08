@@ -38,7 +38,7 @@
         global $conn, $annee, $curseur, $requete;
         
         //affichage du tableau quoi qu'il se passe :
-        $style = "style=\"border: 1px solid black;\"";
+        $style = "style=\"border: 1px solid black; margin :auto;\"";
         echo "<table $style>";
         echo "<tr $style>
               <th $style> N° Epreuve </th>
@@ -68,7 +68,7 @@
         }
         else {
             echo "</table>";
-            echo "<p>Pas encore d'année selectionnée !</p>";
+            echo '<p style = "text-align : center">Pas encore d\'année selectionnée !</p>';
         }
     }
 
