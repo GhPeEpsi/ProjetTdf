@@ -42,13 +42,13 @@
 		
 		if (isset($annee)) {
 			//Pour avoir des bordures dans le tableau :
-			$style = "style=\"border: 1px solid black;\"";
+			$style = "style=\"border: 1px solid black; margin: auto\"";
 			//Bind de l'année et récupération des réponses :
 			ajouterParam($cur,':annee',$annee);
 			$nbCoureur = LireDonneesPreparees($cur, $tabRes);
 			
 			//affichage de la premiere ligne de tableau :
-			echo "<table>";
+			echo "<table $style>";
 			echo "<tr>";
 			foreach ($tabRes[0] as $key => $ligne) {
 				echo "<th $style>$key</th>";
