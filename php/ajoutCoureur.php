@@ -212,7 +212,7 @@
 	function afficherTextFinal1(){
 		global $textFinal1;
 		echo $textFinal1;
-	}	
+	}
 	
 	//Fonction permettant d'afficher le contenu de la variable textFinal1 qui incrémente tous les messages d'erreurs commises par un utilisateur
 	function afficherTextFinal(){
@@ -245,7 +245,8 @@
 		}
 	}
 
-
+	//Fonction permet de remplir une balise Hidden pour permettre ou non d'aller consulter les informations du coureur que l'on vient d'entrer
+	//si on vient de rentrer un coureur alors le droit de passage est vrai sinon il est faux.
 	function droitPassage() {
 		if (isset($_POST['verifier']) && isset($_POST['droitPassage']) && ($_POST['droitPassage']=="false")) {
 			echo "true";
@@ -319,7 +320,6 @@
 
 	//insertion du fichier ajoutCoureur.html. On inclut le fichier de cette manière afin de ne pas "polluer" le champs "depuisQuand" par ce qui est écrit dans le fichier 
 	if(empty($_GET)){
-		
 		include ("../html/ajoutCoureur.html");
 	}
 ?>
