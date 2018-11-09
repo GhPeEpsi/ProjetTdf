@@ -3,17 +3,14 @@
 	include ("util_affichage.php");
 	include ("verificationsForm.php");
 	
-	/* --------------------------------------------------------------------------------------------------------------------------------- */
-	/* ----------------------------------------------------Connexion-------------------------------------------------------------------- */
-	/* --------------------------------------------------------------------------------------------------------------------------------- */
 
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion();
 
-	// $login = 'projet_php';
-	// $mdp = 'projet_php';
+	// $login = 'copie_tdf';
+	// $mdp = 'copie_tdf';
 	// $db = fabriquerChaineConnexion2();
 
 	//$login = 'copie_tdf_copie';
@@ -24,11 +21,6 @@
 	
 	$req = 'SELECT * FROM tdf_coureur ORDER BY nom';
 	$nbLignes = LireDonnees1($conn,$req,$tab);
-	
-	if (!isset($_GET['numCoureur']) || empty($_GET['numCoureur'])) {
-		echo '<script> alert(\'Il n\'est pas permis de modifier l\'URL\'); </script>';
-		return;
-	}
 
 
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
@@ -36,13 +28,13 @@
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 
 	
-	// récupération du numéro du coureur pour l'insérer dans son input correspondant
+	// récupération du numéro du coureur
 	function getNumeroCoureur($conn) {
 		$req = 'SELECT n_coureur FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['N_COUREUR']);
 	}
-	// récupération du numéro du coureur pour l'insérer dans une variable de comparaison
+	// récupération du numéro du coureur pour l'insérer une variable
 	function getNumeroCoureur2($conn) {
 		$req = 'SELECT n_coureur FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
@@ -52,34 +44,23 @@
 	// définition d'une variable de comparaison comprenant le numéro du coureur sélectionné pour qu'il soit inchangeable si l'utilisateur tente de le modifier
 	$nCoureurInchangeable = getNumeroCoureur2($conn);
 
-	// récupération du nom du coureur pour l'insérer dans son input correspondant
+	// récupération du nom du coureur
 	function getNomCoureur($conn) {
 		$req = 'SELECT nom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo utf8_encode($tab[0]['NOM']);
 	}
-	// récupération du nom du coureur pour l'insérer dans une variable de comparaison
-	function getNomCoureur2($conn) {
-		$req = 'SELECT nom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
-		$nbLignes1 = LireDonnees1($conn,$req,$tab);
-		return utf8_encode($tab[0]['NOM']);
-	}
 	
-	// récupération du prénom du coureur pour l'insérer dans son input correspondant
+	// récupération du prénom du coureur
 	function getPrenomCoureur($conn) {
 		$req = 'SELECT prenom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		echo $tab[0]['PRENOM'];
 	}
-	// récupération du prénom du coureur pour l'insérer dans une variable de comparaison
-	function getPrenomCoureur2($conn) {
-		$req = 'SELECT prenom FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
-		$nbLignes1 = LireDonnees1($conn,$req,$tab);
-		return $tab[0]['PRENOM'];
-	}
 
-	// récupération du pays du coureur pour l'insérer dans son input correspondant
+	// récupération du pays du coureur
 	function getPaysCoureur($conn) {
+		echo 'toto';
 		$req = 'SELECT tdf_nation.nom FROM tdf_nation JOIN tdf_app_nation USING (code_cio) WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
 		return utf8_encode($tab[0]['NOM']);
@@ -103,7 +84,7 @@
 		}
 	}
 
-	// récupération de l'année de naissance du coureur pour l'insérer dans son input correspondant
+	// récupération de l'année de naissance du coureur
 	function getAnneeNaissanceCoureur($conn) {
 		$req = 'SELECT annee_naissance FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
@@ -111,7 +92,7 @@
 		return utf8_encode($tab[0]['ANNEE_NAISSANCE']);
 	}
 
-	// récupération de l'année de la première participation du coureur pour l'insérer dans son input correspondant
+	// récupération de l'année de la première participation du coureur
 	function getAnneePremiereCoureur($conn) {
 		$req = 'SELECT annee_prem FROM tdf_coureur WHERE n_coureur = \''.$_GET['numCoureur'].'\'';
 		$nbLignes1 = LireDonnees1($conn,$req,$tab);
@@ -119,11 +100,6 @@
 		return utf8_encode($tab[0]['ANNEE_PREM']);
 	}
 
-	// définition de variables de comparaison
-	$nCoureurInchangeable = getNumeroCoureur2($conn);
-	$paysInchangeable = getPaysCoureur($conn);
-	$prenomInchangeable = getPrenomCoureur2($conn);
-	$nomInchangeable = getNomCoureur2($conn);
 
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 	/* -------------------------------------------------Écriture des données----------------------------------------------------------- */
@@ -170,47 +146,35 @@
 	
 	//fonction qui permet de lancer toutes les fonctions d'insertion :
 	function toutInserer() {
-		global $conn, $regex, $paysInchangeable, $prenomInchangeable, $nomInchangeable;
+		global $conn, $regex;
 		
 		$req = 'select count(*) as nb from tdf_coureur 
 				join tdf_app_nation using (n_coureur)
 				where nom = \''.testNom($_POST['nomCoureur'], $regex).'\'
-				and prenom = \''.testPrenom($_POST['prenomCoureur'], $regex).'\'';
+				and prenom = \''.testPrenom($_POST['prenomCoureur'], $regex).'\'
+				and code_cio = \''.$_POST['nationCoureur'].'\'';
 				
 		LireDonnees1($conn, $req, $tab);
 		
-		$req1 = 'select nom, prenom from tdf_coureur where n_coureur = '.$_GET['numCoureur'];
-		LireDonnees1($conn, $req1, $tab1);
-		
-		// on crée une variable pour savoir si au moins le prénom ou le nom a été modifié
-		if (($tab1[0]['NOM'] == $_POST['nomCoureur']) && ($tab1[0]['PRENOM'] == $_POST['prenomCoureur'])) {
-			$nomPrenomOk = true;
-		}
-		else {
-			$nomPrenomOk = false;
-		}
-
-		// on insère les données dans la base dans le cas où il n'existe pas un coureur avec les même prénom et nom
-		if (($tab[0]['NB'] != 0) && !$nomPrenomOk) { // <-- si au moins le prénom ou le nom a été changé et qu'un coureur possède déjà ce duet
-			echo '<script>alert(\'Un coureur ne peut pas posséder les mêmes nom et prénom qu\'un coureur qui existe déjà\');</script>';
-		} else { // insertion des modifications dans la base
+		if ($tab[0]['NB'] == 0) {
 			setNomCoureur($conn, $regex);
 			setPrenomCoureur($conn, $regex);
 			setPaysCoureur($conn);
 			setAnneeNaissanceCoureur($conn);
 			setAnneePremiereCoureur($conn);
-			echo '<script>alert(\'Modifications enregistrées\');</script>';
+		} else {
+			echo '<script>alert(\'Un coureur ne peut pas posséder les mêmes nom, prénom, et nationalité qu\'un coureur qui existe déjà\');</script>';
 		}
 	}
 
-		
+
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 	/* -----------------------------------------Vérification du bon remplissage des champs--------------------------------------------- */
 	/* -------------------------------------------------------------------------------------------------------------------------------- */
 
 	// Vérifie : si les champs obligatoires sont remplis, si les champs sont correctement remplis (regex)
 	// Si tout est vérifié : la page est soumise et les informations envoyées/modifiées
-	if(isset($_POST['envoyer'])) { // si l'on clique sur le bouton envoyer
+	if(isset($_POST['envoyer'])) {
 		if (empty($_POST['numCoureur']) || empty($_POST['nomCoureur']) || empty($_POST['prenomCoureur']) || ($_POST['nationCoureur'] == 'NATIONALITÉ')) { // Teste si les champs obligatoires sont vides / Même si on ne peut pas modifier numCoureur, si jamais il venait à être vide, il ne faut pas soumettre les informations.
 			echo "<script> alert('Vous n\'avez pas rempli certains champs obligatoires'); </script>";
 		} else if ($_POST['numCoureur'] != $nCoureurInchangeable) { // Si le numéro de coureur modifié par l'utilisateur n'est pas vide, teste s'il est différent du numéro actuel du coureur pour l'empêcher de le modifier
