@@ -31,16 +31,13 @@
 	
 	
 
-
-
-
 	//permet de récupérer l'annee entrée grâce à la méthode GET pour la fonction chargerDate en javascript du fichier "ajoutCoureur.html".
 	if(!empty($_GET['dateN'])){
 		$dateN = $_GET['dateN'];
 		echo $dateN;
 	}
 
-	//On initialise les variables si le champs n'est pas vide et on procède au test de validité du nom et du prenom via testNom/Prenom (fonction du fichier verificationForm.php)
+	//On initialise les variables si le champs n'est pas vide et on procède au test de validité du nom et du prenom via testNom/Prenom (fonction du fichier verificationForm.php).
 	if(!empty($_POST['Nom'])){
 		$nom = $_POST['Nom'];
 		$nom = testNom($nom, $regex);
@@ -51,7 +48,7 @@
 		$prenom = testPrenom($prenom, $regex);
 	}
 
-	//nat est récupéré via la fonction ajoutSelection qui procède avant à un test
+	//nat est récupéré via la fonction ajoutSelection qui procède avant à un test.
 	$nat = ajoutSelection();
 
 
@@ -59,7 +56,7 @@
 		$dateNaissance = $_POST['dateN'];
 	}
 
-	//Variable qui incrémentera tous les messages à afficher au fur et à mesure et qui va être affichée à la fin par la fonction "afficherTextFinal"
+	//Variable qui incrémentera tous les messages à afficher au fur et à mesure et qui va être affichée à la fin par la fonction "afficherTextFinal".
 	$textFinal = "";
 
 	//requete qui va permettre par la suite, l'entrée des nations dans le select correspondant.
@@ -78,7 +75,10 @@
 	// première condition qui se déclenche si l'utilisateur clique sur vérifier.
 	if(isset($_POST['verifier'])){
 
-		// 1). verfication du bon remplissage des champs obligatoire :
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------- 1). verfication du bon remplissage des champs obligatoire : ------------------------------------------------- */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 		if (empty($_POST['Nom']) || empty($_POST['prenom']) || $_POST['nationalite'] == ''){
 			echo "<script> alert('vous n\'avez pas tout rempli') </script>";
 		}else{
@@ -195,7 +195,7 @@
 				}
 
 /* --------------------------------------------------------------------------------------------------------------------------------------------------------- */
-/*------------------ 2) c) Si on ne remplit pas "Année de naissance" mais que l'on remplit "Depuis Quand", on renvoie un message d'erreur. ------------------ */
+/*------------------ 2) c) Si on ne remplit pas "Année de naissance" mais que l'on remplit "Depuis Quand", on renvoie un message d'erreur.------------------ */
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 			}elseif (empty($_POST['dateN']) && !empty($_POST['depuisQ'])) {
