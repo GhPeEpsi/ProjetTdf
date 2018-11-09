@@ -9,12 +9,6 @@
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion();
 	$conn = OuvrirConnexion($db,$login,$mdp);
-	
-	
-	// $db_username = 'projet_php';
-	// $db_password = 'projet_php';
-	// $db = fabriquerChaineConnexion2();
-	// $conn = OuvrirConnexion($db,$db_username,$db_password);
 
     //PROGRAMME PRINCIPAL :
     $orderBy = choixOrderBy();
@@ -29,7 +23,6 @@
 	if (isset($_GET['annee'])) {
 		$annee = $_GET['annee'];
 	}
-	// print_r($_POST);
 
 	//REQUETE :
 	$reqLigne = 'select distinct rang, code_pays, nom, prenom, temps  from tdf_classements_generaux join

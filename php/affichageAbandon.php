@@ -3,6 +3,10 @@
     include ("util_affichage.php");
     include ("../html/navBar.html");
 
+    /* -------------------------------------------------------------------------------------------------------------------------------- */
+	/* ---------------------------------------------------------Connexions------------------------------------------------------------- */
+    /* -------------------------------------------------------------------------------------------------------------------------------- */
+    
     /* Serveur UNICAEN */
     $login = 'ETU2_49';
     $mdp = 'ETU2_49';
@@ -24,7 +28,7 @@
         }
     }
 
-    //REQUETE :
+    // Requête pour récupérer les informations importantes sur les abandons
     $requete = 'SELECT n_epreuve, nom, prenom, libelle, aba.commentaire, typ.commentaire AS raison
                 FROM tdf_abandon aba
                 JOIN tdf_typeaban typ USING (c_typeaban)
@@ -33,11 +37,11 @@
                 ORDER BY n_epreuve';
     $curseur = preparerRequete($conn,$requete);
 
-    //affichage du tableau :
+    // permet l'affichage du tableau entier
     function affichage() {
         global $conn, $annee, $curseur, $requete;
         
-        //affichage du tableau quoi qu'il se passe :
+        //affichage du tableau quoi qu'il se passe
         $style = "style=\"border: 1px solid black; margin :auto;\"";
         echo "<table $style>";
         echo "<tr $style>
@@ -47,21 +51,16 @@
               <th $style> Commentaire </th>
               <th $style> Raison de l'abandon </th>
               </tr>";
-        
-        //affichage des données si une annee est entrée :
-        if (isset($annee)) {
-            //ajout de l'année aux requetes :
-            ajouterParam($curseur,':annee',$annee);
+
+        if (isset($annee)) { //affichage des données si une annee est entrée
+            ajouterParam($curseur,':annee',$annee); //ajout de l'année sélectionnée à la requête
             
-            //boucle d'affichage :
+            //boucle d'affichage
             $nbLignes = LireDonneesPreparees($curseur,$tab);
-            $j=0;
-            foreach($tab as $ligne) {
-                // echo "<PRE>";
-                // print_r($ligne);
-                // echo "</PRE>";
-                $tableau = array();
-                $tableau[] = $tab[$j];
+            $j = 0;
+            foreach($tab as $ligne) { // pour chaque ligne d'informations de la requête
+                $tableau = array(); // on vide la ligne correspondant aux informations précédentes
+                $tableau[] = $tab[$j]; // on met les données dans la ligne du tableau
                 $j++;
                 afficheLigneTableau($tableau, $style);
             }
@@ -73,7 +72,6 @@
     }
 
     function afficheLigneTableau($tab, $style) {
-        
         if (!isset($tab[1])) {
             echo '<tr '.$style.'>
                   <th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
@@ -82,8 +80,7 @@
                   <th '.$style.'>'.utf8_encode($tab[0]['COMMENTAIRE']).'</th>
                   <th '.$style.'>'.utf8_encode($tab[0]['RAISON']).'</th>
                   </tr>';
-        }
-        else {
+        } else {
             echo '<tr '.$style.'>
                   <th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
                   <th '.$style.'>'.afficheNomPrenom($tab).'</th>
@@ -94,6 +91,7 @@
         }
     }
 
+    // permet l'affichage des nom ET prénom dans la MÊME case
     function afficheNomPrenom($tab) {
         $retour = '';
         foreach ($tab as $ligne) {
@@ -102,7 +100,6 @@
         return $retour;
     }
 
-    //LE FICHIER HTML:
     include("../html/affichageAbandon.html");
 
 ?>

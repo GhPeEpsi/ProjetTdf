@@ -1,9 +1,7 @@
 <?php
 mb_internal_encoding("UTF-8");
-//$regex =  mb_convert_encoding("#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{2,40}$#", "UTF-8");
+
 $regex = "#^[a-zA-ZÀÂÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿæÆœŒø '-]{1,}$#";
-//iconv_set_encoding($regex1, "UTF-8");
-//$regex2 = "#^[a-zA-ZÂÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÝàáâãäåçèéêëìíîïñðòóôõöýÿæÆœŒø' -]{2,40}$#";
 
 function supprimeAccents($str, $isPrenom, $encoding='UTF-8') {
     // transformer les caractères accentués en entités HTML
@@ -80,20 +78,18 @@ function testPrenom($prenom, $regex) {
         $prenom = mb_strtolower($prenom, "UTF-8");
         $array = preg_split("#('|-| )#", $prenom, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         
+        //retire l'eventuel accent sur le premier caractère et le remplace par une majuscule.
         foreach ($array as $key => $value) {
-            $array2 = preg_split('//', $array[$key], -1, PREG_SPLIT_NO_EMPTY);
-            $array2[0] = supprimeCaracteresSpeciaux($array2[0]);
-            $array[$key] = implode($array2);
+            
             $array[$key] = $value = ucfirst(supprimeAccents($value, TRUE));
         }
 
         $prenom = implode($array);
         $prenom = supprimeCaracteresSpeciaux($prenom);
 
-        //echo $prenom;
-        //echo "<br>";
         $prenom = html_entity_decode($prenom, ENT_NOQUOTES, "UTF-8");
-
+        
+        //verifie si le prénom saisi dépasse 30 caractères
         if (iconv_strlen($prenom, 'UTF-8') > 30) {
             echo "<script> alert('Le prenom saisi ne doit pas dépasser 30 caractères !')</script>";
             return NULL;
@@ -101,7 +97,7 @@ function testPrenom($prenom, $regex) {
 
         return $prenom;
     } else {
-        //echo "Prénom invalide <br>";   
+         
         echo "<script> alert('Le prenom saisi n\'est pas valide !')</script>";
         
         return NULL;
@@ -132,7 +128,7 @@ function testNomSponsor($sponsor) {
 
         return $sponsor;
     } else {
-        //echo "Nom invalide <br>"; 
+        
         echo "<script> alert('Le nom de sponsor saisi contient des caractères interdit !')</script>";
 
         return NULL;  
@@ -153,7 +149,7 @@ function testNomAbrege($sponsor) {
 
         return $sponsor;
     } else {
-        //echo "Nom invalide <br>"; 
+        
         echo "<script> alert('Le nom de sponsor saisi contient des caractères interdit !')</script>";
 
         return NULL;  
