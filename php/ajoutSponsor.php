@@ -8,21 +8,15 @@
 
 	
 	// connexion à la base
-	 $db_username = 'ETU2_49';
-	 $db_password = 'ETU2_49';
-	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	$db_username = 'ETU2_49';
+	$db_password = 'ETU2_49';
+	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
-
-	//connection de Jérémy qui resté là après la merge
-	// $db_username = 'copie_tdf_copie';
-	// $db_password = 'copie_tdf_copie';
+	/*LocalHost*/
+	// $db_username = 'copie_tdf';
+	// $db_password = 'copie_tdf';
 	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
-	//$db = fabriquerChaineConnexion();
-
-
-	 // $db_username = 'projet_php';
-	 // $db_password = 'projet_php';
-	 // $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	
 	//traitement :
@@ -31,27 +25,11 @@
 	//permet de reremplire ou pas les champs lors de rafraichissement
 	$reaffichage = true;
 	
-	if (isset($_GET['nom'])) {
-		$nom = testNomSponsor($_GET['nom']);
-		if($nom != NULL) {
-			echo substr($nom, 0, 3);
-		}
-	}
-
-	// if(!empty($_POST['nom'])){
-	// 	$nom = $_POST['nom'];
-	// 	$nom = testNomSponsor($nom, $regex);
-	// 	$temporaire = $_POST['nomAbrege'];
-	// 	$nomAbrege = substr($nom, 0, 3);
-	// 	echo $nomAbrege;
-	// }
-
 	// condition pour que rien ne se passe si tout n'est pas rempli, sinon, ajout du coureur à la base grace à la requête
 	if(isset($_POST['verifier'])){
-
 		//verfication du bon remplissage des champs obligatoire :
-		//Si on oublie les un des champs et ca passe pas :
-		if (empty($_POST['nom']) || empty($_POST['nomAbrege']) || $_POST['nationalite'] == ''){
+		//Si on oublie l'un des champs ca passe pas :
+		if (empty($_POST['nom']) || empty($_POST['nomAbrege']) || $_POST['nationalite'] == '' || $_POST['sponsor']=="null"){
 			$textFinal = $textFinal."<br> Vous n'avez pas tout rempli";
 		}else{ //sinon on récupére les infos
 			if(!empty($_POST['nom'])){ //Test et modifications du nom
@@ -72,32 +50,30 @@
 				}
 			}
 			
-			$cio = recupNation();			
+			$cio = recupNation();
 			
-			if (!empty($_POST['sponsor'])) {
+			if (!empty($_POST['sponsor'])) { //récupération du numero d'équipe
 				$n_equipe = $_POST['sponsor'];
 			}
 			
-			if ($textFinal == "") {
+			if ($textFinal == "") { //s'il n'y a pas eu d'erreur (qui sont stokées dans textFinal) alors on envoie :
 				enregistrementDonnées();
 			}
 		}
 	}
-	
-	//print_r($_POST);
 	
 
 	//FUNCTION :
 	function enregistrementDonnées() {
 		global $conn, $annee, $nomAbrege, $nom, $n_equipe,$cio, $textFinal, $reaffichage;
 		
-		//vérification de l'absence de sponsor de meme nom code_cio et nom abrégé :
+		//vérification de l'absence de sponsor de meme nom, code_cio et nom abrégé :
 		$req = 'select count(*) from tdf_sponsor 
 		where na_sponsor = :nomAbrege
 		and nom = :nom
 		and code_cio = :cio';
 		$cur = preparerRequete($conn,$req);
-		//éxecution
+		//execution
 		ajouterParam($cur,':nomAbrege',$nomAbrege);
 		ajouterParam($cur,':nom',$nom);
 		ajouterParam($cur,':cio',$cio);
@@ -108,9 +84,7 @@
 				values(:n_equipe, (select max(n_sponsor) from tdf_sponsor)+1,:nom, :nomAbrege, :cio, :annee)';
 		$curAjout = preparerRequete($conn,$reqAjout);
 		
-		//print_r($tab);
-		
-		if ($tab[0]['COUNT(*)'] == 0 && $n_equipe == null) {
+		if ($tab[0]['COUNT(*)'] == 0) { //si il y a 0 sponsor de meme parametre on ecrit dans la bdd
 			//echo "<h1>$dateC ; $nomAbrege ; $nom ; $n_equipe ; $cio</h1>";
 			ajouterParam($curAjout,':annee',$annee);
 			ajouterParam($curAjout,':nomAbrege',$nomAbrege);
@@ -120,7 +94,7 @@
 			majDonneesPreparees($curAjout);
 			$textFinal = $textFinal . "Sponsor bien enregistré pour l'équipe $n_equipe !!";
 			$reaffichage = false;
-		}else{
+		}else{ //sinon on remplit le texte final pour dire deja existant :
 			$textFinal = $textFinal . "Veuillez sélectionner un sponsor à mettre à jour. ";
 		}
 	}
@@ -130,6 +104,7 @@
 		echo $textFinal;
 	}
 	
+	//remplit la liste déroulante pour le choix des sponsors a mettre à jour :
 	function remplirDernierSponsor() {
 		global $conn, $n_equipe, $reaffichage;
 		$req = 'select n_equipe, n_sponsor, nom, na_sponsor, code_cio,annee_sponsor 
@@ -143,8 +118,10 @@
 		
 		$nb = LireDonnees1($conn, $req, $tab);
 		
+		//première ligne :
 		echo '<option value="null">Choisir un sponsor a mettre à jour</option>';
 		
+		//affichage de tout les sponsors :
 		foreach ($tab as $sponsor) {
 			if ($reaffichage) {
 				if(($n_equipe == 'null') || ($n_equipe != $sponsor['N_EQUIPE']))
@@ -201,19 +178,19 @@
 		}
 	}
 
-	function afficherNom(){
+	function afficherNom(){ //affiche le nom si on permet le ré-affichage
 		global $nom, $reaffichage;
 		if ($reaffichage)
 			echo $nom;
 	}
 
-	function afficherDateC(){
+	function afficherDateC(){ //idem avec la date
 		global $annee, $reaffichage;
 		if ($reaffichage)
 			echo $annee;
 	}
 
-	function afficherNomAbrege(){
+	function afficherNomAbrege(){ //idem avec le nom abrege
 		global $nomAbrege, $reaffichage;
 		if ($reaffichage)
 			echo $nomAbrege;

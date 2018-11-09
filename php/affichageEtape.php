@@ -7,19 +7,13 @@
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
-	// $db = fabriquerChaineConnexion();
-	$conn = OuvrirConnexion($db,$login,$mdp);
 	
-	/*Bastien Localhost*/
-	/*$login = 'copie_tdf';
-	$mdp = 'copie_tdf';
-	$db = fabriquerChaineConnexion2();
-	$conn = OuvrirConnexion($db,$login,$mdp);*/
-
-	//Jérémy Localhost
-	// $db_username = 'copie_tdf_copie';
-	// $db_password = 'copie_tdf_copie';
-	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	/*Localhost*/
+	// $login = 'copie_tdf';
+	// $mdp = 'copie_tdf';
+	// $db = fabriquerChaineConnexion2();
+	
+	$conn = OuvrirConnexion($db,$login,$mdp);
 	
 	//PROGRAMME PRINCIPAL :
 	$annee;
@@ -48,29 +42,12 @@
 	
 	
 	//FONCTIONS DE TRAITEMENT :
-	/*//Récupération de la liste des années
-	function listeAnnee() {
-		global $conn, $annee;
-		$req = "select annee from tdf_annee order by annee";
-		LireDonnees1($conn, $req, $tab);
-		
-		if (!empty($annee)) {echo '<option value="pasBon">Année</option>';}
-		else {echo '<option value="pasBon" selected>Année</option>';}
-		
-		foreach ($tab as $sousTab) {
-			$val = $sousTab['ANNEE'];
-			if (!empty($annee) && $val == $annee)
-				echo '<option value="'.$val.'" selected>'.$val.'</option>';
-			else
-				echo '<option value="'.$val.'">'.$val.'</option>';
-		}
-	}*/
 	
-	//affichage du tableau :
+	//affichage du tableau contenant les informations une fois que la date est renseigné :
 	function affichage() {
 		global $conn, $annee, $curLigne, $curNbVainqueur;
 		
-		//affichage du tableau quoi qu'il ce passe :
+		//affichage de l'entête du tableau quoi qu'il ce passe :
 		$style = "style=\"border: 1px solid black; margin: auto;\"";
 		echo "<table $style>";
 		echo "<tr $style>
@@ -92,9 +69,8 @@
 			$nbEpreuve = LireDonneesPreparees($curLigne, $tabRes);
 			$nbVainqueur = LireDonneesPreparees($curNbVainqueur, $tabNb);
 
-			//boucle d'affichage :
+			//boucle d'affichage des lignes :
 			$j =0; //parcour du tableau de resultat
-			//afficheLigneTableau($tabNb, $style);
 			foreach ($tabNb as $etape) {
 				$tab = array();
 				for ($i = 0 ; $i<$etape['NB'] ; $i++) {
@@ -105,36 +81,16 @@
 			}
 		}
 		else {
+			//sinon on ferme le tableau et informe l'utilisateur qu'il faut selectionner une année
 			echo "</table>";
 			echo '<p style="text-align :center">Pas encore d\'année selectionnée !</p>';
 		}
 	}
 	
-	function fabriqueCondition($EpMultiGagn) {
-		echo '<h1>coucou1</h1>';
-		$condition =
-		(
-			(
-				isset($epreuve[0]['N_EPREUVE'])
-				&&
-				($epreuve[0]['N_EPREUVE'] != $EpMultiGagn)
-			)
-			|| 
-			(
-				isset($epreuve['N_EPREUVE'])
-				&&
-				($epreuve['N_EPREUVE'] != $EpMultiGagn)
-			)
-		);
-		
-		return $condition;
-	}
-	
+	//affiche une ligne du tableau :
 	function afficheLigneTableau($tab, $style) {
-		/*echo '<pre>';
-		print_r($tab);
-		echo '</pre><br><br><br><br><br><br><br>';*/
 		
+		//si vainqueur unique
 		if (!isset($tab[1])) {
 			echo '<tr '.$style.'>
 				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
@@ -146,6 +102,7 @@
 				</tr>';
 		}
 		else {
+			//si victoire en équipe
 			echo '<tr '.$style.'>
 				<th '.$style.'>'.$tab[0]['N_EPREUVE'].'</th>
 				<th '.$style.'>'.$tab[0]['DISTANCE'].'</th>
@@ -157,6 +114,7 @@
 		}
 	}
 	
+	//affichage de tout les membres en cas de victoire par équipe :
 	function afficheNomPrenom($tab) {
 		$retour = '';
 		foreach ($tab as $ligne) {

@@ -7,19 +7,20 @@
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
-	$conn = OuvrirConnexion($db,$login,$mdp);
 	
-	//Bastien Localhost
+	/*Localhost*/
 	// $login = 'projet_php';
 	// $mdp = 'projet_php';
 	// $db = fabriquerChaineConnexion2();
-	// $conn = OuvrirConnexion($db,$login,$mdp);
 	
+	$conn = OuvrirConnexion($db,$login,$mdp);
 
+	//Sauvegarde de parametre du coureur :
 	$n_coureur;
 	$nom;
 	$prenom;
 	
+	//récupération du n_coureur et verification de l'intégrité de GET :
 	if (!empty($_GET['numCoureur'])) {
 		$n_coureur = intval($_GET['numCoureur']);
 	}
@@ -37,8 +38,6 @@
 		join tdf_nation na using (code_cio)
 		where n_coureur = ".$n_coureur;
 	$nbLignesBase = LireDonnees1($conn,$reqBase,$tabBase);
-	//$nom = $tabBase[0]['Nom'];
-	//$prenom = $tabBase[0]['Prenom'];
 	
 	$reqAnneeParticipation = 
 			"select annee from tdf_parti_coureur
@@ -54,16 +53,10 @@
 	else {
 		$prob = true;
 	}
-		
-	/*$req = 'SELECT * FROM tdf_coureur order by nom';
-	$nbLignes = LireDonnees1($conn,$req,$tab);*/
-	
-	
 
-	//PLACE D'ARRIVÉE A CHAQUE TOUR
 	//Remplissage des info si coureur séléctionné :
 	function afficheBase() {
-		global $nbLignesBase, $tabBase;
+		global $tabBase;
 		foreach ($tabBase[0] as $key => $ligne) {
 			if ($key != "Numero de coureur") {
 				echo "<p>$key : $ligne</p>";
@@ -76,19 +69,24 @@
 		echo "A participé $nbLignesAnnee fois au tdf<br>";
 	}
 	
+	//Affichage du palmarés d'un coureur :
 	function afficheAnnee() {
 		global $conn, $nbLignesAnnee, $tabAnnee, $n_coureur, $prob;
 		
 		$style = "style=\"border: 1px solid black;\"";
 		if ($prob) {echo "<h3>Pas encore de participation</h3>";return;}
 		
+		//affichage de l'entete :
 		echo "<table $style>";
 		echo 
 			"<tr $style>
 				<th $style>Annee</th>
 				<th $style>Place</th>
 			</tr>";
+			
+		//Affichage de chaque ligne
 		foreach($tabAnnee as $ligne) {
+			//requete pour récuperer la place d'un coureur pour une année donnée :
 			$reqPlaceParticipation = 
 				"select count(tmp) as nb from
 				(
@@ -120,6 +118,8 @@
 					group by annee, nom, prenom
 				)";
 			$place = LireDonneesCount($conn,$reqPlaceParticipation);
+			
+			//si la place pour une année est de 0 alors on cherche le motif de l'abandon :
 			if ($place == '0') {
 				$reqAbandon = "select libelle, n_epreuve from tdf_coureur
 								join tdf_parti_coureur using (n_coureur)
@@ -130,6 +130,7 @@
 				LireDonnees1($conn, $reqAbandon, $repAban);
 				$place = $repAban[0]['LIBELLE'] . " à la " . $repAban[0]['N_EPREUVE'] . "e épreuve";
 			}
+			//affichage du resultat :
 			echo "
 				<tr $style>
 					<th $style>" . $ligne['ANNEE'] . "</th>
@@ -143,7 +144,7 @@
 	include("../html/affichageCoureur.html");
 	
 	
-	//à déplacer plus tard ...
+	//renvoi la valeur d'un count(*) :
 	function LireDonneesCount($conn,$sql) {
 		$cur = $conn->query($sql);
 		$tab = $cur->fetchall(PDO::FETCH_ASSOC);

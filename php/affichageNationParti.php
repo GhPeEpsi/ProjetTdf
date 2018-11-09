@@ -7,13 +7,15 @@
 	$db_username = 'ETU2_49';
 	$db_password = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
-	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	
-	// $db_username = 'projet_php';
-	// $db_password = 'projet_php';
+	/*LocalHost Bastien*/
+	// $db_username = 'copie_tdf';
+	// $db_password = 'copie_tdf';
 	// $db = fabriquerChaineConnexion2();
-	// $conn = OuvrirConnexion($db,$db_username,$db_password);
+	
+	$conn = OuvrirConnexion($db,$db_username,$db_password);
 
+	//Requetes :
 	$reqSpon = 'select distinct tdf_nation.nom from tdf_nation 
 			join tdf_sponsor using (code_cio) order by nom';
 			
@@ -46,7 +48,7 @@
 				)
 				order by nom';
 	
-	//selection du tableau à afficher :
+	//éxecution de la requete correspondant aux filtres :
 	if (isset($_POST['continuer']) && $_POST['filtres']!='0') {
 		switch ($_POST['filtres']) {
 			case 'spon' : $nb = LireDonnees1($conn, $reqSpon, $tab); break;
@@ -56,10 +58,12 @@
 		}
 	}
 	else {
-		$nb = LireDonnees1($conn, $reqTous, $tab);
+		$nb = LireDonnees1($conn, $reqTous, $tab); //si aucun filtre de séléctionné
 	}
 	
-	//fonction de traitement
+	//Fonction
+	
+	//affichege du tableau
 	function affichage() {
 		global $nb, $tab;
 
@@ -73,6 +77,7 @@
 		}
 	}
 	
+	//renvoie un selected pour sauvegarder les filtres si jamais un est sélectionné :
 	function select($ou) {
 		if (isset($_POST['filtres']) && $ou == $_POST['filtres'])
 			echo "selected";

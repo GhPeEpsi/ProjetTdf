@@ -3,10 +3,12 @@
 	include ("util_affichage.php");
 	include ("../html/navBar.html");
 
+	//Conection Unicaen
 	$db_username = 'ETU2_49';
 	$db_password = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	
+	//Localhost
 	// $db_username = 'projet_php';
 	// $db_password = 'projet_php';
 	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
@@ -42,6 +44,7 @@
 		
 	//function	
 	function choixOrderBy() {
+		//vérification de la validité du formulaire GET :
 		if (isset($_GET['tri']))
 			$tri = $_GET['tri'];
 		else
@@ -52,8 +55,10 @@
 		else
 			$sens = 'null';
 		
+		//préparation du order by :
 		$retour= "";
 		
+		//remplissage du order by en fonction du formulaire get :
 		switch($tri) {
 			case 'n_coureur' : $retour = $retour . 'order by n_coureur';break;
 			case 'nom' : $retour = $retour . 'order by nom';break;
@@ -64,6 +69,7 @@
 			default : $retour = $retour . 'order by n_coureur';
 		}
 		
+		//remplissage du sens de tri du order by :
 		switch ($sens) {
 			case 'asc' : $retour = $retour . ' asc';break;
 			case 'desc' : $retour = $retour . ' desc';break;
@@ -73,7 +79,7 @@
 		return $retour;
 	}
 
-	
+	//Affiche le tableau avec les coureurs ...
 	function affichageTableau() {
 		global $tab;
 		foreach($tab as $coureur) {
@@ -84,6 +90,7 @@
 				else
 					echo '<td>'.$colonne.'</td>';
 			}
+			//affichage des liens modification information et suppression d'un coureur :
 			echo '<th scope="col">
 					  <a href="modificationCoureur.php?numCoureur='.$coureur["N_COUREUR"].'">Modifier</a>
 				  </th>';
@@ -96,6 +103,7 @@
 		}
 	}
 	
+	//vérifie si le coureur à participé au tdf et si on peut le supprimer :
 	function pouvoirSupprimer($coureur) {
 		if ($coureur['NB'] == 0)
 			return '<a href="supprimerUnCoureur.php?numCoureur='.$coureur["N_COUREUR"].'">Supprimer</a>';

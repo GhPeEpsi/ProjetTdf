@@ -16,7 +16,7 @@
 		<form name="formAjoutSponsor" action="" method="post">
 			<select name="sponsor">
 				<?php  remplirDernierSponsor();?>
-			</select><br><br>
+			</select><br><br><span class="error">* </span>
 			
 			
 			
@@ -60,8 +60,3 @@
 		<span class="error"> <?php afficherTexteFinal(); ?> </span>
   </body>
 </html>
-
-
-<!-- question : est-ce que faut faire en php le fait que si pas tout rempli alors on efface pas tout      resolu -->
-
-<!-- Penser à régler probleme de nom et prenom identiques mais nationamité different qui devrait s'insérer dans la base et ce n'est pas le cas  -->

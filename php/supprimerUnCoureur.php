@@ -1,5 +1,5 @@
 <?php
-	//positionné la poour eviter les echo de la navbar
+	//positionné la pour eviter les echo de la navbar
 	if (isset($_POST['annuler'])) {
 		header('Location: choixCoureur.php');
 	}
@@ -9,21 +9,23 @@
 	include ("util_affichage.php");
 	include ("../html/navBar.html");
 
-
+	//ce fichier sert de page de vérification a la suppression 
+	//d'un coureur via choixCoureur (menu gerer coureur) :
+	
 	//Serveur UNICAEN
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
-	$conn = OuvrirConnexion($db,$login,$mdp);
 	
-	//Bastien Localhost
+	//Localhost
 	// $login = 'projet_php';
 	// $mdp = 'projet_php';
 	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
-	// $db = fabriquerChaineConnexion2();
-	// $conn = OuvrirConnexion($db,$login,$mdp);
 
+	
+	$conn = OuvrirConnexion($db,$login,$mdp);
 
+	//récupération du numero de coureur ou message à l'utilisateur :
 	if (!empty($_GET['numCoureur'])) {
 		$n_coureur = intval($_GET['numCoureur']);
 	}
@@ -32,12 +34,12 @@
 		return;
 	}
 
-	
+	//lancement de la fonction principale si l'utilisateur à validé :
 	if (isset($_POST['valider'])) {
 		supprimer($n_coureur);
 	}
 	
-
+	// affiche le nom, prenom d'un coureur à supprimer :
 	function afficherCoureur() {
 		global $conn, $n_coureur;
 		$req = 'select nom, prenom from tdf_coureur where n_coureur = '.$n_coureur;
@@ -46,6 +48,7 @@
 			echo '<p>Voulez-vous supprimer ce coureur : '.$tab[0]['NOM']. ' ' .$tab[0]['PRENOM'].' ?</p>';
 	}
 
+	//Suppression du coureur :
 	function supprimer($n_coureur){
 		global $conn;
 		
@@ -60,6 +63,7 @@
 			return;
 		}
 		
+		//suppression :
 		$reqAppNation = "delete from tdf_app_nation where n_coureur=".$n_coureur;
 		$reqCoureur = "delete from tdf_coureur where n_coureur=".$n_coureur;
 		majDonnees($conn,$reqAppNation);

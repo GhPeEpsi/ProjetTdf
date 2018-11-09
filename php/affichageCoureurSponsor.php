@@ -7,15 +7,16 @@
 	$login = 'ETU2_49';
 	$mdp = 'ETU2_49';
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	
+	/*Localhost*/
+	// $login = 'copie_tdf';
+	// $mdp = 'copie_tdf';
+	// $db = fabriquerChaineConnexion2();
+	
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	
-	/*Bastien Localhost*/
-	/*$login = 'copie_tdf';
-	$mdp = 'copie_tdf';
-	$db = fabriquerChaineConnexion2();
-	$conn = OuvrirConnexion($db,$login,$mdp);*/
-	
 	//PROGRAMME PRINCIPAL :
+	//récupération de l'année si elle est sélectionné
 	$annee;
 	if (isset($_POST['verifier'])) {
 		if (isset($_POST['annee']) && $_POST['annee'] != "pasBon") {
@@ -55,6 +56,7 @@
 			}
 			echo "</tr>";
 			
+			//affichage des informations :
 			foreach ($tabRes as $ligne) {
 				echo "<tr>";
 				foreach($ligne as $col) {
