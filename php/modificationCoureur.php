@@ -12,13 +12,15 @@
 	$db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 	// $db = fabriquerChaineConnexion();
 
+	//Connexion locale Bastien
 	// $login = 'projet_php';
 	// $mdp = 'projet_php';
 	// $db = fabriquerChaineConnexion2();
 
+	//Connexion locale Jérémy
 	//$login = 'copie_tdf_copie';
 	//$mdp = 'copie_tdf_copie';
-	//$db = fabriquerChaineConnexion2();
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 
 	$conn = OuvrirConnexion($db,$login,$mdp);
 	

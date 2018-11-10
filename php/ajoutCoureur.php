@@ -17,15 +17,15 @@
 	/* --------------------------------------------------------------------------------------------------------------------------------- */
 
 	// connexion à la base
-	 // $db_username = 'ETU2_49';
-	 // $db_password = 'ETU2_49';
-	 // $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
+	 $db_username = 'ETU2_49';
+	 $db_password = 'ETU2_49';
+	 $db = "oci:dbname=spartacus.iutc3.unicaen.fr:1521/info.iutc3.unicaen.fr;charset=AL32UTF8";
 
 
-	//connection locale de Jérémy
-	$db_username = 'copie_tdf_copie';
-	$db_password = 'copie_tdf_copie';
-	$db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
+	//connexion locale de Jérémy
+	// $db_username = 'copie_tdf_copie';
+	// $db_password = 'copie_tdf_copie';
+	// $db = "oci:dbname=localhost:1521/xe;charset=AL32UTF8";
 	
 	$conn = OuvrirConnexion($db,$db_username,$db_password);
 	
@@ -245,7 +245,7 @@
 		}
 	}
 
-	//Fonction permet de remplir une balise Hidden pour permettre ou non d'aller consulter les informations du coureur que l'on vient d'entrer
+	//Fonction permettant de remplir une balise Hidden afin d'aller ou non consulter les informations du coureur que l'on vient d'entrer
 	//si on vient de rentrer un coureur alors le droit de passage est vrai sinon il est faux.
 	function droitPassage() {
 		if (isset($_POST['verifier']) && isset($_POST['droitPassage']) && ($_POST['droitPassage']=="false")) {
@@ -318,7 +318,7 @@
 		echo $depuisQuand;
 	}
 
-	//insertion du fichier ajoutCoureur.html. On inclut le fichier de cette manière afin de ne pas "polluer" le champs "depuisQuand" par ce qui est écrit dans le fichier 
+	//insertion du fichier ajoutCoureur.html. On inclut le fichier de cette manière afin de ne pas "polluer" le champs "depuisQuand" par ce qui est écrit dans le fichier que l'on inclut
 	if(empty($_GET)){
 		include ("../html/ajoutCoureur.html");
 	}
