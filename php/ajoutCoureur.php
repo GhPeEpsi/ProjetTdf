@@ -132,7 +132,7 @@
 						$textFinal = $textFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 					}
 					else {
-						$textFinal = $textFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
+						$textFinal = $textFinal."<br> Le coureur existe deja, veuillez changer le nom, le prénom, ou la nationalité";
 					}
 				}
 
@@ -189,7 +189,7 @@
 							$textFinal = $textFinal."<br> Vous avez inséré le coureur ".$nom. " " .$prenom." de nationalité ".$nat;
 						}
 						else {
-							$textFinal = $textFinal."<br> Le coureur existe deja veuillez changer le nom, le prenom, ou la nationalité";
+							$textFinal = $textFinal."<br> Le coureur existe deja, veuillez changer le nom, le prénom, ou la nationalité";
 						}
 					}
 				}

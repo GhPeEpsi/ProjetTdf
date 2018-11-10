@@ -32,7 +32,7 @@
 		$nbcoureurs = LireDonnees1($conn,$reqBase,$tabParticipation);
 		
 		if ($nbcoureurs == 0) //s'il n'y a pas de coureur supprimable affichage d'un message :
-			echo "<h3>Vous ne pouvez pas supprimer de coureur a partir du moment où ils ont tous participé à au moins 1 tdf</h3>";
+			echo "<h3>Vous ne pouvez pas supprimer de coureur pour le moment. Chaque coureur a participé à au moins 1 Tour de France</h3>";
 		else //sinon affichage de la liste :
 			afficherCheck($tabParticipation);
 	}

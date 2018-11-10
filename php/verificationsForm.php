@@ -91,7 +91,7 @@ function testPrenom($prenom, $regex) {
         
         //verifie si le prénom saisi dépasse 30 caractères
         if (iconv_strlen($prenom, 'UTF-8') > 30) {
-            echo "<script> alert('Le prenom saisi ne doit pas dépasser 30 caractères !')</script>";
+            echo "<script> alert('Le prénom saisi ne doit pas dépasser 30 caractères !')</script>";
             return NULL;
         }
 

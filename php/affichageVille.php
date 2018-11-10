@@ -29,7 +29,7 @@
 	$nbLignes1 = LireDonnees1($conn, $req1, $tab1);
 	
 	//$style = "style=\"border: 1px solid black;\"";
-	echo "<h4> Ville étapes depuis la création du tour de France :  </h4>";
+	echo "<h4> Villes étapes depuis la création du Tour de France :  </h4>";
 	echo '<table style="margin :auto">';
 	echo "<tr>
 	<th style= \"border: 1px solid black;\" >Ville de départ</th>

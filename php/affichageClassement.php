@@ -109,7 +109,7 @@ using(n_coureur) where tdf_classements_generaux.annee = :annee and valide != \'R
 		}
 		else {
 			echo "</table>";
-			echo '<p style ="text-align:center">Pas encore d\'année selectionnée !</p>';
+			echo '<p style ="text-align:center">Pas encore d\'année sélectionnée !</p>';
 		}
 	}
 

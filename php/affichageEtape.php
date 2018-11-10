@@ -83,7 +83,7 @@
 		else {
 			//sinon on ferme le tableau et informe l'utilisateur qu'il faut selectionner une année
 			echo "</table>";
-			echo '<p style="text-align :center">Pas encore d\'année selectionnée !</p>';
+			echo '<p style="text-align :center">Pas encore d\'année sélectionnée !</p>';
 		}
 	}
 	
