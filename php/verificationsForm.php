@@ -48,8 +48,7 @@ function testNom($nom, $regex) {
     if (preg_match($regex, $nom) && !(preg_match("#---|''|^'$|^-$#", $nom))){
         //retire caractères interdits et convertit en majuscules
         $nom = strtoupper(supprimeCaracteresSpeciaux(supprimeAccents($nom, FALSE)));
-        //echo $nom;
-        //echo "<br>";
+
         $nom = utf8_encode($nom);
 
         if (iconv_strlen($nom, 'UTF-8') > 30) {
@@ -64,8 +63,7 @@ function testNom($nom, $regex) {
         }
 
         return $nom;
-    } else {
-        //echo "Nom invalide <br>"; 
+    } else { 
         echo "<script> alert('Le nom saisi n\'est pas valide !')</script>";
 
         return NULL;  
